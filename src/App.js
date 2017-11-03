@@ -2,6 +2,15 @@ import React, { Component } from 'react';
 import logo from './logo.svg';
 import './App.css';
 
+import io from 'socket.io-client';
+
+const socket = io();
+
+// sockets test
+socket.on('hello', ({ message }) =>
+  alert(message)
+);
+
 class App extends Component {
   render() {
     return (

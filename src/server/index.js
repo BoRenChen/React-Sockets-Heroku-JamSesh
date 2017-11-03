@@ -17,3 +17,4 @@ io.on('connection', socket => {
 });
 
 server.listen(port);
+console.log('server listening on port ' + port);
