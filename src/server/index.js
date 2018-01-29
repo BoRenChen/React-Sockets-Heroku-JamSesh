@@ -12,8 +12,8 @@ app.get('/', (req, res, next) => {
 });
 
 // sockets test
-io.on('connection', socket => {
-  socket.emit('hello', { message: 'hello!!! from server!' })
+io.on('connection', client => {
+  client.emit('hello', { message: 'hello!!! from server!' })
 
 
 	client.on('join', function(data) {
@@ -37,7 +37,7 @@ io.on('connection', socket => {
 	    console.log('Client disconnected...');
 	      client.emit('disconnected');
 	    });
-  
+
 });
 
 server.listen(port);
