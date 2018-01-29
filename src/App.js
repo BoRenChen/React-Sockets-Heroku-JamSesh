@@ -9,7 +9,7 @@ const socket = io();
 
 // sockets test
 socket.on('hello!!', ({ message }) =>
-  alert(message)
+  alert(message + 'app.js')
 );
 
 class App extends Component {
