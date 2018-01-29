@@ -3,6 +3,7 @@ import logo from './logo.svg';
 import './App.css';
 
 import io from 'socket.io-client';
+import Tone from "tone";
 
 const socket = io();
 
@@ -15,17 +16,7 @@ class App extends Component {
 
   componentDidMount() {
  
-var socket = this.props.socket;
 
-//socket test
-socket.on('hello', ({ message }) =>
-  alert(message + 'app.js'));
-
-socket.emit('join', 'sinding from app to server');
-
-  //SOCKET CONNECTION
- const io = require('socket.io-client')
- socket = io();
 
   socket.on('connect', function(data) {
       console.log('joining the server - from client');
