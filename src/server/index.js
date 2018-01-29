@@ -13,7 +13,7 @@ app.get('/', (req, res, next) => {
 
 // sockets test
 io.on('connection', socket => {
-  socket.emit('hello', { message: 'hello from server!' })
+  socket.emit('hello', { message: 'hello!!! from server!' })
 });
 
 server.listen(port);

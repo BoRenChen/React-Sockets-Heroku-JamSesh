@@ -7,7 +7,7 @@ import io from 'socket.io-client';
 const socket = io();
 
 // sockets test
-socket.on('hello', ({ message }) =>
+socket.on('hello!!', ({ message }) =>
   alert(message)
 );
 
