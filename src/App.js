@@ -7,8 +7,47 @@ import io from 'socket.io-client';
 import Tone from "tone";
 import {TimelineMax, Ease, Expo, Elastic} from "gsap";
 
-const socket = io();
 
+
+
+//GLOBAL
+const socket = io();
+var synthStatus = false;
+var synth2 = new Tone.PolySynth({
+  "portamento" : 0.01,
+  "oscillator" : {
+    "type" : "square"
+  },
+  "envelope" : {
+    "attack" : 0.005,
+    "decay" : 0.2,
+    "sustain" : 0.4,
+    "release" : 1.4,
+  },
+  "filterEnvelope" : {
+    "attack" : 0.005,
+    "decay" : 0.1,
+    "sustain" : 0.05,
+    "release" : 0.8,
+    "baseFrequency" : 300,
+    "octaves" : 4
+  }
+}).toMaster();
+  var synth = new Tone.Synth({
+    "oscillator" : {
+      "type" : "pwm",
+      "modulationFrequency" : 0.2
+    },
+    "envelope" : {
+      "attack" : 0.02,
+      "decay" : 0.1,
+      "sustain" : 0.2,
+      "release" : 0.9,
+    }
+  }).toMaster();
+
+
+      
 // sockets test
 socket.on('hello!!', ({ message }) =>
   alert(message + 'app.js....')
@@ -53,39 +92,6 @@ class App extends Component {
   //--------------------------------------TONE-------------------------------------------//
 
   
-    var synth2 = new Tone.PolySynth({
-      "portamento" : 0.01,
-      "oscillator" : {
-        "type" : "square"
-      },
-      "envelope" : {
-        "attack" : 0.005,
-        "decay" : 0.2,
-        "sustain" : 0.4,
-        "release" : 1.4,
-      },
-      "filterEnvelope" : {
-        "attack" : 0.005,
-        "decay" : 0.1,
-        "sustain" : 0.05,
-        "release" : 0.8,
-        "baseFrequency" : 300,
-        "octaves" : 4
-      }
-    }).toMaster();
-      var synth3 = new Tone.Synth().toMaster();
-      var synth = new Tone.Synth({
-        "oscillator" : {
-          "type" : "pwm",
-          "modulationFrequency" : 0.2
-        },
-        "envelope" : {
-          "attack" : 0.02,
-          "decay" : 0.1,
-          "sustain" : 0.2,
-          "release" : 0.9,
-        }
-      }).toMaster();
   //var code = $.ui.keyCode;
 
   //KEYBOARD
@@ -511,7 +517,46 @@ console.log("up! ");
     alert('move to second component')
     this.setState({first: false})
   }
+  handleSynth() {
+      console.log("pressed", synth2);
+      if (synthStatus == false) {
+      synth2 = new Tone.PolySynth(3, Tone.DuoSynth, {
+      "oscillator": {
+        "type": "sine"
+      },
+      "envelope": {
+        "attack": 0.01,
+        "decay": 0.1,
+        "sustain": 0.2,
+        "release": 4,
+      }
+    }).toMaster();
+      synthStatus = true;
+    } else {
+      synth2 = new Tone.PolySynth({
+        "portamento" : 0.01,
+        "oscillator" : {
+          "type" : "square"
+        },
+        "envelope" : {
+          "attack" : 0.005,
+          "decay" : 0.2,
+          "sustain" : 0.4,
+          "release" : 1.4,
+        },
+        "filterEnvelope" : {
+          "attack" : 0.005,
+          "decay" : 0.1,
+          "sustain" : 0.05,
+          "release" : 0.8,
+          "baseFrequency" : 300,
+          "octaves" : 4
+        }
+      }).toMaster();
+      synthStatus = false;
+    }
 
+    }
   render() {
     return (
       <div className="App">
@@ -539,7 +584,7 @@ console.log("up! ");
         <input type="range" min="-10" max="10"/>
 
         </div>
-
+        <button onClick={this.handleSynth.bind(this)}>change synth</button>
         <button onClick={this.handle.bind(this)}>move to second page</button>
         {this.state.first == true && <Pqr/>}
         {this.state.first == false && <Sqr/>}
