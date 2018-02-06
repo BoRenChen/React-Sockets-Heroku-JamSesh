@@ -3,7 +3,7 @@ const express = require('express');
 const app = express();
 const server = require('http').createServer(app);
 const io = require('socket.io')(server);
-const port = process.env.PORT || 8080;
+const port = process.env.PORT || 3000;
 
 app.use(express.static(path.join(__dirname, '../../build')));
 
@@ -31,7 +31,15 @@ io.on('connection', client => {
 	    });
 	    client.on('buttonReleased', function(data){
 	        console.log("server released" + data);
-	      client.broadcast.emit('release', data);
+	      	client.broadcast.emit('release', data);
+	    });
+	    client.on('PianoKeyPressed', function(data){
+	        console.log("Paino Key Press " + data);
+	      	client.broadcast.emit('PianoKeyPress', data);
+	    });
+	    client.on('PianoKeyReleased', function(data){
+	        console.log("Piano Key Release " + data);
+	      	client.broadcast.emit('PianoKeyRelease', data);
 	    });
 	    client.on('disconnect', function () {
 	    console.log('Client disconnected...');

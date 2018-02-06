@@ -33,6 +33,23 @@ svg {
   margin: auto;
 }
 
+
+.drumsvg {
+  height: 100vh;
+  width: 100vw;
+  display: block;
+  -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+}
+i {
+  color: $white;
+}
+i:hover {
+  color: $gray-light;
+}
+
+#Drums:hover {
+  cursor: pointer;
+}
 ul {
   height:18.875em; width:34em;
   margin:5em auto; padding:3em 0 0 3em; position:relative; 
