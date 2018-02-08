@@ -41,6 +41,14 @@ io.on('connection', client => {
 	        console.log("Piano Key Release " + data);
 	      	client.broadcast.emit('PianoKeyRelease', data);
 	    });
+	    client.on('synthStatusChanged', function(data){
+	    	console.log("New Synth Status = " + data);
+	    	client.broadcast.emit('changeSynthStatus', data);
+	    });
+	    client.on('drumPressed', function(data){
+	    	console.log("Drum Pressed " + data);
+	    	client.broadcast.emit('drumPress', data);
+	    });
 	    client.on('disconnect', function () {
 	    console.log('Client disconnected...');
 	      client.emit('disconnected');

@@ -33,6 +33,7 @@ var synth2 = new Tone.PolySynth({
     "octaves" : 4
   }
 }).toMaster();
+  var synth3 = new Tone.Synth().toMaster();
   var synth = new Tone.Synth({
     "oscillator" : {
       "type" : "pwm",
@@ -86,7 +87,75 @@ class App extends Component {
     console.log("PianoReleaseFromServer" + data)
       synth2.triggerRelease(data);
    });
-
+  socket.on('changeSynthStatus', function(data){
+    console.log('change synth status to ' + data)
+    synthStatus = data;
+    
+      if (synthStatus == false) {
+      synth2 = new Tone.PolySynth(3, Tone.DuoSynth, {
+      "oscillator": {
+        "type": "sine"
+      },
+      "envelope": {
+        "attack": 0.01,
+        "decay": 0.1,
+        "sustain": 0.2,
+        "release": 4,
+      }
+    }).toMaster();
+      synthStatus = true;
+    } else {
+      synth2 = new Tone.PolySynth({
+        "portamento" : 0.01,
+        "oscillator" : {
+          "type" : "square"
+        },
+        "envelope" : {
+          "attack" : 0.005,
+          "decay" : 0.2,
+          "sustain" : 0.4,
+          "release" : 1.4,
+        },
+        "filterEnvelope" : {
+          "attack" : 0.005,
+          "decay" : 0.1,
+          "sustain" : 0.05,
+          "release" : 0.8,
+          "baseFrequency" : 300,
+          "octaves" : 4
+        }
+      }).toMaster();
+      synthStatus = false;
+    }
+  });
+  socket.on('drumPress', function(data){
+    console.log('drumPress ' + data)
+    switch(data){
+      case 'snare':
+        snare(true);
+        break;
+      case 'hiHat':
+        hiHat(true);
+        break; 
+      case 'kick':
+        kick(true);
+        break; 
+      case 'leftTom':
+        leftTom(true);
+        break; 
+      case 'rightTom':
+        rightTom(true);
+        break; 
+      case 'floorTom':
+        floorTom(true);
+        break; 
+      case 'crashdrum':
+        crashdrum(true);
+        break;     
+      default:
+        break;
+    }
+  });
 
   
   //--------------------------------------TONE-------------------------------------------//
@@ -253,65 +322,74 @@ class App extends Component {
            // The last tween, returns the element to it's original properties
            .to(snareDrum, 0.4, {scale: 1, transformOrigin: "50% 100%", ease: Elastic.easeOut});
 
-      function snare(){
+      function snare(fromServer){
         //snare audio & animatin
         snaretl.restart();
         snaretl.play();
         var snareAudioEl = snareAudio.get(0);
+        if(!fromServer) socket.emit('drumPressed', "snare");
+
         snareAudioEl.currentTime = 0;
         snareAudioEl.play();
+
       }
 
-      function crashdrum(){
+      function crashdrum(fromServer){
         //crash
         crashtl.restart();
         crashtl.play();
         var crashAudioEl = crashAudio.get(0);
+        if(!fromServer) socket.emit('drumPressed', "crashdrum");
         crashAudioEl.currentTime = 0;
         crashAudioEl.play();
       }
 
-      function rightTom(){
+      function rightTom(fromServer){
         //right tom
         rightTomtl.restart();
         rightTomtl.play();
         var smallTomAudioEl = smallTomAudio.get(0);
+        if(!fromServer) socket.emit('drumPressed', "rightTom");
         smallTomAudioEl.currentTime = 0;
         smallTomAudioEl.play();
       }
 
-      function leftTom(){
+      function leftTom(fromServer){
         //lift tom
         leftTomtl.restart();
         leftTomtl.play();
         var bigTomAudioEl = bigTomAudio.get(0);
+        if(!fromServer) socket.emit('drumPressed', "leftTom");
         bigTomAudioEl.currentTime = 0;
         bigTomAudioEl.play();
       }
 
-      function floorTom(){
+      function floorTom(fromServer){
         //Floor Tom
         floorTomtl.restart();
         floorTomtl.play();
         var floorTomAudioEl = floorTomAudio.get(0);
+        if(!fromServer) socket.emit('drumPressed', "floorTom");
         floorTomAudioEl.currentTime = 0;
         floorTomAudioEl.play();
       }
 
-      function kick(){
+      function kick(fromServer){
         //Kick Drum
         kicktl.restart();
         kicktl.play();
         var kickAudioEl = kickAudio.get(0);
+        if(!fromServer) socket.emit('drumPressed', "kick");
         kickAudioEl.currentTime = 0;
         kickAudioEl.play();
       }
 
-      function hiHat(){
+      function hiHat(fromServer){
         //Hi-Hat
         hiHattl.restart();
         hiHattl.play();
         var hiHatClosedAudioEl = hiHatClosedAudio.get(0);
+        if(!fromServer) socket.emit('drumPressed', "hiHat");
         hiHatClosedAudioEl.currentTime = 0;
         hiHatClosedAudioEl.play();
 
@@ -411,31 +489,51 @@ class App extends Component {
 
 
     $('#snaredr').click(function(){
-            snare();
+            snare(false);
               }); 
 
     $('#crashdr').click(function(){
-      crashdrum();
+      crashdrum(false);
 
     });
 
     $('#right-tomdr').click(function(){
-      rightTom();
+      rightTom(false);
 
     });
     $('#left-tomdr').click(function(){
-      leftTom();
+      leftTom(false);
     });
     $('#floortomdr').click(function(){
-      floorTom();
+      floorTom(false);
     });
     $('#kickdr').click(function(){
-      kick();
+      kick(false);
     });
     $('#hiHatdr').click(function(){
-      hiHat();
+      hiHat(false);
     });
-
+    $('#Key-72').click(function(){
+      snare(false);
+    });
+    $('#Key-71').click(function(){
+      floorTom(false);
+    });
+    $('#Key-70').click(function(){
+      crashdrum(false);
+    });
+    $('#Key-89').click(function(){
+      rightTom(false);
+    });
+    $('#Key-84').click(function(){
+      leftTom(false);
+    });
+    $('#Key-66').click(function(){
+      kick(false);
+    });
+    $('#Key-74').click(function(){
+      hiHat(false);
+    });
   } 
 
   componentDidUpdate(){
@@ -519,6 +617,7 @@ console.log("up! ");
   }
   handleSynth() {
       console.log("pressed", synth2);
+      socket.emit('synthStatusChanged', synthStatus);
       if (synthStatus == false) {
       synth2 = new Tone.PolySynth(3, Tone.DuoSynth, {
       "oscillator": {
@@ -571,7 +670,6 @@ console.log("up! ");
           <li className="white b" id="B4">B4</li>
           <li className="black as"></li>
           <li className="white a" id="A4">A4</li>
-          <li className="black gs"></li>
           <li className="white g" id="G4">G4</li>
           <li className="black fs"></li>
           <li className="white f" id="F4">F4</li>
