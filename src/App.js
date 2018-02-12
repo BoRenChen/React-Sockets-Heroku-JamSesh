@@ -34,18 +34,21 @@ var synth2 = new Tone.PolySynth({
   }
 }).toMaster();
   var synth3 = new Tone.Synth().toMaster();
-  var synth = new Tone.Synth({
-    "oscillator" : {
-      "type" : "pwm",
-      "modulationFrequency" : 0.2
-    },
+  var synth = new Tone.FMSynth({
+    "modulationIndex" : 12.22,
     "envelope" : {
-      "attack" : 0.02,
-      "decay" : 0.1,
-      "sustain" : 0.2,
-      "release" : 0.9,
+      "attack" : 0.01,
+      "decay" : 0.2
+    },
+    "modulation" : {
+      "type" : "square"
+    },
+    "modulationEnvelope" : {
+      "attack" : 0.2,
+      "decay" : 0.01
     }
   }).toMaster();
+
 
 
       
@@ -556,6 +559,156 @@ class App extends Component {
     $('#Hi-Hat').click(function(){
       hiHat(false);
     });
+
+
+    //--------------------------------------Sequencer-------------------------------------------//
+
+
+    // Sequencer varibles
+  var rows = $('.row');
+  var rowLength = rows.first().children().length;
+  var labels = $('label');
+  // Beat starts at 1 because 0 is the img for each row
+  var beat = 1;
+
+  // Sequencer
+  function sequencer () {
+    labels.removeClass('active');
+    // Do this function for each .row
+    $(rows).each(function() {
+    // Select the child element at the "beat" index
+     var current = $(this).children().eq(beat);
+      current.addClass('active');
+    // If the current input is checked do some stuff!
+      if (current.find('input').is(":checked")) {
+        console.log(current.parent().attr('data-target-drum'))
+        switch(current.parent().attr('data-target-drum')){
+          case 'snare':
+            snare(true);
+            break;
+
+          case 'hiHat':
+            hiHat(true);
+            break; 
+          case 'kick':
+            kick(true);
+            break; 
+          case 'leftTom':
+            leftTom(true);
+            break; 
+          case 'rightTom':
+            rightTom(true);
+            break; 
+          case 'floorTom':
+            floorTom(true);
+            break; 
+          case 'crash':
+            crashdrum(true);
+            break;     
+          default:
+            break;
+        }
+        // kicktl.restart();
+        // kicktl.play();
+        // var kickAudioEl = kickAudio.get(0);
+        // kickAudioEl.currentTime = 0;
+        // kickAudioEl.play();
+
+        var targetDrum = (current.parent().attr('data-target-drum'));
+        // If there a function that shares the same name as the data attribue, do it!
+        var fn = window[targetDrum];
+        if (typeof fn === "function") {
+          fn();
+        }
+      }
+    });
+    // If we get to the last child, start over
+    if ( beat < (rowLength - 1) ) {
+      ++beat;
+    } else {
+      beat = 1;
+    }
+  }
+
+  // Start/Stop Sequencer varibles
+  var sequencerOn = false;
+  var intervalId;
+  ///
+  // Start/Stop Sequencer
+  $('#sequencer-active-btn').click(function () {
+    $(this).find('i').toggleClass('fa-pause');
+    console.log("HIT")
+    if (sequencerOn === false) {
+      console.log('wasfalse')
+      intervalId = window.setInterval(sequencer, interval);
+      sequencerOn = true;
+    } else {
+            console.log('was true')
+
+      window.clearInterval(intervalId);
+      sequencerOn = false;
+    }
+  });
+
+  // Tempo varibles
+  var bpm = 300;
+  var interval = 60000 / bpm;
+  var targetDrum;
+  var fn;
+
+  // Set tempo
+  function setTempo() {
+    window.clearInterval(intervalId);
+    var intervalId = window.setInterval(sequencer, interval);
+  }
+
+  // Increase tempo
+  $('#bpm-increase-btn').click(function() {
+    if ( bpm < 300 ) {
+      bpm = parseInt($('#bpm-indicator').val());
+      bpm += 10;
+      interval = 60000 / bpm;
+      $('#bpm-indicator').val(bpm);
+      if(sequencerOn === true) {
+        setTempo();
+
+      }
+    }
+  });
+
+  //Decrease tempo
+  $('#bpm-decrease-btn').click(function() {
+    if ( bpm > 100 ) {
+      bpm = parseInt($('#bpm-indicator').val());
+      bpm -= 10;
+      interval = 60000 / bpm;
+      $('#bpm-indicator').val(bpm);
+      if(sequencerOn === true) {
+        setTempo();
+      }
+    }
+  });
+
+  // Trigger drum on input check
+  $('input').click(function() {
+    if (sequencerOn === false) {
+      if ($(this).is(":checked")) {
+        targetDrum = $(this).parents(".row").attr('data-target-drum');
+        fn = window[targetDrum];
+        if (typeof fn === "function") {
+          fn();
+        }
+      }
+    }
+  });
+
+  // Load audio on iOS devices on the first user interaction, because...
+  $('#sequencer-visible-btn').one('click', function() {
+    $("audio").each(function(i) {
+      this.play();
+      this.pause();
+    });
+  });
   } 
 
   componentDidUpdate(){
@@ -567,18 +720,20 @@ class App extends Component {
         }
       }).toMaster();
       var synth3 = new Tone.Synth().toMaster();
-      var synth = new Tone.Synth({
-        "oscillator" : {
-          "type" : "pwm",
-          "modulationFrequency" : 0.2
-        },
-        "envelope" : {
-          "attack" : 0.02,
-          "decay" : 0.1,
-          "sustain" : 0.2,
-          "release" : 0.9,
-        }
-      }).toMaster();
+  var synth = new Tone.FMSynth({
+      "modulationIndex" : 12.22,
+      "envelope" : {
+        "attack" : 0.01,
+        "decay" : 0.2
+      },
+      "modulation" : {
+        "type" : "square"
+      },
+      "modulationEnvelope" : {
+        "attack" : 0.2,
+        "decay" : 0.01
+      }
+    }).toMaster();
   //var code = $.ui.keyCode;
 
   document.addEventListener('keypress', (event) => {
@@ -773,7 +928,6 @@ class Sqr extends React.Component {
     <div>
       <h1>Second</h1>
 
-
         <ul className="set">
           <li className="white b" id="B4">B4</li>
           <li className="black as"></li>
@@ -798,6 +952,99 @@ class Drum extends React.Component {
     return (
     <div>
       <h1>Drum</h1>
+
+  <div id="container-sequencer" class="container-sequencer collapse">
+          <div id="sequencer" class="sequencer">
+            <div class="row" data-target-drum="crash">
+              <img src="img/crash.png" alt="Crash"/>
+              <label><input type="checkbox"/><span></span></label>
+              <label><input type="checkbox"/><span></span></label>
+              <label><input type="checkbox"/><span></span></label>
+              <label><input type="checkbox"/><span></span></label>
+              <label><input type="checkbox"/><span></span></label>
+              <label><input type="checkbox"/><span></span></label>
+              <label><input type="checkbox"/><span></span></label>
+              <label><input type="checkbox"/><span></span></label>
+            </div>
+            <div class="row" data-target-drum="hiHat">
+              <img src="img/hi-hat.png" alt="Hi hat"/>
+              <label><input type="checkbox"/><span></span></label>
+              <label><input type="checkbox"/><span></span></label>
+              <label><input type="checkbox"/><span></span></label>
+              <label><input type="checkbox"/><span></span></label>
+              <label><input type="checkbox"/><span></span></label>
+              <label><input type="checkbox"/><span></span></label>
+              <label><input type="checkbox"/><span></span></label>
+              <label><input type="checkbox"/><span></span></label>
+            </div>
+            <div class="row" data-target-drum="snare">
+              <img src="img/snare.png" alt="Snare"/>
+              <label><input type="checkbox"/><span></span></label>
+              <label><input type="checkbox"/><span></span></label>
+              <label><input type="checkbox"/><span></span></label>
+              <label><input type="checkbox"/><span></span></label>
+              <label><input type="checkbox"/><span></span></label>
+              <label><input type="checkbox"/><span></span></label>
+              <label><input type="checkbox"/><span></span></label>
+              <label><input type="checkbox"/><span></span></label>
+            </div>
+            <div class="row" data-target-drum="rightTom">
+              <img src="img/right-tom.png" alt="Right tom"/>
+              <label><input type="checkbox"/><span></span></label>
+              <label><input type="checkbox"/><span></span></label>
+              <label><input type="checkbox"/><span></span></label>
+              <label><input type="checkbox"/><span></span></label>
+              <label><input type="checkbox"/><span></span></label>
+              <label><input type="checkbox"/><span></span></label>
+              <label><input type="checkbox"/><span></span></label>
+              <label><input type="checkbox"/><span></span></label>
+            </div>
+            <div class="row" data-target-drum="leftTom">
+              <img src="img/left-tom.png" alt="Left tom"/>
+              <label><input type="checkbox"/><span></span></label>
+              <label><input type="checkbox"/><span></span></label>
+              <label><input type="checkbox"/><span></span></label>
+              <label><input type="checkbox"/><span></span></label>
+              <label><input type="checkbox"/><span></span></label>
+              <label><input type="checkbox"/><span></span></label>
+              <label><input type="checkbox"/><span></span></label>
+              <label><input type="checkbox"/><span></span></label>
+            </div>
+            <div class="row" data-target-drum="floorTom">
+              <img src="img/floor-tom.png" alt="Floor tom"/>
+              <label><input type="checkbox"/><span></span></label>
+              <label><input type="checkbox"/><span></span></label>
+              <label><input type="checkbox"/><span></span></label>
+              <label><input type="checkbox"/><span></span></label>
+              <label><input type="checkbox"/><span></span></label>
+              <label><input type="checkbox"/><span></span></label>
+              <label><input type="checkbox"/><span></span></label>
+              <label><input type="checkbox"/><span></span></label>
+            </div>
+            <div class="row" data-target-drum="kick">
+              <img src="img/kick.png" alt="Kick"/>
+              <label><input type="checkbox"/><span></span></label>
+              <label><input type="checkbox"/><span></span></label>
+              <label><input type="checkbox"/><span></span></label>
+              <label><input type="checkbox"/><span></span></label>
+              <label><input type="checkbox"/><span></span></label>
+              <label><input type="checkbox"/><span></span></label>
+              <label><input type="checkbox"/><span></span></label>
+              <label><input type="checkbox"/><span></span></label>
+            </div>
+            <div class="sequencer-controls">
+              <button id="sequencer-active-btn" class="btn" aria-label="Play"><i class="fa fa-play"></i></button>
+              <div class="sequencer-controls-tempo">
+                <button id="bpm-decrease-btn" class="btn" aria-label="Decrease bpm"><i class="fa fa-minus"></i></button>
+                <input id="bpm-indicator" type="number" min="100" max="300" size="3" value="150" readonly/>
+                <button id="bpm-increase-btn" class="btn" aria-label="Iecrease bpm"><i class="fa fa-plus"></i></button>
+              </div>
+            </div>
+          </div>
+
+          </div>
+       
+
 
 <svg class="drumsvg" version="1.1" xmlns="http://www.w3.org/2000/svg" viewBox="300 300 1400 1400">
 <g id="Drums">
