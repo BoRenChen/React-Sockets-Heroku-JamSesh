@@ -90,7 +90,7 @@ class App extends Component {
   socket.on('changeSynthStatus', function(data){
     console.log('change synth status to ' + data)
     synthStatus = data;
-    
+
       if (synthStatus == false) {
       synth2 = new Tone.PolySynth(3, Tone.DuoSynth, {
       "oscillator": {
@@ -488,15 +488,14 @@ class App extends Component {
            .to([hiHatTop, hiHatBottom], 0.6, {rotation: 0, transformOrigin: "50% 50%", ease: Elastic.easeOut.config(1.5, 0.2)});
 
 
+    //All mouse interaction for drum
+    //DOM Button
     $('#snaredr').click(function(){
             snare(false);
-              }); 
-
+    }); 
     $('#crashdr').click(function(){
       crashdrum(false);
-
     });
-
     $('#right-tomdr').click(function(){
       rightTom(false);
 
@@ -513,6 +512,7 @@ class App extends Component {
     $('#hiHatdr').click(function(){
       hiHat(false);
     });
+    //Graphic Key 
     $('#Key-72').click(function(){
       snare(false);
     });
@@ -532,6 +532,28 @@ class App extends Component {
       kick(false);
     });
     $('#Key-74').click(function(){
+      hiHat(false);
+    });
+    //Graphical Interface
+    $('#Snare').click(function(){
+      snare(false);
+    });
+    $('#Floor-Tom').click(function(){
+      floorTom(false);
+    });
+    $('#Crash').click(function(){
+      crashdrum(false);
+    });
+    $('#Tom-Right-All').click(function(){
+      rightTom(false);
+    });
+    $('#Tom-Left-All').click(function(){
+      leftTom(false);
+    });
+    $('#Kick').click(function(){
+      kick(false);
+    });
+    $('#Hi-Hat').click(function(){
       hiHat(false);
     });
   } 
@@ -670,6 +692,7 @@ console.log("up! ");
           <li className="white b" id="B4">B4</li>
           <li className="black as"></li>
           <li className="white a" id="A4">A4</li>
+          <li className="black gs"></li>
           <li className="white g" id="G4">G4</li>
           <li className="black fs"></li>
           <li className="white f" id="F4">F4</li>
