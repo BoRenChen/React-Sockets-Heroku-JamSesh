@@ -584,26 +584,26 @@ class App extends Component {
         console.log(current.parent().attr('data-target-drum'))
         switch(current.parent().attr('data-target-drum')){
           case 'snare':
-            snare(true);
+            snare(false);
             break;
 
           case 'hiHat':
-            hiHat(true);
+            hiHat(false);
             break; 
           case 'kick':
-            kick(true);
+            kick(false);
             break; 
           case 'leftTom':
-            leftTom(true);
+            leftTom(false);
             break; 
           case 'rightTom':
-            rightTom(true);
+            rightTom(false);
             break; 
           case 'floorTom':
-            floorTom(true);
+            floorTom(false);
             break; 
           case 'crash':
-            crashdrum(true);
+            crashdrum(false);
             break;     
           default:
             break;
