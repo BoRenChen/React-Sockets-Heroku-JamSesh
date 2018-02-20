@@ -159,6 +159,17 @@ class App extends Component {
         break;
     }
   });
+    socket.on('broad', function(data) {
+   $('#future').append(data+ "<br/>");
+     });
+
+
+  //Message
+   $('form').submit(function(e){
+       e.preventDefault();
+       var message = $('#chat_input').val();
+       socket.emit('messages', message);
+   });
 
   
   //--------------------------------------TONE-------------------------------------------//
@@ -840,6 +851,13 @@ console.log("up! ");
           <img src={logo} className="App-logo" alt="logo" />
           <h1 className="App-title">Welcome to JamSesh Powered By React</h1>
         </header>
+
+        <div id="future"></div>
+          <form id="form" id="chat_form">
+              <input id="chat_input" type="text"/>
+              <input type="submit" value="Send"/>
+        </form>
+
 
       <div className="component-app">
 
