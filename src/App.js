@@ -172,6 +172,16 @@ class App extends Component {
    });
 
   
+  //Drum Sequencer
+
+  socket.on('addDrumSequencerItem', function(data) {
+    var id = '#' + data;
+    $(id.toString()).prop('checked', true);
+  });
+  socket.on('removeDrumSequencerItem', function(data){
+    var id = '#' + data;
+    $(id.toString()).prop('checked', false);
+  });
   //--------------------------------------TONE-------------------------------------------//
 
   
@@ -675,6 +685,7 @@ class App extends Component {
 
   // Increase tempo
   $('#bpm-increase-btn').click(function() {
+    console.log('increase bpm');
     if ( bpm < 300 ) {
       bpm = parseInt($('#bpm-indicator').val());
       bpm += 10;
@@ -689,6 +700,8 @@ class App extends Component {
 
   //Decrease tempo
   $('#bpm-decrease-btn').click(function() {
+
+    console.log('decrease bpm');
     if ( bpm > 100 ) {
       bpm = parseInt($('#bpm-indicator').val());
       bpm -= 10;
@@ -702,13 +715,22 @@ class App extends Component {
 
   // Trigger drum on input check
   $('input').click(function() {
+    console.log('im clicked', this)
     if (sequencerOn === false) {
+
+        var id = this.id
       if ($(this).is(":checked")) {
         targetDrum = $(this).parents(".row").attr('data-target-drum');
-        fn = window[targetDrum];
+        console.log(id);
+        socket.emit('addDrumSequencerItem', id);
+
+        //For instant feedback
+        //fn = window[targetDrum];
         if (typeof fn === "function") {
           fn();
         }
+      } else {
+        socket.emit('removeDrumSequencerItem', id);
       }
     }
   });
@@ -975,80 +997,79 @@ class Drum extends React.Component {
           <div id="sequencer" class="sequencer">
             <div class="row" data-target-drum="crash">
               <img src="img/crash.png" alt="Crash"/>
-              <label><input type="checkbox"/><span></span></label>
-              <label><input type="checkbox"/><span></span></label>
-              <label><input type="checkbox"/><span></span></label>
-              <label><input type="checkbox"/><span></span></label>
-              <label><input type="checkbox"/><span></span></label>
-              <label><input type="checkbox"/><span></span></label>
-              <label><input type="checkbox"/><span></span></label>
-              <label><input type="checkbox"/><span></span></label>
+              <label><input id='crash-01' type="checkbox"/><span></span></label>
+              <label><input id='crash-02' type="checkbox"/><span></span></label>
+              <label><input id='crash-03' type="checkbox"/><span></span></label>
+              <label><input id='crash-04' type="checkbox"/><span></span></label>
+              <label><input id='crash-05' type="checkbox"/><span></span></label>
+              <label><input id='crash-06' type="checkbox"/><span></span></label>
+              <label><input id='crash-07' type="checkbox"/><span></span></label>
+              <label><input id='crash-08' type="checkbox"/><span></span></label>
             </div>
             <div class="row" data-target-drum="hiHat">
               <img src="img/hi-hat.png" alt="Hi hat"/>
-              <label><input type="checkbox"/><span></span></label>
-              <label><input type="checkbox"/><span></span></label>
-              <label><input type="checkbox"/><span></span></label>
-              <label><input type="checkbox"/><span></span></label>
-              <label><input type="checkbox"/><span></span></label>
-              <label><input type="checkbox"/><span></span></label>
-              <label><input type="checkbox"/><span></span></label>
-              <label><input type="checkbox"/><span></span></label>
+              <label><input id='hiHat-01' type="checkbox"/><span></span></label>
+              <label><input id='hiHat-02' type="checkbox"/><span></span></label>
+              <label><input id='hiHat-03' type="checkbox"/><span></span></label>
+              <label><input id='hiHat-04' type="checkbox"/><span></span></label>
+              <label><input id='hiHat-05' type="checkbox"/><span></span></label>
+              <label><input id='hiHat-06' type="checkbox"/><span></span></label>
+              <label><input id='hiHat-07' type="checkbox"/><span></span></label>
+              <label><input id='hiHat-08' type="checkbox"/><span></span></label>
             </div>
             <div class="row" data-target-drum="snare">
               <img src="img/snare.png" alt="Snare"/>
-              <label><input type="checkbox"/><span></span></label>
-              <label><input type="checkbox"/><span></span></label>
-              <label><input type="checkbox"/><span></span></label>
-              <label><input type="checkbox"/><span></span></label>
-              <label><input type="checkbox"/><span></span></label>
-              <label><input type="checkbox"/><span></span></label>
-              <label><input type="checkbox"/><span></span></label>
-              <label><input type="checkbox"/><span></span></label>
+              <label><input id='snare-01' type="checkbox"/><span></span></label>
+              <label><input id='snare-02' type="checkbox"/><span></span></label>
+              <label><input id='snare-03' type="checkbox"/><span></span></label>
+              <label><input id='snare-04' type="checkbox"/><span></span></label>
+              <label><input id='snare-05' type="checkbox"/><span></span></label>
+              <label><input id='snare-06' type="checkbox"/><span></span></label>
+              <label><input id='snare-07' type="checkbox"/><span></span></label>
+              <label><input id='snare-08' type="checkbox"/><span></span></label>
             </div>
             <div class="row" data-target-drum="rightTom">
-              <img src="img/right-tom.png" alt="Right tom"/>
-              <label><input type="checkbox"/><span></span></label>
-              <label><input type="checkbox"/><span></span></label>
-              <label><input type="checkbox"/><span></span></label>
-              <label><input type="checkbox"/><span></span></label>
-              <label><input type="checkbox"/><span></span></label>
-              <label><input type="checkbox"/><span></span></label>
-              <label><input type="checkbox"/><span></span></label>
-              <label><input type="checkbox"/><span></span></label>
+              <img src="img/right-tom.png" alt="Right tom"/><label><input class='rightTom-01' type="checkbox"/><span></span></label>
+              <label><input id='rightTom-02' type="checkbox"/><span></span></label>
+              <label><input id='rightTom-03' type="checkbox"/><span></span></label>
+              <label><input id='rightTom-04' type="checkbox"/><span></span></label>
+              <label><input id='rightTom-05' type="checkbox"/><span></span></label>
+              <label><input id='rightTom-06' type="checkbox"/><span></span></label>
+              <label><input id='rightTom-07' type="checkbox"/><span></span></label>
+              <label><input id='rightTom-08' type="checkbox"/><span></span></label>
             </div>
             <div class="row" data-target-drum="leftTom">
               <img src="img/left-tom.png" alt="Left tom"/>
-              <label><input type="checkbox"/><span></span></label>
-              <label><input type="checkbox"/><span></span></label>
-              <label><input type="checkbox"/><span></span></label>
-              <label><input type="checkbox"/><span></span></label>
-              <label><input type="checkbox"/><span></span></label>
-              <label><input type="checkbox"/><span></span></label>
-              <label><input type="checkbox"/><span></span></label>
-              <label><input type="checkbox"/><span></span></label>
+              <label><input id='leftTom-01' type="checkbox"/><span></span></label>
+              <label><input id='leftTom-02' type="checkbox"/><span></span></label>
+              <label><input id='leftTom-03' type="checkbox"/><span></span></label>
+              <label><input id='leftTom-04' type="checkbox"/><span></span></label>
+              <label><input id='leftTom-05' type="checkbox"/><span></span></label>
+              <label><input id='leftTom-06' type="checkbox"/><span></span></label>
+              <label><input id='leftTom-07' type="checkbox"/><span></span></label>
+              <label><input id='leftTom-08' type="checkbox"/><span></span></label>
             </div>
             <div class="row" data-target-drum="floorTom">
               <img src="img/floor-tom.png" alt="Floor tom"/>
-              <label><input type="checkbox"/><span></span></label>
-              <label><input type="checkbox"/><span></span></label>
-              <label><input type="checkbox"/><span></span></label>
-              <label><input type="checkbox"/><span></span></label>
-              <label><input type="checkbox"/><span></span></label>
-              <label><input type="checkbox"/><span></span></label>
-              <label><input type="checkbox"/><span></span></label>
-              <label><input type="checkbox"/><span></span></label>
+              <label><input id='floorTom-01' type="checkbox"/><span></span></label>
+              <label><input id='floorTom-02' type="checkbox"/><span></span></label>
+              <label><input id='floorTom-03' type="checkbox"/><span></span></label>
+              <label><input id='floorTom-04' type="checkbox"/><span></span></label>
+              <label><input id='floorTom-05' type="checkbox"/><span></span></label>
+              <label><input id='floorTom-06' type="checkbox"/><span></span></label>
+              <label><input id='floorTom-07' type="checkbox"/><span></span></label>
+              <label><input id='floorTom-08' type="checkbox"/><span></span></label>
             </div>
             <div class="row" data-target-drum="kick">
               <img src="img/kick.png" alt="Kick"/>
-              <label><input type="checkbox"/><span></span></label>
-              <label><input type="checkbox"/><span></span></label>
-              <label><input type="checkbox"/><span></span></label>
-              <label><input type="checkbox"/><span></span></label>
-              <label><input type="checkbox"/><span></span></label>
-              <label><input type="checkbox"/><span></span></label>
-              <label><input type="checkbox"/><span></span></label>
-              <label><input type="checkbox"/><span></span></label>
+              <label><input id='kick-01' type="checkbox"/><span></span></label>
+              <label><input id='kick-02' type="checkbox"/><span></span></label>
+              <label><input id='kick-03' type="checkbox"/><span></span></label>
+              <label><input id='kick-04' type="checkbox"/><span></span></label>
+              <label><input id='kick-05' type="checkbox"/><span></span></label>
+              <label><input id='kick-06' type="checkbox"/><span></span></label>
+              <label><input id='kick-07' type="checkbox"/><span></span></label>
+              <label><input id='kick-08' type="checkbox"/><span></span></label>
             </div>
             <div class="sequencer-controls">
               <button id="sequencer-active-btn" class="btn" aria-label="Play"><i class="fa fa-play"></i></button>

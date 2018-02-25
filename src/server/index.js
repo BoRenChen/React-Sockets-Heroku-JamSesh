@@ -11,7 +11,37 @@ app.get('/', (req, res, next) => {
   res.sendFile(__dirname + './index.html')
 });
 
-// sockets test
+
+//Global Function
+Array.prototype.remove = function() {
+    var what, a = arguments, L = a.length, ax;
+    while (L && this.length) {
+        what = a[--L];
+        while ((ax = this.indexOf(what)) !== -1) {
+            this.splice(ax, 1);
+        }
+    }
+    return this;
+};
+
+
+// Drum Server
+var drumSequencer = [];
+
+function addDrum(item) {
+	if (!drumSequencer.includes(item)){
+
+		drumSequencer.push(item);
+	console.log("adding item to Drum Sequencer: " + item);
+	}
+	console.log(drumSequencer);
+}
+function removeDrum(item) {
+	drumSequencer.remove(item);
+	console.log("Removing item to Drum Sequencer: " + item);
+}
+
+// Sockets Connection
 io.on('connection', client => {
   client.emit('hello', { message: 'hello!!! from server!' })
 
@@ -20,6 +50,8 @@ io.on('connection', client => {
 	     	console.log('joined the server from App.js - from server');
 
 	        client.emit('welcomeMsg', 'Connected to socket')
+	        //sending drum data to user (array)
+	        client.emit('drumData', drumSequencer)
 	    });
 	    client.on('messages', function(data) {
 	           client.emit('broad', data);
@@ -48,6 +80,15 @@ io.on('connection', client => {
 	    client.on('drumPressed', function(data){
 	    	console.log("Drum Pressed " + data);
 	    	client.broadcast.emit('drumPress', data);
+	    });
+	    //Drum Sequencer
+	    client.on('addDrumSequencerItem', function(data){
+	    	addDrum(data);
+	    	client.broadcast.emit('addDrumSequencerItem', data);
+	    });
+	    client.on('removeDrumSequencerItem', function(data){
+	    	removeDrum(data);
+	    	client.broadcast.emit('removeDrumSequencerItem', data);
 	    });
 	    client.on('disconnect', function () {
 	    console.log('Client disconnected...');
