@@ -203,6 +203,7 @@ class App extends Component {
     console.log("Setting Sequencer from Server", data)
     if (data) {
       console.log('wasfalse')
+      beat = 1;
       intervalId = window.setInterval(sequencer, interval);
       sequencerOn = true;
     } else {
