@@ -77,10 +77,10 @@ io.on('connection', client => {
 	    	console.log("New Synth Status = " + data);
 	    	client.broadcast.emit('changeSynthStatus', data);
 	    });
-	    // client.on('drumPressed', function(data){
-	    // 	console.log("Drum Pressed " + data);
-	    // 	client.broadcast.emit('drumPress', data);
-	    // });
+	    client.on('drumPressed', function(data){
+	    	console.log("Drum Pressed " + data);
+	    	client.broadcast.emit('drumPress', data);
+	    });
 	    //Drum Sequencer
 	    client.on('addDrumSequencerItem', function(data){
 	    	addDrum(data);

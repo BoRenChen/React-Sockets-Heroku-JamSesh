@@ -211,3 +211,10 @@ input[type=number] {
   background-size: contain;
 }
 
+#bpm-decrease-btn {
+  background: red;
+}
+
+#bpm-increase-btn {
+  background: orange;
+}
