@@ -60,18 +60,22 @@ io.on('connection', client => {
 	    client.on('buttonPressed', function(data) {
 	        console.log("server pressed" + data);
 	        client.broadcast.emit('press', data);
+	        client.emit('press', data);
 	    });
 	    client.on('buttonReleased', function(data){
 	        console.log("server released" + data);
 	      	client.broadcast.emit('release', data);
+	      	client.emit('PianoKeyPress', data);
 	    });
 	    client.on('PianoKeyPressed', function(data){
 	        console.log("Paino Key Press " + data);
 	      	client.broadcast.emit('PianoKeyPress', data);
+	      	client.emit('PianoKeyPress', data);
 	    });
 	    client.on('PianoKeyReleased', function(data){
 	        console.log("Piano Key Release " + data);
 	      	client.broadcast.emit('PianoKeyRelease', data);
+	      	client.emit('PianoKeyRelease', data);
 	    });
 	    client.on('synthStatusChanged', function(data){
 	    	console.log("New Synth Status = " + data);
@@ -80,6 +84,7 @@ io.on('connection', client => {
 	    client.on('drumPressed', function(data){
 	    	console.log("Drum Pressed " + data);
 	    	client.broadcast.emit('drumPress', data);
+	    	client.emit('drumPress', data);
 	    });
 	    //Drum Sequencer
 	    client.on('addDrumSequencerItem', function(data){

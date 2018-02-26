@@ -265,7 +265,7 @@ class App extends Component {
        if (typeof(note) != 'undefined') {
           console.log("ISSA NOTE", note, typeof(note));
           socket.emit('PianoKeyPressed', note);
-          synth2.triggerAttack(note);
+          //synth2.triggerAttack(note);
         } else {
           console.log("ITS UNDEFINED EEEK!!!", note)
         }
@@ -280,7 +280,7 @@ class App extends Component {
       console.log('good keyup', note);
 
       socket.emit('PianoKeyReleased', note);
-      synth2.triggerRelease(note);
+      //synth2.triggerRelease(note);
 
     });
 
@@ -292,7 +292,7 @@ class App extends Component {
     document.querySelectorAll('li').forEach(function(button){
       button.addEventListener('mousedown', function(e){
         //play the note on mouse down
-        synth.triggerAttack(e.target.textContent)
+        //synth.triggerAttack(e.target.textContent)
         //Play sound base on content of the li
         socket.emit('buttonPressed', e.target.textContent);
 
@@ -384,7 +384,7 @@ class App extends Component {
         if(!fromServer) socket.emit('drumPressed', "snare");
 
         snareAudioEl.currentTime = 0;
-        snareAudioEl.play();
+        //snareAudioEl.play();
 
       }
 
@@ -395,7 +395,7 @@ class App extends Component {
         var crashAudioEl = crashAudio.get(0);
         if(!fromServer) socket.emit('drumPressed', "crashdrum");
         crashAudioEl.currentTime = 0;
-        crashAudioEl.play();
+        //crashAudioEl.play();
       }
 
       function rightTom(fromServer){
@@ -405,7 +405,7 @@ class App extends Component {
         var smallTomAudioEl = smallTomAudio.get(0);
         if(!fromServer) socket.emit('drumPressed', "rightTom");
         smallTomAudioEl.currentTime = 0;
-        smallTomAudioEl.play();
+        //smallTomAudioEl.play();
       }
 
       function leftTom(fromServer){
@@ -415,7 +415,7 @@ class App extends Component {
         var bigTomAudioEl = bigTomAudio.get(0);
         if(!fromServer) socket.emit('drumPressed', "leftTom");
         bigTomAudioEl.currentTime = 0;
-        bigTomAudioEl.play();
+        //bigTomAudioEl.play();
       }
 
       function floorTom(fromServer){
@@ -425,7 +425,7 @@ class App extends Component {
         var floorTomAudioEl = floorTomAudio.get(0);
         if(!fromServer) socket.emit('drumPressed', "floorTom");
         floorTomAudioEl.currentTime = 0;
-        floorTomAudioEl.play();
+        //floorTomAudioEl.play();
       }
 
       function kick(fromServer){
@@ -435,7 +435,7 @@ class App extends Component {
         var kickAudioEl = kickAudio.get(0);
         if(!fromServer) socket.emit('drumPressed', "kick");
         kickAudioEl.currentTime = 0;
-        kickAudioEl.play();
+        //kickAudioEl.play();
       }
 
       function hiHat(fromServer){
@@ -445,7 +445,7 @@ class App extends Component {
         var hiHatClosedAudioEl = hiHatClosedAudio.get(0);
         if(!fromServer) socket.emit('drumPressed', "hiHat");
         hiHatClosedAudioEl.currentTime = 0;
-        hiHatClosedAudioEl.play();
+        //hiHatClosedAudioEl.play();
 
       }
 
@@ -828,7 +828,7 @@ console.log("up! ");
       })
       button.addEventListener('mouseup', function(e){
         //release on mouseup
-        synth.triggerRelease()
+        //synth.triggerRelease()
         //Release sound base on content of the li.
         socket.emit('buttonReleased', e.target.textContent);
       })
@@ -1090,7 +1090,7 @@ class Drum extends React.Component {
             <div class="sequencer-controls">
               <button id="sequencer-active-btn" class="btn" aria-label="Play"><i class="fa fa-play"></i></button>
               <div class="sequencer-controls-tempo">
-                <button id="bpm-decrease-btn" class="btn" aria-label="Decrease bpm">-</button>
+                <button id="bpm-decrease-btn" class="btn" aria-label="Decrease bpm">-q</button>
                 <input id="bpm-indicator" type="number" min="100" max="300" size="3" value="150" readonly/>
                 <button id="bpm-increase-btn" class="btn" aria-label="Iecrease bpm">+</button>
               </div>
