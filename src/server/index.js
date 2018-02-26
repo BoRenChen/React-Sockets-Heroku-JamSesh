@@ -43,15 +43,15 @@ function removeDrum(item) {
 
 // Sockets Connection
 io.on('connection', client => {
-  client.emit('hello', { message: 'hello!!! from server!' })
+  	client.emit('hello', { message: 'hello!!! from server!' })
 
 
 	client.on('join', function(data) {
 	     	console.log('joined the server from App.js - from server');
 
+	//sending drum data to user (array)
+	client.emit('drumData', drumSequencer);
 	        client.emit('welcomeMsg', 'Connected to socket')
-	        //sending drum data to user (array)
-	        client.emit('drumData', drumSequencer)
 	    });
 	    client.on('messages', function(data) {
 	           client.emit('broad', data);
@@ -77,10 +77,10 @@ io.on('connection', client => {
 	    	console.log("New Synth Status = " + data);
 	    	client.broadcast.emit('changeSynthStatus', data);
 	    });
-	    client.on('drumPressed', function(data){
-	    	console.log("Drum Pressed " + data);
-	    	client.broadcast.emit('drumPress', data);
-	    });
+	    // client.on('drumPressed', function(data){
+	    // 	console.log("Drum Pressed " + data);
+	    // 	client.broadcast.emit('drumPress', data);
+	    // });
 	    //Drum Sequencer
 	    client.on('addDrumSequencerItem', function(data){
 	    	addDrum(data);
@@ -89,6 +89,10 @@ io.on('connection', client => {
 	    client.on('removeDrumSequencerItem', function(data){
 	    	removeDrum(data);
 	    	client.broadcast.emit('removeDrumSequencerItem', data);
+	    });
+	    client.on('drumSequencerActive', function(data){
+	    	console.log('drumSequencerActive', data);
+	    	client.emit('setDrumSequencer', data);
 	    });
 	    client.on('disconnect', function () {
 	    console.log('Client disconnected...');

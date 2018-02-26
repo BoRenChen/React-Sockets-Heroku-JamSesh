@@ -174,13 +174,43 @@ class App extends Component {
   
   //Drum Sequencer
 
+  socket.on('drumData', function(data){
+
+    $('input').each(function() {
+      this.checked = false;
+    });
+ 
+    data.forEach(function(entry) {
+    entry = '#' + entry;
+    $(entry.toString()).prop('checked', true);
+    });
+    console.log('finish updating drum sequencer');
+
+  });
+
   socket.on('addDrumSequencerItem', function(data) {
     var id = '#' + data;
     $(id.toString()).prop('checked', true);
   });
+
   socket.on('removeDrumSequencerItem', function(data){
     var id = '#' + data;
     $(id.toString()).prop('checked', false);
+  });
+
+  socket.on('setDrumSequencer', function(data){
+    $(this).find('i').toggleClass('fa-pause');
+    console.log("HIT")
+    if (data) {
+      console.log('wasfalse')
+      intervalId = window.setInterval(sequencer, interval);
+      sequencerOn = true;
+    } else {
+            console.log('was true')
+
+      window.clearInterval(intervalId);
+      sequencerOn = false;
+    }
   });
   //--------------------------------------TONE-------------------------------------------//
 
@@ -426,7 +456,6 @@ class App extends Component {
     var crashAudio = $('#Crash-Audio');
     var crashAudioEl = crashAudio.get(0);
     crashAudioEl.currentTime = 0;
-    crashAudioEl.play();
 
     // Crash timeline
     var crashtl = new TimelineMax({
@@ -660,15 +689,11 @@ class App extends Component {
     $(this).find('i').toggleClass('fa-pause');
     console.log("HIT")
     if (sequencerOn === false) {
-      console.log('wasfalse')
-      intervalId = window.setInterval(sequencer, interval);
-      sequencerOn = true;
+    socket.emit('drumSequencerActive', true);
     } else {
-            console.log('was true')
-
-      window.clearInterval(intervalId);
-      sequencerOn = false;
+    socket.emit('drumSequencerActive', false);
     }
+
   });
 
   // Tempo varibles
