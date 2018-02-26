@@ -200,14 +200,13 @@ class App extends Component {
 
   socket.on('setDrumSequencer', function(data){
     $(this).find('i').toggleClass('fa-pause');
-    console.log("HIT")
+    console.log("Setting Sequencer from Server", data)
     if (data) {
       console.log('wasfalse')
       intervalId = window.setInterval(sequencer, interval);
       sequencerOn = true;
     } else {
-            console.log('was true')
-
+      console.log('was true')
       window.clearInterval(intervalId);
       sequencerOn = false;
     }

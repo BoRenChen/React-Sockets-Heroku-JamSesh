@@ -93,6 +93,7 @@ io.on('connection', client => {
 	    client.on('drumSequencerActive', function(data){
 	    	console.log('drumSequencerActive', data);
 	    	client.emit('setDrumSequencer', data);
+	    	client.broadcast.emit('setDrumSequencer', data);
 	    });
 	    client.on('disconnect', function () {
 	    console.log('Client disconnected...');
