@@ -701,25 +701,17 @@ class App extends Component {
   var interval = 60000 / bpm;
   var targetDrum;
   var fn;
-
-  // Set tempo
-  function setTempo() {
-    window.clearInterval(intervalId);
-    var intervalId = window.setInterval(sequencer, interval);
-  }
-
-  // Increase tempo
+// Increase tempo
   $('#bpm-increase-btn').click(function() {
+    console.log("bpm",bpm);
+    console.log("interval", interval);
     console.log('increase bpm');
     if ( bpm < 300 ) {
       bpm = parseInt($('#bpm-indicator').val());
       bpm += 10;
-      interval = 60000 / bpm;
-      $('#bpm-indicator').val(bpm);
-      if(sequencerOn === true) {
-        setTempo();
 
-      }
+      interval = parseInt(60000 / bpm);
+      $('#bpm-indicator').val(bpm);
     }
   });
 
@@ -730,13 +722,12 @@ class App extends Component {
     if ( bpm > 100 ) {
       bpm = parseInt($('#bpm-indicator').val());
       bpm -= 10;
-      interval = 60000 / bpm;
+      console.log("bpm",bpm);
+      interval = parseInt(60000 / bpm);
       $('#bpm-indicator').val(bpm);
-      if(sequencerOn === true) {
-        setTempo();
-      }
     }
   });
+
 
   // Trigger drum on input check
   $('input').click(function() {
@@ -1099,9 +1090,9 @@ class Drum extends React.Component {
             <div class="sequencer-controls">
               <button id="sequencer-active-btn" class="btn" aria-label="Play"><i class="fa fa-play"></i></button>
               <div class="sequencer-controls-tempo">
-                <button id="bpm-decrease-btn" class="btn" aria-label="Decrease bpm"><i class="fa fa-minus"></i></button>
+                <button id="bpm-decrease-btn" class="btn" aria-label="Decrease bpm">-</button>
                 <input id="bpm-indicator" type="number" min="100" max="300" size="3" value="150" readonly/>
-                <button id="bpm-increase-btn" class="btn" aria-label="Iecrease bpm"><i class="fa fa-plus"></i></button>
+                <button id="bpm-increase-btn" class="btn" aria-label="Iecrease bpm">+</button>
               </div>
             </div>
           </div>
