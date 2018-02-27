@@ -65,7 +65,7 @@ io.on('connection', client => {
 	    client.on('buttonReleased', function(data){
 	        console.log("server released" + data);
 	      	client.broadcast.emit('release', data);
-	      	client.emit('PianoKeyPress', data);
+	      	client.emit('release', data);
 	    });
 	    client.on('PianoKeyPressed', function(data){
 	        console.log("Paino Key Press " + data);

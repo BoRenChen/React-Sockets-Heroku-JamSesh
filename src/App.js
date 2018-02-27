@@ -74,7 +74,7 @@ class App extends Component {
    });
 
   socket.on("press", function(data){
-    console.log(data);
+    console.log('press' + data);
     synth.triggerAttack(data);
   });
 
@@ -301,7 +301,7 @@ class App extends Component {
       })
       button.addEventListener('mouseup', function(e){
         //release on mouseup
-        synth.triggerRelease()
+        //synth.triggerRelease()
         //Release sound base on content of the li.
         socket.emit('buttonReleased', e.target.textContent);
       })
@@ -381,10 +381,16 @@ class App extends Component {
         snaretl.restart();
         snaretl.play();
         var snareAudioEl = snareAudio.get(0);
-        if(!fromServer) socket.emit('drumPressed', "snare");
+        if(!fromServer) {
+          socket.emit('drumPressed', "snare");
 
-        snareAudioEl.currentTime = 0;
-        //snareAudioEl.play();
+        } else {
+        
+          snareAudioEl.currentTime = 0;
+          snareAudioEl.play();
+        }
+
+
 
       }
 
@@ -393,9 +399,14 @@ class App extends Component {
         crashtl.restart();
         crashtl.play();
         var crashAudioEl = crashAudio.get(0);
-        if(!fromServer) socket.emit('drumPressed', "crashdrum");
+        if(!fromServer){
+          socket.emit('drumPressed', "crashdrum");
+        } else {
+
         crashAudioEl.currentTime = 0;
-        //crashAudioEl.play();
+        crashAudioEl.play();
+       
+        }
       }
 
       function rightTom(fromServer){
@@ -403,9 +414,12 @@ class App extends Component {
         rightTomtl.restart();
         rightTomtl.play();
         var smallTomAudioEl = smallTomAudio.get(0);
-        if(!fromServer) socket.emit('drumPressed', "rightTom");
-        smallTomAudioEl.currentTime = 0;
-        //smallTomAudioEl.play();
+        if(!fromServer) {
+          socket.emit('drumPressed', "rightTom");
+        } else {
+          smallTomAudioEl.currentTime = 0;
+          smallTomAudioEl.play();
+        }
       }
 
       function leftTom(fromServer){
@@ -413,9 +427,12 @@ class App extends Component {
         leftTomtl.restart();
         leftTomtl.play();
         var bigTomAudioEl = bigTomAudio.get(0);
-        if(!fromServer) socket.emit('drumPressed', "leftTom");
-        bigTomAudioEl.currentTime = 0;
-        //bigTomAudioEl.play();
+        if(!fromServer) {
+          socket.emit('drumPressed', "leftTom");
+        } else {
+          bigTomAudioEl.currentTime = 0;
+          bigTomAudioEl.play();
+        }      
       }
 
       function floorTom(fromServer){
@@ -423,9 +440,12 @@ class App extends Component {
         floorTomtl.restart();
         floorTomtl.play();
         var floorTomAudioEl = floorTomAudio.get(0);
-        if(!fromServer) socket.emit('drumPressed', "floorTom");
-        floorTomAudioEl.currentTime = 0;
-        //floorTomAudioEl.play();
+        if(!fromServer) {
+          socket.emit('drumPressed', "floorTom");
+        } else {
+          floorTomAudioEl.currentTime = 0;
+          floorTomAudioEl.play();
+        }
       }
 
       function kick(fromServer){
@@ -433,9 +453,12 @@ class App extends Component {
         kicktl.restart();
         kicktl.play();
         var kickAudioEl = kickAudio.get(0);
-        if(!fromServer) socket.emit('drumPressed', "kick");
-        kickAudioEl.currentTime = 0;
-        //kickAudioEl.play();
+        if(!fromServer) { 
+          socket.emit('drumPressed', "kick");
+        } else {
+          kickAudioEl.currentTime = 0;
+          kickAudioEl.play();
+        }
       }
 
       function hiHat(fromServer){
@@ -443,10 +466,12 @@ class App extends Component {
         hiHattl.restart();
         hiHattl.play();
         var hiHatClosedAudioEl = hiHatClosedAudio.get(0);
-        if(!fromServer) socket.emit('drumPressed', "hiHat");
-        hiHatClosedAudioEl.currentTime = 0;
-        //hiHatClosedAudioEl.play();
-
+        if(!fromServer) { 
+          socket.emit('drumPressed', "hiHat");
+        } else {
+          hiHatClosedAudioEl.currentTime = 0;
+          hiHatClosedAudioEl.play();
+        }
       }
 
 
@@ -797,7 +822,7 @@ document.addEventListener('keydown', (event) => {
 const keyName = event.key;
  //synth2.triggerAttack("B4");
 
- synth2.triggerAttack(keyName+4)
+ //synth2.triggerAttack(keyName+4)
   //synth2.triggerAttack(keyName.concat(4))
   console.log(keyName.concat(4));
   console.log(keyName+4);
@@ -807,7 +832,7 @@ const keyName = event.key;
 });
 
 document.addEventListener('keyup', (event) => {
-  synth2.triggerRelease(event.key+4)
+  //synth2.triggerRelease(event.key+4)
   //Release sound base on content of the li.
   //socket.emit('buttonReleased', "B4");
 
@@ -819,7 +844,9 @@ console.log("up! ");
     document.querySelectorAll('li').forEach(function(button){
       button.addEventListener('mousedown', function(e){
         //play the note on mouse down
-        synth.triggerAttack(e.target.textContent)
+        //
+
+        //synth.triggerAttack(e.target.textContent)
         //Play sound base on content of the li
         socket.emit('buttonPressed', e.target.textContent);
 
