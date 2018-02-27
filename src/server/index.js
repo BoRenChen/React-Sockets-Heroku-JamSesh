@@ -84,7 +84,7 @@ io.on('connection', client => {
 	    client.on('drumPressed', function(data){
 	    	console.log("Drum Pressed " + data);
 	    	client.broadcast.emit('drumPress', data);
-	    	client.emit('drumPress', data);
+	    	client.emit("drumPress", data);
 	    });
 	    //Drum Sequencer
 	    client.on('addDrumSequencerItem', function(data){
