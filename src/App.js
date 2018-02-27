@@ -184,6 +184,8 @@ class App extends Component {
     entry = '#' + entry;
     $(entry.toString()).prop('checked', true);
     });
+    socket.emit('requestBpm');
+
     console.log('finish updating drum sequencer');
 
   });
@@ -211,6 +213,13 @@ class App extends Component {
       window.clearInterval(intervalId);
       sequencerOn = false;
     }
+  });
+
+
+  socket.on('updateBpm', function(data){
+    bpm = data;
+    interval = parseInt(60000 / bpm);
+    $('#bpm-indicator').val(bpm);
   });
   //--------------------------------------TONE-------------------------------------------//
 
@@ -714,9 +723,11 @@ class App extends Component {
     $(this).find('i').toggleClass('fa-pause');
     console.log("HIT")
     if (sequencerOn === false) {
-    socket.emit('drumSequencerActive', true);
+      socket.emit('updateBpmToServer', bpm);
+      socket.emit('drumSequencerActive', true);
     } else {
-    socket.emit('drumSequencerActive', false);
+      
+      socket.emit('drumSequencerActive', false);
     }
 
   });
@@ -783,7 +794,15 @@ class App extends Component {
       this.pause();
     });
   });
-  } 
+
+
+  //Refresh Btn
+  $('#sequencer-reset-btn').click(function(){
+    socket.emit('requestUpdateSequencer');
+  });
+
+
+  }//End Of componentWillUpdate 
 
   componentDidUpdate(){
 
@@ -1116,8 +1135,9 @@ class Drum extends React.Component {
             </div>
             <div class="sequencer-controls">
               <button id="sequencer-active-btn" class="btn" aria-label="Play"><i class="fa fa-play"></i></button>
+              <button id="sequencer-reset-btn" class="btn">Refresh Sequencer</button>
               <div class="sequencer-controls-tempo">
-                <button id="bpm-decrease-btn" class="btn" aria-label="Decrease bpm">-q</button>
+                <button id="bpm-decrease-btn" class="btn" aria-label="Decrease bpm">-</button>
                 <input id="bpm-indicator" type="number" min="100" max="300" size="3" value="150" readonly/>
                 <button id="bpm-increase-btn" class="btn" aria-label="Iecrease bpm">+</button>
               </div>

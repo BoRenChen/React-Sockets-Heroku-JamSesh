@@ -27,7 +27,7 @@ Array.prototype.remove = function() {
 
 // Drum Server
 var drumSequencer = [];
-
+var bpm = 150;
 function addDrum(item) {
 	if (!drumSequencer.includes(item)){
 
@@ -99,6 +99,20 @@ io.on('connection', client => {
 	    	console.log('drumSequencerActive', data);
 	    	client.emit('setDrumSequencer', data);
 	    	client.broadcast.emit('setDrumSequencer', data);
+	    });
+	    client.on('updateBpmToServer', function(data){
+	    	bpm = data;
+	    	console.log('update bpm to : '+ data);
+
+	    	client.broadcast.emit('updateBpm', data);
+	    });
+	    client.on('requestBpm', function(){
+	    	console.log('request from client to update bpm');
+	    	client.emit('updateBpm', bpm);
+	    });
+	    client.on('requestUpdateSequencer', function(){
+	    	console.log('reqeust from client to update sequencer');
+			client.emit('drumData', drumSequencer);
 	    });
 	    client.on('disconnect', function () {
 	    console.log('Client disconnected...');
