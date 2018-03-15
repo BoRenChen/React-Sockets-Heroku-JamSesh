@@ -6,13 +6,14 @@ import anime from 'animejs';
 import io from 'socket.io-client';
 import Tone from "tone";
 import {TimelineMax, Ease, Expo, Elastic} from "gsap";
-
+import { Howl } from 'howler';
 
 
 
 //GLOBAL
 const socket = io();
 var synthStatus = false;
+var keyboardState = "vibe";
 var synth2 = new Tone.PolySynth({
   "portamento" : 0.01,
   "oscillator" : {
@@ -58,6 +59,14 @@ socket.on('hello!!', ({ message }) =>
 );
 
 class App extends Component {
+     state = {
+    clicked: 0
+  }
+  
+  increment = () => {
+    this.setState((prevState, currProps) => ({clicked: prevState.clicked + 1}))
+  }
+  
   constructor(){
     super();
     this.state={first: true};
@@ -259,11 +268,122 @@ class App extends Component {
       }
     };
 
+    var Vibes = {
+  // https://github.com/stuartmemo/qwerty-hancock
+  keyboard: {
+    // Lower octave.
+    a: "https://crossorigin.me/https://s3.amazonaws.com/iamjoshellis-codepen/pens-of-rock/drums/Snare.mp3",
+    w: "https://crossorigin.me/https://s3.amazonaws.com/keydown-pro/percs2.wav",
+    s: "https://s3.amazonaws.com/keydown-pro/percs3.mp3",
+    e: "https://s3.amazonaws.com/keydown-pro/percs4.mp3",
+    d: "https://s3.amazonaws.com/keydown-pro/percs5.wav",
+    f: "https://s3.amazonaws.com/keydown-pro/percs6.wav",
+    t: "https://s3.amazonaws.com/keydown-pro/percs7.wav",
+    g: "https://s3.amazonaws.com/keydown-pro/percs8.wav",
+    y: "https://s3.amazonaws.com/keydown-pro/percs9.wav",
+    h: "https://s3.amazonaws.com/keydown-pro/percs10.wav",
+    u: "https://s3.amazonaws.com/keydown-pro/tones1.wav",
+    j: "https://s3.amazonaws.com/keydown-pro/tones2.wav",
+    i: "https://s3.amazonaws.com/keydown-pro/kick7.wav",
+   
+    k: "https://crossorigin.me/https://s3.amazonaws.com/keydown-pro/tones3.wav",
+    o: "https://crossorigin.me/https://s3.amazonaws.com/keydown-pro/tones4.wav",
+    l: "https://crossorigin.me/https://s3.amazonaws.com/keydown-pro/tones5.wav",
+    p: "https://crossorigin.me/https://s3.amazonaws.com/keydown-pro/tones6.wav",
+    ';': "https://crossorigin.me/https://s3.amazonaws.com/keydown-pro/tones7.wav",
+    "'": "https://crossorigin.me/https://s3.amazonaws.com/keydown-pro/tones8.wav",
+    ']': "https://crossorigin.me/https://s3.amazonaws.com/keydown-pro/tones9.wav",
+    '\\': "https://crossorigin.me/https://s3.amazonaws.com/keydown-pro/tones10.wav", 
+    z:"https://crossorigin.me/https://s3.amazonaws.com/keydown-pro/kicks6.WAV", 
+    x:"https://crossorigin.me/https://s3.amazonaws.com/keydown-pro/snares2.mp3", 
+    c:"https://crossorigin.me/https://s3.amazonaws.com/keydown-pro/snares3.mp3", 
+    v:"https://crossorigin.me/https://s3.amazonaws.com/keydown-pro/snares4.mp3", 
+    b:"https://crossorigin.me/https://s3.amazonaws.com/keydown-pro/snares5.wav", 
+    n:"https://crossorigin.me/https://s3.amazonaws.com/keydown-pro/snares6.wav", 
+    m:"https://crossorigin.me/https://s3.amazonaws.com/keydown-pro/snares7.wav", 
+   
+    q:"https://crossorigin.me/https://s3.amazonaws.com/keydown-pro/kicks2.mp3", 
+    z:"https://crossorigin.me/https://s3.amazonaws.com/keydown-pro/kicks1.mp3"
+
+      }
+    
+    };
+
+    var keyboardState = "vibe";
+   
+
+    var vibe= Vibes.keyboard;
+
     var instrument = Instruments.keyboard;
 
 
 
     //--------------INTERACTION---------------//
+
+
+  switch(keyboardState) {
+
+    case "instrument":
+    console.log('changed to instrument');
+    document.addEventListener('keydown', (event) => {
+      console.log("this is the event", event)
+      const keyName = event.key;
+      var note = instrument[keyName].replace('l', octave).replace('u', octave + 1);
+  
+       if (typeof(note) != 'undefined') {
+          console.log("ISSA NOTE", note, typeof(note));
+          socket.emit('PianoKeyPressed', note);
+          synth2.triggerAttack(note);
+
+        } else {
+          console.log("ITS UNDEFINED EEEK!!!", note)
+        }
+    });
+
+    document.addEventListener('keyup', (event) => {
+
+      var key = event.key;
+      var note = instrument[key].replace('l', octave).replace('u', octave + 1);
+      console.log(event, "THIS IS THE EVEENT BEING PASSED")
+      console.log(key, "KEY", note)
+      console.log('good keyup', note);
+
+      socket.emit('PianoKeyReleased', note);
+      synth2.triggerRelease(note);
+
+    });
+    break;
+    //Vibe(mp3 keyboard) State
+    case "vibe":
+    let numberOfParticules = 30;
+let pointerX = 0;
+let pointerY = 0;
+let sectionColors = ['#FF1461', '#18FF92'];
+    console.log('changed to vibe');
+    document.addEventListener('keydown', (event) => {
+      console.log("this is the event", event)
+      const keyName = event.key;
+      console.log(vibe[keyName])
+      var note = vibe[keyName];
+  
+
+       if (typeof(note) != 'undefined') {
+          console.log("ISSA NOTE", note, typeof(note));
+          
+          var sound = new Howl({
+            src: [note]
+          })
+          sound.play();
+        } else {
+          console.log("ITS UNDEFINED FUCK!!!", note, event.key)
+        }
+    });
+
+
+
+
+    break;
+  }
 
   
     document.addEventListener('keydown', (event) => {
@@ -296,7 +416,7 @@ class App extends Component {
 
 
 
-    //MOUSE INTERACTION OF KEYBOARD
+    //MOUSE INTERACTION OF 
     //attach a listener to all of the buttons
     document.querySelectorAll('li').forEach(function(button){
       button.addEventListener('mousedown', function(e){
@@ -887,6 +1007,22 @@ console.log("up! ");
     alert('move to second component')
     this.setState({first: false})
   }
+
+  handleInstrument() { 
+    console.log("it was", keyboardState);
+    switch (keyboardState) {
+      case "vibe":
+      keyboardState = "instrument";
+      break;
+
+      case "instrument": 
+      keyboardState = "vibe";
+      break;
+
+
+
+    }
+  }
   handleSynth() {
       console.log("pressed", synth2);
       socket.emit('synthStatusChanged', synthStatus);
@@ -929,6 +1065,8 @@ console.log("up! ");
 
     }
   render() {
+    let yo = (this.state.clicked % 2) === 0;
+
     return (
       <div className="App">
         <header className="App-header">
@@ -943,6 +1081,28 @@ console.log("up! ");
         </form>
 
 
+        <div id="reactanime">{yo ? (
+      <Anime easing="easeOutElastic"
+           loop={false}
+           autoplay={true}
+           duration={1000}
+           delay={(el, index) => index * 240}
+           translateX="13rem"
+           scale={[.75, .9]}>
+        <div className="blue" />
+      </Anime>
+    ) :  <Anime easing="easeOutElastic"
+           loop={false}
+           autoplay={true}
+           duration={1000}
+           delay={(el, index) => index * 240}
+           translateX={yo ? "13rem" : "0rem"}
+           scale={[.75, .9]}>
+       <div className="green"  />
+    </Anime>
+  }
+  <a style={{display: 'block', width: 240}}onClick={this.increment}>Trigger</a>
+</div>
       <div className="component-app">
 
         <ul className="set">
@@ -963,6 +1123,7 @@ console.log("up! ");
 
         </div>
         <button onClick={this.handleSynth.bind(this)}>change synth</button>
+        <button onClick={this.handleInstrument.bind(this)}>change instrument</button>
         <button onClick={this.handle.bind(this)}>move to second page</button>
         {this.state.first == true && <Pqr/>}
         {this.state.first == false && <Sqr/>}
@@ -972,6 +1133,51 @@ console.log("up! ");
   }
 }
 //uses template from codepen: Sellfy.com/orange83/checkout/?visitor_id=d8d1c378-4af5-483c-a6da-1a630daf0dca
+class Anime extends React.Component {
+
+  constructor(props) {
+    super(props);
+    this.targets = [];
+  }
+
+  componentDidMount() {
+
+    let animeProps = Object.assign({}, this.props, {
+      targets: this.targets
+  });
+
+    delete animeProps.children;
+
+this.anime = anime(animeProps);
+  }
+  
+  shouldComponentUpdate(nextProps) {
+    this.anime = anime(Object.assign({}, {targets: this.targets}, nextProps));
+    
+    return true;
+  }
+
+addTarget = (newTarget) => {
+  this.targets = [...this.targets, newTarget];
+}
+
+render() {
+  let children = [];
+  if (this.props.children) {
+    if (Array.isArray(this.props.children))
+      children = this.props.children;
+    else
+      children = [this.props.children];
+  }
+
+  return (
+    <g>
+      {children.map((child, i) => (React.cloneElement(child, { key: i, ref: this.addTarget })))}
+    </g>
+  );
+  }
+}
+
 class Pqr extends React.Component {
   render (){
     return (<div><h1>First</h1>
