@@ -13,7 +13,7 @@ import { Howl } from 'howler';
 //GLOBAL
 const socket = io();
 var synthStatus = false;
-var keyboardState = "vibe";
+var keyboardState = "instrument";
 var synth2 = new Tone.PolySynth({
   "portamento" : 0.01,
   "oscillator" : {
@@ -230,6 +230,20 @@ class App extends Component {
     interval = parseInt(60000 / bpm);
     $('#bpm-indicator').val(bpm);
   });
+
+  socket.on('VibeKeyPress', function(data){
+          var sound = new Howl({
+            src: [data]
+          })
+          sound.play();
+  });
+
+
+  socket.on('setKeyboardInstrument', function(data){
+    console.log('setKeyboardInstrument', data);
+    keyboardState = data
+  });
+
   //--------------------------------------TONE-------------------------------------------//
 
   
@@ -309,9 +323,7 @@ class App extends Component {
     
     };
 
-    var keyboardState = "vibe";
    
-
     var vibe= Vibes.keyboard;
 
     var instrument = Instruments.keyboard;
@@ -321,26 +333,53 @@ class App extends Component {
     //--------------INTERACTION---------------//
 
 
-  switch(keyboardState) {
 
-    case "instrument":
-    console.log('changed to instrument');
-    document.addEventListener('keydown', (event) => {
-      console.log("this is the event", event)
-      const keyName = event.key;
-      var note = instrument[keyName].replace('l', octave).replace('u', octave + 1);
-  
-       if (typeof(note) != 'undefined') {
-          console.log("ISSA NOTE", note, typeof(note));
-          socket.emit('PianoKeyPressed', note);
-          synth2.triggerAttack(note);
 
-        } else {
-          console.log("ITS UNDEFINED EEEK!!!", note)
-        }
-    });
+  //handler
 
-    document.addEventListener('keyup', (event) => {
+  var insKeyDown = function(event){
+        switch(keyboardState) {
+    
+
+          case "instrument":
+            console.log("this is the event", event)
+            var keyName = event.key;
+            var note = instrument[keyName].replace('l', octave).replace('u', octave + 1);
+        
+             if (typeof(note) != 'undefined') {
+                socket.emit('PianoKeyPressed', note);
+                //synth2.triggerAttack(note);
+
+              } else {
+                console.log("ITS UNDEFINED EEEK!!!", note)
+              }
+          break;
+
+
+          //Vibe(mp3 keyboard) State
+          case "vibe":
+            console.log("this is the event", event)
+            var keyName = event.key;
+            console.log(vibe[keyName])
+            var note = vibe[keyName];
+        
+
+             if (typeof(note) != 'undefined') {
+                socket.emit('VibeKeyPressed', note);
+
+              } else {
+                console.log("ITS UNDEFINED FUCK!!!", note, event.key)
+              }
+
+
+          break;
+
+          default:
+          break;      
+
+    }
+    }
+    var insKeyUp = function(event){
 
       var key = event.key;
       var note = instrument[key].replace('l', octave).replace('u', octave + 1);
@@ -351,70 +390,12 @@ class App extends Component {
       socket.emit('PianoKeyReleased', note);
       synth2.triggerRelease(note);
 
-    });
-    break;
-    //Vibe(mp3 keyboard) State
-    case "vibe":
-    let numberOfParticules = 30;
-let pointerX = 0;
-let pointerY = 0;
-let sectionColors = ['#FF1461', '#18FF92'];
-    console.log('changed to vibe');
-    document.addEventListener('keydown', (event) => {
-      console.log("this is the event", event)
-      const keyName = event.key;
-      console.log(vibe[keyName])
-      var note = vibe[keyName];
-  
+    }
 
-       if (typeof(note) != 'undefined') {
-          console.log("ISSA NOTE", note, typeof(note));
-          
-          var sound = new Howl({
-            src: [note]
-          })
-          sound.play();
-        } else {
-          console.log("ITS UNDEFINED FUCK!!!", note, event.key)
-        }
-    });
-
-
-
-
-    break;
-  }
+      document.addEventListener('keydown', insKeyDown );
+      document.addEventListener('keyup', insKeyUp);
 
   
-    document.addEventListener('keydown', (event) => {
-      console.log("this is the event", event)
-      const keyName = event.key;
-      var note = instrument[keyName].replace('l', octave).replace('u', octave + 1);
-  
-       if (typeof(note) != 'undefined') {
-          console.log("ISSA NOTE", note, typeof(note));
-          socket.emit('PianoKeyPressed', note);
-          //synth2.triggerAttack(note);
-        } else {
-          console.log("ITS UNDEFINED EEEK!!!", note)
-        }
-    });
-
-    document.addEventListener('keyup', (event) => {
-
-      var key = event.key;
-      var note = instrument[key].replace('l', octave).replace('u', octave + 1);
-      console.log(event, "THIS IS THE EVEENT BEING PASSED")
-      console.log(key, "KEY", note)
-      console.log('good keyup', note);
-
-      socket.emit('PianoKeyReleased', note);
-      //synth2.triggerRelease(note);
-
-    });
-
-
-
 
     //MOUSE INTERACTION OF 
     //attach a listener to all of the buttons
@@ -955,25 +936,15 @@ let sectionColors = ['#FF1461', '#18FF92'];
     console.log("hey! ", keyName);
   });
 
-//var keyboard = Interface.Keyboard();
-
 document.addEventListener('keydown', (event) => {
 const keyName = event.key;
- //synth2.triggerAttack("B4");
-
- //synth2.triggerAttack(keyName+4)
-  //synth2.triggerAttack(keyName.concat(4))
   console.log(keyName.concat(4));
   console.log(keyName+4);
 
-//socket.emit('buttonPressed', "B4");
 
 });
 
 document.addEventListener('keyup', (event) => {
-  //synth2.triggerRelease(event.key+4)
-  //Release sound base on content of the li.
-  //socket.emit('buttonReleased', "B4");
 
 console.log("up! ");
 });
@@ -1010,19 +981,25 @@ console.log("up! ");
 
   handleInstrument() { 
     console.log("it was", keyboardState);
+    var data = '';
+
+    console.log("it was 1");
     switch (keyboardState) {
       case "vibe":
-      keyboardState = "instrument";
-      break;
+        data = 'instrument';
+        break;
 
-      case "instrument": 
-      keyboardState = "vibe";
-      break;
+      case "instrument":
+        data = 'vibe';
+        break;  
 
-
+      default:
+        break;
 
     }
+    socket.emit('setKeyboardInstrument', data);
   }
+  
   handleSynth() {
       console.log("pressed", synth2);
       socket.emit('synthStatusChanged', synthStatus);
@@ -1081,28 +1058,7 @@ console.log("up! ");
         </form>
 
 
-        <div id="reactanime">{yo ? (
-      <Anime easing="easeOutElastic"
-           loop={false}
-           autoplay={true}
-           duration={1000}
-           delay={(el, index) => index * 240}
-           translateX="13rem"
-           scale={[.75, .9]}>
-        <div className="blue" />
-      </Anime>
-    ) :  <Anime easing="easeOutElastic"
-           loop={false}
-           autoplay={true}
-           duration={1000}
-           delay={(el, index) => index * 240}
-           translateX={yo ? "13rem" : "0rem"}
-           scale={[.75, .9]}>
-       <div className="green"  />
-    </Anime>
-  }
-  <a style={{display: 'block', width: 240}}onClick={this.increment}>Trigger</a>
-</div>
+        
       <div className="component-app">
 
         <ul className="set">

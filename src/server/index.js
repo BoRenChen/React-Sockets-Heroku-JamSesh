@@ -86,6 +86,16 @@ io.on('connection', client => {
 	    	client.broadcast.emit('drumPress', data);
 	    	client.emit("drumPress", data);
 	    });
+	    client.on('VibeKeyPressed', function(data){
+	    	console.log('VibeKeyPressed', data);
+	    	client.broadcast.emit('VibeKeyPress', data);
+	    	client.emit('VibeKeyPress', data);
+	    })
+	    client.on('setKeyboardInstrument', function(data){
+	    	console.log('changing instrument', data);
+	    	client.broadcast.emit('setKeyboardInstrument', data);
+	    	client.emit('setKeyboardInstrument', data);
+	    })
 	    //Drum Sequencer
 	    client.on('addDrumSequencerItem', function(data){
 	    	addDrum(data);
