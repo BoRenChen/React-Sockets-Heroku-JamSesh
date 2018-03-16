@@ -7,6 +7,9 @@ import io from 'socket.io-client';
 import Tone from "tone";
 import {TimelineMax, Ease, Expo, Elastic} from "gsap";
 import { Howl } from 'howler';
+import P5Wrapper from 'react-p5-wrapper';
+import sketch from './sketches/sketch';
+import sketch2 from './sketches/sketch2';
 
 
 
@@ -58,19 +61,31 @@ socket.on('hello!!', ({ message }) =>
   alert(message + 'app.js....')
 );
 
+
+
+
+
+  //--------------------------------------App Class Start-------------------------------------------//
 class App extends Component {
-     state = {
-    clicked: 0
+
+  constructor(props) {
+    super(props);
+    this.state = {
+      first: true,
+      rotation: 150,
+      stateSketch: sketch,
+    };
   }
-  
-  increment = () => {
-    this.setState((prevState, currProps) => ({clicked: prevState.clicked + 1}))
+
+  rotationChange(e){
+    this.setState({rotation:e.target.value});
+    console.log(this.state.rotation);
   }
-  
-  constructor(){
-    super();
-    this.state={first: true};
+
+  pressEvent(){
+    this.state.stateSketch === sketch ? this.setState({stateSketch:sketch2}) : this.setState({stateSketch:sketch});
   }
+
 
   componentDidMount() {
    console.log("STARTING");
@@ -999,7 +1014,7 @@ console.log("up! ");
     }
     socket.emit('setKeyboardInstrument', data);
   }
-  
+
   handleSynth() {
       console.log("pressed", synth2);
       socket.emit('synthStatusChanged', synthStatus);
@@ -1041,6 +1056,9 @@ console.log("up! ");
     }
 
     }
+
+//main render
+//app render
   render() {
     let yo = (this.state.clicked % 2) === 0;
 
@@ -1056,7 +1074,11 @@ console.log("up! ");
               <input id="chat_input" type="text"/>
               <input type="submit" value="Send"/>
         </form>
-
+        <div>
+        <P5Wrapper sketch={this.state.stateSketch} rotation={this.state.rotation}/>
+        <input type="range" value={this.state.rotation}  min="0"  max="360" step="1" onInput={this.rotationChange.bind(this)}/>
+        <button onClick={this.pressEvent.bind(this)}>Change Sketch</button>
+        </div>
 
         
       <div className="component-app">

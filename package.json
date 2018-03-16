@@ -11,6 +11,7 @@
     "react": "^16.0.0",
     "react-anime": "^2.1.0",
     "react-dom": "^16.0.0",
+    "react-p5-wrapper": "^0.0.4",
     "react-scripts": "1.0.17",
     "socket.io": "^2.0.4",
     "socket.io-client": "^2.0.4",
