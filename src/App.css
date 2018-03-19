@@ -1,5 +1,8 @@
 
-
+canvas {
+  position: relative;
+  
+}
 
 g {
        color: black;
