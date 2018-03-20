@@ -209,7 +209,7 @@ function rectMaker(rect, xpos) {
       p.pop();
     
 
-    
+
 
 
     y1.render();
@@ -223,7 +223,6 @@ function rectMaker(rect, xpos) {
     y9.render();
     y10.render();
 
-    p.background(100);
     p.noStroke();
 
     p.push();
