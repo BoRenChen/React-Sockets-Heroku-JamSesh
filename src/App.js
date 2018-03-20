@@ -119,7 +119,7 @@ class App extends Component {
   socket.on('PianoKeyRelease', function(data){
    // console.log("PianoReleaseFromServer" + data)
       synth2.triggerRelease(data);
-      addNewCircle(20);
+      addNewCircle(100);
    }.bind(this));
   socket.on('changeSynthStatus', function(data){
     console.log('change synth status to ' + data)
@@ -259,7 +259,7 @@ class App extends Component {
           })
           sound.play();
 
-      addNewCircle(50);
+      addNewCircle(400);
   });
 
 
