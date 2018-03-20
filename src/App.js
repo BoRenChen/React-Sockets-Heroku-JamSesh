@@ -17,6 +17,7 @@ import sketch2 from './sketches/sketch2';
 const socket = io();
 var synthStatus = false;
 var keyboardState = "instrument";
+var circles =[];
 var synth2 = new Tone.PolySynth({
   "portamento" : 0.01,
   "oscillator" : {
@@ -73,13 +74,18 @@ class App extends Component {
     this.state = {
       first: true,
       rotation: 150,
+      circles: circles,
       stateSketch: sketch,
     };
+    console.log("here...........", circles, 'and', this.state.circles);
   }
 
   rotationChange(e){
     this.setState({rotation:e.target.value});
     console.log(this.state.rotation);
+
+    this.setState({circles:circles});
+    console.log(this.state.circles);
   }
 
   pressEvent(){
@@ -93,27 +99,28 @@ class App extends Component {
   //--------------------------------------SOCKET-------------------------------------------//
 
   socket.on('connect', function(data) {
-      console.log('joining the server - from client');
+     // console.log('joining the server - from client');
       socket.emit('join', 'Sending from App.js to Socket server.');
    });
 
   socket.on("press", function(data){
-    console.log('press' + data);
+   // console.log('press' + data);
     synth.triggerAttack(data);
   });
 
   socket.on('release', function(data){
-    console.log("release" + data)
+   // console.log("release" + data)
       synth.triggerRelease();
    });
   socket.on('PianoKeyPress', function(data){
-    console.log("PianoPressFromServer" + data)
+  //  console.log("PianoPressFromServer" + data)
       synth2.triggerAttack(data);
    });
   socket.on('PianoKeyRelease', function(data){
-    console.log("PianoReleaseFromServer" + data)
+   // console.log("PianoReleaseFromServer" + data)
       synth2.triggerRelease(data);
-   });
+      addNewCircle(20);
+   }.bind(this));
   socket.on('changeSynthStatus', function(data){
     console.log('change synth status to ' + data)
     synthStatus = data;
@@ -251,6 +258,8 @@ class App extends Component {
             src: [data]
           })
           sound.play();
+
+      addNewCircle(50);
   });
 
 
@@ -258,6 +267,8 @@ class App extends Component {
     console.log('setKeyboardInstrument', data);
     keyboardState = data
   });
+
+
 
   //--------------------------------------TONE-------------------------------------------//
 
@@ -348,16 +359,47 @@ class App extends Component {
     //--------------INTERACTION---------------//
 
 
+  //rendering 
+  function addNewCircle(d){
+    let graphic = {
+      x: Math.floor(Math.random() * (window.innerWidth - 80) + 60),
+      y: Math.floor(Math.random() * (window.innerHeight - 80) + 60),
+      r:Math.floor(Math.random() * Math.floor(255)),
+      g:Math.floor(Math.random() * Math.floor(255)),
+      b:Math.floor(Math.random() * Math.floor(255)),
+      a:Math.floor(255), 
+      diameter: Math.floor(Math.random() * 30 + d),
+      dx: (Math.random() - 0.5) * 4,
+      dy: (Math.random() - 0.5) * 4
+    };
+
+    if(circles.length >=10 ){
+      circles[0] = graphic;
+    } else {
+    circles.push(graphic);
+    }
+    var i = 1;
+    circles.forEach(c => {
+      c.a = Math.round( c.a - 20);
+      console.log(c.a);
+    });
+    console.log('here');
+    this.setState({
+            circles:circles
+          });
+  };
+
 
 
   //handler
 
   var insKeyDown = function(event){
+
         switch(keyboardState) {
     
 
           case "instrument":
-            console.log("this is the event", event)
+
             var keyName = event.key;
             var note = instrument[keyName].replace('l', octave).replace('u', octave + 1);
         
@@ -366,14 +408,12 @@ class App extends Component {
                 //synth2.triggerAttack(note);
 
               } else {
-                console.log("ITS UNDEFINED EEEK!!!", note)
               }
           break;
 
 
           //Vibe(mp3 keyboard) State
           case "vibe":
-            console.log("this is the event", event)
             var keyName = event.key;
             console.log(vibe[keyName])
             var note = vibe[keyName];
@@ -383,7 +423,6 @@ class App extends Component {
                 socket.emit('VibeKeyPressed', note);
 
               } else {
-                console.log("ITS UNDEFINED FUCK!!!", note, event.key)
               }
 
 
@@ -398,9 +437,6 @@ class App extends Component {
 
       var key = event.key;
       var note = instrument[key].replace('l', octave).replace('u', octave + 1);
-      console.log(event, "THIS IS THE EVEENT BEING PASSED")
-      console.log(key, "KEY", note)
-      console.log('good keyup', note);
 
       socket.emit('PianoKeyReleased', note);
       synth2.triggerRelease(note);
@@ -420,9 +456,6 @@ class App extends Component {
         //synth.triggerAttack(e.target.textContent)
         //Play sound base on content of the li
         socket.emit('buttonPressed', e.target.textContent);
-
-        console.log("from local" + e.target.textContent)
-
       })
       button.addEventListener('mouseup', function(e){
         //release on mouseup
@@ -786,7 +819,6 @@ class App extends Component {
           case 'snare':
             snare(false);
             break;
-
           case 'hiHat':
             hiHat(false);
             break; 
@@ -1075,7 +1107,7 @@ console.log("up! ");
               <input type="submit" value="Send"/>
         </form>
         <div>
-        <P5Wrapper sketch={this.state.stateSketch} rotation={this.state.rotation}/>
+        <P5Wrapper sketch={this.state.stateSketch} rotation={this.state.rotation} circles={this.state.circles}/>
         <input type="range" value={this.state.rotation}  min="0"  max="360" step="1" onInput={this.rotationChange.bind(this)}/>
         <button onClick={this.pressEvent.bind(this)}>Change Sketch</button>
         </div>

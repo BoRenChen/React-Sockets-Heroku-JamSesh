@@ -6,26 +6,33 @@ export default function sketch (p) {
   };
 
   p.myCustomRedrawAccordingToNewPropsHandler = function (props) {
+    console.log(props)
     if (props.rotation){
       rotation = props.rotation * Math.PI / 180;
+    }
+    if(props.circles){
+      console.log(props.circles);
+      circles = props.circles;
     }
   };
   p.keyPressed = function() {
      console.log('pressed in p5');
      p.circles();
+
   };
 
   p.circles = function() {
-    for (let i = 0; i < 1; i++) {
-      let circle = {
-        x: Math.floor(Math.random() * (window.innerWidth - 80) + 60),
-        y: Math.floor(Math.random() * (window.innerHeight - 80) + 60),
-        diameter: Math.floor(Math.random() * 30 + 20),
-        dx: (Math.random() - 0.5) * 4,
-        dy: (Math.random() - 0.5) * 4
-      };
-      circles.push(circle);
-    }
+      // for (let i = 0; i < 1; i++) {
+      //   let circle = {
+      //     x: Math.floor(Math.random() * (window.innerWidth - 80) + 60),
+      //     y: Math.floor(Math.random() * (window.innerHeight - 80) + 60),
+      //     diameter: Math.floor(Math.random() * 30 + 20),
+      //     dx: (Math.random() - 0.5) * 4,
+      //     dy: (Math.random() - 0.5) * 4
+      //   };
+      //   circles.push(circle);
+      // }
+      console.log(circles);
   };
   const changeVelocity = c => {
     if (c.x + c.diameter / 2 > window.innerWidth || c.x - c.diameter / 2 < 0) {
@@ -50,8 +57,9 @@ export default function sketch (p) {
 
     circles.forEach(c => {
       p.noStroke();
-      p.fill(255, 255, 255, 50);
+      p.fill(c.r, c.g, c.b, c.a);
       p.ellipse(c.x, c.y, c.diameter, c.diameter);
+
       // changeVelocity(c);
       // circles.forEach(circleTwo => {
       //   let a = Math.abs(c.x - circleTwo.x);

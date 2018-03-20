@@ -41,6 +41,8 @@ function removeDrum(item) {
 	console.log("Removing item to Drum Sequencer: " + item);
 }
 
+
+
 // Sockets Connection
 io.on('connection', client => {
   	client.emit('hello', { message: 'hello!!! from server!' })
