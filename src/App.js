@@ -263,11 +263,53 @@ class App extends Component {
   });
 
 
-  socket.on('setKeyboardInstrument', function(data){
-    console.log('setKeyboardInstrument', data);
-    keyboardState = data
-  });
 
+  //--------------------------------------Recording-------------------------------------------//
+  //enabled chrome://flags/ -- Experimental Web Platform Features
+  
+var recordButton, stopButton, recorder;
+
+window.onload = function () {
+  recordButton = document.getElementById('record');
+  stopButton = document.getElementById('stop');
+
+  // get audio stream from user's mic
+  navigator.mediaDevices.getUserMedia({
+    audio: true
+  })
+  .then(function (stream) {
+    recordButton.disabled = false;
+    recordButton.addEventListener('click', startRecording);
+    stopButton.addEventListener('click', stopRecording);
+    recorder = new MediaRecorder(stream);
+
+    // listen to dataavailable, which gets triggered whenever we have
+    // an audio blob available
+    recorder.addEventListener('dataavailable', onRecordingReady);
+  });
+};
+
+function startRecording() {
+  recordButton.disabled = true;
+  stopButton.disabled = false;
+
+  recorder.start();
+}
+
+function stopRecording() {
+  recordButton.disabled = false;
+  stopButton.disabled = true;
+
+  // Stopping the recorder will eventually trigger the `dataavailable` event and we can complete the recording process
+  recorder.stop();
+}
+
+function onRecordingReady(e) {
+  var audio = document.getElementById('audio');
+  // e.data contains a blob representing the recording
+  audio.src = URL.createObjectURL(e.data);
+  audio.play();
+}
 
 
   //--------------------------------------TONE-------------------------------------------//
@@ -1044,7 +1086,7 @@ console.log("up! ");
         break;
 
     }
-    socket.emit('setKeyboardInstrument', data);
+    keyboardState = data;
   }
 
   handleSynth() {
@@ -1106,6 +1148,9 @@ console.log("up! ");
               <input id="chat_input" type="text"/>
               <input type="submit" value="Send"/>
         </form>
+
+            <p><button id="record">Record audio</button> <button id="stop">Stop</button></p>
+    <p><audio id="audio" controls></audio></p>
         <div>
         <P5Wrapper sketch={this.state.stateSketch} rotation={this.state.rotation} circles={this.state.circles}/>
         <input type="range" value={this.state.rotation}  min="0"  max="360" step="1" onInput={this.rotationChange.bind(this)}/>
@@ -2143,6 +2188,8 @@ class Drum extends React.Component {
 </div>
 
         </div>
+
+
         )
   }
 }

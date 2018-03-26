@@ -50,7 +50,7 @@ io.on('connection', client => {
 
 	client.on('join', function(data) {
 	     	console.log('joined the server from App.js - from server');
-
+	     	console.log(client.id);
 	//sending drum data to user (array)
 	client.emit('drumData', drumSequencer);
 	        client.emit('welcomeMsg', 'Connected to socket')
@@ -93,11 +93,7 @@ io.on('connection', client => {
 	    	client.broadcast.emit('VibeKeyPress', data);
 	    	client.emit('VibeKeyPress', data);
 	    })
-	    client.on('setKeyboardInstrument', function(data){
-	    	console.log('changing instrument', data);
-	    	client.broadcast.emit('setKeyboardInstrument', data);
-	    	client.emit('setKeyboardInstrument', data);
-	    })
+	   
 	    //Drum Sequencer
 	    client.on('addDrumSequencerItem', function(data){
 	    	addDrum(data);
