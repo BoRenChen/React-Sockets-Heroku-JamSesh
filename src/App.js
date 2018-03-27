@@ -315,6 +315,52 @@ class App extends Component {
 
 
 
+//--------------------------------------Recording-------------------------------------------//
+  //enabled chrome://flags/ -- Experimental Web Platform Features
+  
+var recordButton, stopButton, recorder;
+
+window.onload = function () {
+  recordButton = document.getElementById('record');
+  stopButton = document.getElementById('stop');
+
+  // get audio stream from user's mic
+  navigator.mediaDevices.getUserMedia({
+    audio: true
+  })
+  .then(function (stream) {
+    recordButton.disabled = false;
+    recordButton.addEventListener('click', startRecording);
+    stopButton.addEventListener('click', stopRecording);
+    recorder = new MediaRecorder(stream);
+
+    // listen to dataavailable, which gets triggered whenever we have
+    // an audio blob available
+    recorder.addEventListener('dataavailable', onRecordingReady);
+  });
+};
+
+function startRecording() {
+  recordButton.disabled = true;
+  stopButton.disabled = false;
+
+  recorder.start();
+}
+
+function stopRecording() {
+  recordButton.disabled = false;
+  stopButton.disabled = true;
+
+  // Stopping the recorder will eventually trigger the `dataavailable` event and we can complete the recording process
+  recorder.stop();
+}
+
+function onRecordingReady(e) {
+  var audio = document.getElementById('audio');
+  // e.data contains a blob representing the recording
+  audio.src = URL.createObjectURL(e.data);
+  audio.play();
+}
 
 
   //--------------------------------------TONE-------------------------------------------//
@@ -1178,11 +1224,14 @@ console.log("up! ");
         {this.state.first == "Keyboard2" && <Keyboard2/>}
         {this.state.first == "Drum" && <Drum/>}
         {this.state.first == "DrumSequencer" && <DrumSequencer/>}
-
+        
         <button onClick={this.handleSynth.bind(this)}>change synth</button>
         <button onClick={this.handleInstrument.bind(this)}>change instrument</button>
         <button onClick={this.handleSeq.bind(this)}>sequencer</button>
         <button onClick={this.handle.bind(this)}>move to second page</button>
+                    <p><button id="record">Record audio</button> <button id="stop">Stop</button></p>
+    <p><audio id="audio" controls></audio></p>
+
         <DrumSequencer/>
 
 
