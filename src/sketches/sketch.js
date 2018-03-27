@@ -1,13 +1,13 @@
 export default function sketch (p) {
   let rotation = 0;
-  var circles = [];
+
   p.setup = function () {
-    var cnv = p.createCanvas(p.windowWidth, p.windowHeight, p.WEBGL);
+    p.createCanvas(p.windowWidth, p.windowHeight, p.WEBGL);
   };
 
 
-  //Bar Player
-     function Rectangle(height, tH, Color) {
+  
+   function Rectangle(height, tH, Color) {
       this.height = height;
       this.tH= tH;
       this.Color= Color;
@@ -59,22 +59,16 @@ function Color(r,g,b,t) {
 
   
 
-  //End Bar Player
-
-
-
   p.myCustomRedrawAccordingToNewPropsHandler = function (props) {
-    console.log(props)
     if (props.rotation){
       rotation = props.rotation * Math.PI / 180;
     }
-    if(props.circles){
-      console.log(props.circles);
-      circles = props.circles;
-    }
   };
+
+
+
   p.keyPressed = function() {
-     console.log(p.keyCode)
+    console.log(p.keyCode)
     var color1 = new Color(128,128,128, .3);
     var color2 = new Color(0,0,0,1);
     var code =  p.keyCode;
@@ -114,7 +108,15 @@ function Color(r,g,b,t) {
         y10.tH = -200;
     }
 
-  };
+     
+
+      
+  }
+
+
+  p.keys = function(x) {
+    return window[y.concat(x)];
+  }
 
   p.keyReleased = function() {
     var code =  p.keyCode;
@@ -151,63 +153,16 @@ function Color(r,g,b,t) {
     }     
   }
 
+
 function rectMaker(rect, xpos) {
     p.fill(rect.Color.r, rect.Color.g, rect.Color.b, rect.Color.b)
     p.rect(xpos, halfHeight, oneTenthWW, rect.height);
   }
 
-  p.circles = function() {
-      // for (let i = 0; i < 1; i++) {
-      //   let circle = {
-      //     x: Math.floor(Math.random() * (window.innerWidth - 80) + 60),
-      //     y: Math.floor(Math.random() * (window.innerHeight - 80) + 60),
-      //     diameter: Math.floor(Math.random() * 30 + 20),
-      //     dx: (Math.random() - 0.5) * 4,
-      //     dy: (Math.random() - 0.5) * 4
-      //   };
-      //   circles.push(circle);
-      // }
-      console.log(circles);
-  };
-  const changeVelocity = c => {
-    if (c.x + c.diameter / 2 > window.innerWidth || c.x - c.diameter / 2 < 0) {
-      c.dx = -c.dx;
-    }
-    if (c.y + c.diameter / 2 > window.innerHeight || c.y - c.diameter / 2 < 0) {
-      c.dy = -c.dy;
-    }
-    c.x += c.dx;
-    c.y += c.dy;
-  };
-
+    
 
   p.draw = function () {
-
-    p.background(100);
-    p.noStroke();
-
-    p.push();
-    p.translate(-window.innerWidth /2, -window.innerHeight/2);
-  
-
-    circles.forEach(c => {
-      p.noStroke();
-      p.fill(c.r, c.g, c.b, c.a);
-      p.ellipse(c.x, c.y, c.diameter, c.diameter);
-
-      // changeVelocity(c);
-      // circles.forEach(circleTwo => {
-      //   let a = Math.abs(c.x - circleTwo.x);
-      //   let b = Math.abs(c.y - circleTwo.y);
-      //   let distance = Math.sqrt(a * a + b * b);
-      //   if (distance < 200) {
-      //     p.stroke(255, 255, 255, 70);
-      //     p.line(c.x, c.y, circleTwo.x, circleTwo.y);
-      //   }
-      });
-
-      p.pop();
-    
+    //console.log(y1.height);
 
 
 
@@ -223,11 +178,12 @@ function rectMaker(rect, xpos) {
     y9.render();
     y10.render();
 
+    p.background(100);
     p.noStroke();
 
     p.push();
     p.translate(150, 100);
-    p.box(100, 100, 100);
+    
     p.pop();
 
     p.noFill();
@@ -269,7 +225,13 @@ function rectMaker(rect, xpos) {
     rectMaker(y2,-oneTenthWW*4);
     rectMaker(y1,-oneTenthWW*5);
 
+     p.rect(-oneTenthWW*5, halfHeight, oneTenthWW, y1.height,100);
+    
+   
+
+   
+
+
+
   };
-
-
 };
