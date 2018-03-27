@@ -401,6 +401,17 @@ function onRecordingReady(e) {
       }
     };
 
+    var Drums = {
+      keyboard: {
+        t: 'leftTom',
+        y: 'rightTom', 
+        f: 'crash',
+        g: 'floorTom', 
+        b: 'kick',
+        h: 'snare',
+        j: 'hiHat'
+      }
+    };
     var Vibes = {
   // https://github.com/stuartmemo/qwerty-hancock
   keyboard: {
@@ -447,6 +458,7 @@ function onRecordingReady(e) {
 
     var instrument = Instruments.keyboard;
 
+    var drum = Drums.keyboard;
 
 
     //--------------INTERACTION---------------//
@@ -467,15 +479,17 @@ function onRecordingReady(e) {
     };
 
     if(circles.length >=10 ){
-      circles[0] = graphic;
+      circles.splice(-1,1);
+      circles.splice(0,0, graphic);
+
     } else {
     circles.push(graphic);
     }
     var i = 1;
-    circles.forEach(c => {
-      c.a = Math.round( c.a - 20);
-      console.log(c.a);
-    });
+    for(var i = circles.length - 1; i > -1; i--){
+      circles[i].a = 255 - Math.round(25*i);
+      console.log(i, circles[i].a);
+    }
     console.log('here');
     this.setState({
             circles:circles
@@ -487,15 +501,17 @@ function onRecordingReady(e) {
   //handler
 
   var insKeyDown = function(event){
-
         switch(keyboardState) {
     
 
           case "instrument":
 
-            var keyName = event.key;
-            var note = instrument[keyName].replace('l', octave).replace('u', octave + 1);
-        
+            var key = event.key;
+            
+      if(instrument[key]){
+          var note = instrument[key].replace('l', octave).replace('u', octave + 1);
+      }
+      
              if (typeof(note) != 'undefined') {
                 socket.emit('PianoKeyPressed', note);
                 //synth2.triggerAttack(note);
@@ -520,7 +536,36 @@ function onRecordingReady(e) {
 
 
           break;
-
+          case "drum":
+            var keyName = event.key;
+            var note = drum[keyName];
+            
+            switch(note){
+              case 'snare':
+                snare(false);
+                break;
+              case 'hiHat':
+                hiHat(false);
+                break; 
+              case 'kick':
+                kick(false);
+                break; 
+              case 'leftTom':
+                leftTom(false);
+                break; 
+              case 'rightTom':
+                rightTom(false);
+                break; 
+              case 'floorTom':
+                floorTom(false);
+                break; 
+              case 'crash':
+                crashdrum(false);
+                break;     
+              default:
+                break;
+            }
+          break;
           default:
           break;      
 
@@ -529,8 +574,11 @@ function onRecordingReady(e) {
     var insKeyUp = function(event){
 
       var key = event.key;
-      var note = instrument[key].replace('l', octave).replace('u', octave + 1);
-
+      
+      if(instrument[key]){
+          var note = instrument[key].replace('l', octave).replace('u', octave + 1);
+      }
+      
       socket.emit('PianoKeyReleased', note);
       synth2.triggerRelease(note);
 
@@ -1101,7 +1149,6 @@ console.log("up! ");
     console.log("it was", keyboardState);
     var data = '';
 
-    console.log("it was 1");
     switch (keyboardState) {
       case "vibe":
         data = 'instrument';
@@ -1112,10 +1159,17 @@ console.log("up! ");
         break;  
 
       default:
+        data = 'instrument';
         break;
 
     }
     keyboardState = data;
+  }
+
+  handleDrumKey() { 
+    console.log("it was", keyboardState);
+
+    keyboardState = 'drum';
   }
 
   handleSynth() {
@@ -1229,8 +1283,9 @@ console.log("up! ");
         <button onClick={this.handleInstrument.bind(this)}>change instrument</button>
         <button onClick={this.handleSeq.bind(this)}>sequencer</button>
         <button onClick={this.handle.bind(this)}>move to second page</button>
-                    <p><button id="record">Record audio</button> <button id="stop">Stop</button></p>
-    <p><audio id="audio" controls></audio></p>
+        <button onClick={this.handleDrumKey.bind(this)}>Drum</button>
+        <p><button id="record">Record audio</button> <button id="stop">Stop</button></p>
+        <p><audio id="audio" controls></audio></p>
 
         <DrumSequencer/>
 
