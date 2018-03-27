@@ -74,11 +74,10 @@ function Color(r,g,b,t) {
     }
   };
   p.keyPressed = function() {
-     console.log(p.keyCode)
     var color1 = new Color(128,128,128, .3);
     var color2 = new Color(0,0,0,1);
     var code =  p.keyCode;
-    if (code == 65 || code == 90|| code ==81) {//A
+    if (code === 65 || code === 90|| code ===81) {//A
       y1.tH = -200;
     }
 
@@ -86,31 +85,31 @@ function Color(r,g,b,t) {
       y2.Color = color2;
 
     }
-    if (code == 83|| code == 87|| code ==88) {//S
+    if (code === 83|| code === 87|| code ===88) {//S
         y2.tH = -200;
     }
-    if (code == 68 || code == 69|| code ==67) {//D
+    if (code === 68 || code ===69|| code ===67) {//D
         y3.tH = -200;
     }
-    if (code == 70 || code == 82|| code ==86) {//F
+    if (code ===70 || code ===82|| code ===86) {//F
         y4.tH = -200;
     }
-    if (code == 71|| code ==84 || code ==66) {//G
+    if (code ===71|| code ===84 || code ===66) {//G
         y5.tH = -200;
     }
-    if (code == 72|| code ==89 || code ==78) {//H
+    if (code === 72|| code===89 || code===78) {//H
         y6.tH = -200;
     }
-    if (code == 74|| code ==85 || code ==77) {//J
+    if (code === 74|| code ===85 || code ===77) {//J
         y7.tH = -200;
     }
-    if (code== 75|| code ==73|| code ==188) {//K
+    if (code=== 75|| code===73|| code ===188) {//K
         y8.tH = -200;
     }
-    if (code == 76|| code ==79|| code ==190) {//L
+    if (code=== 76|| code ===79|| code===190) {//L
         y9.tH = -200;
     }
-    if (code == 186|| code == 80|| code ==191) {//S
+    if (code ===186|| code=== 80|| code ===191) {//S
         y10.tH = -200;
     }
 
@@ -119,34 +118,34 @@ function Color(r,g,b,t) {
   p.keyReleased = function() {
     var code =  p.keyCode;
 
-    if (code == 65 || code == 90|| code ==81) {//A
+    if (code === 65 || code=== 90|| code ===81) {//A
         y1.tH = 0;
     } 
-    if (code == 83 || code == 87|| code ==88) {//S
+    if (code=== 83 || code === 87|| code===88) {//S
         y2.tH = 0;
     } 
-    if (code == 68 || code == 69|| code ==67) {//S
+    if (code ===68 || code ===69|| code ===67) {//S
         y3.tH = 0;
     } 
-    if (code == 70 || code == 82|| code ==86) {//S
+    if (code ===70 || code ===82|| code ===86) {//S
         y4.tH = 0;
     } 
-    if (code == 71 || code ==84 || code ==66) {//S
+    if (code === 71 || code ===84 || code ===66) {//S
         y5.tH = 0;
     } 
-    if (code == 72 || code ==89 || code ==78) {//S
+    if (code === 72 || code ===89 || code ===78) {//S
         y6.tH = 0;
     } 
-    if (code == 74 || code ==85 || code ==77) {//S
+    if (code === 74 || code ===85 || code ===77) {//S
         y7.tH = 0;
     } 
-    if (code == 75 || code ==73|| code ==188) {//S
+    if (code ===75 || code ===73|| code ===188) {//S
         y8.tH = 0;
     } 
-    if (code == 76 || code ==79|| code ==190) {//S
+    if (code === 76 || code ===79|| code===190) {//S
         y9.tH = 0;
     } 
-    if (code == 186 || code == 80|| code ==191) {//S
+    if (code === 186 || code=== 80|| code ===191) {//S
         y10.tH = 0;
     }     
   }
@@ -179,7 +178,7 @@ function rectMaker(rect, xpos) {
     c.x += c.dx;
     c.y += c.dy;
   };
-
+  
 
   p.draw = function () {
 
@@ -225,21 +224,11 @@ function rectMaker(rect, xpos) {
 
     p.noStroke();
 
-    p.push();
-    p.translate(150, 100);
-    p.box(100, 100, 100);
-    p.pop();
+    
 
     p.noFill();
     p.noStroke();
    
-    p.push();
-    p.translate(500, p.height*0.35, -200);
-
-    p.rotateY(rotation);
-    p.rotateX(-0.9);
-    p.box(400);
-    p.pop();
 
     
     p.fill(128 , 128, 128);

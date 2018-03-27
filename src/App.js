@@ -11,10 +11,22 @@ import P5Wrapper from 'react-p5-wrapper';
 import sketch from './sketches/sketch';
 import sketch2 from './sketches/sketch2';
 
+import crash from "./img/crash.png";
+import floor from "./img/floor-tom.png";
+import hi  from "./img/hi-hat.png";
+import kick from "./img/kick.png";
+import left  from "./img/left-tom.png";
+import right from "./img/right-tom.png";
+import snare from "./img/snare.png";
+import sound from "./img/orangeVolume.png";
+import message from "./img/message.png";
+
 
 
 //GLOBAL
 const socket = io();
+var seqOpen = false; 
+var eqOpen = false;
 var synthStatus = false;
 var keyboardState = "instrument";
 var circles =[];
@@ -55,6 +67,43 @@ var synth2 = new Tone.PolySynth({
   }).toMaster();
 
 
+  
+  function eqPop() {
+    
+    if (eqOpen == false) {
+
+  document.getElementById("eq").style.left = "0px"; 
+  document.getElementById("eq").style.transition = ".5s"; 
+  
+  eqOpen = true;
+} 
+else if (eqOpen == true) {
+  document.getElementById("eq").style.left = "-200px"; 
+  document.getElementById("eq").style.transition = ".5s"; 
+  eqOpen = false;
+
+}
+  }
+
+
+    function seqPop() {
+    
+    if (seqOpen == false) {
+  document.getElementById("sequencer").style.bottom = "0px"; 
+  document.getElementById("sequencer").style.transition = ".5s"; 
+  document.getElementById("openPanel").innerHTML = "Hide Drum Sequencer"; 
+  seqOpen = true;
+} 
+else if (seqOpen == true) {
+  document.getElementById("sequencer").style.bottom = "-360px"; 
+  document.getElementById("sequencer").style.transition = ".5s"; 
+  document.getElementById("openPanel").innerHTML = "View Drum Sequencer"; 
+  console.log("closing");
+  seqOpen = false;
+}
+  }
+
+
 
       
 // sockets test
@@ -72,7 +121,7 @@ class App extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      first: true,
+      first: "Keyboard1",
       rotation: 150,
       circles: circles,
       stateSketch: sketch,
@@ -195,6 +244,8 @@ class App extends Component {
      });
 
 
+
+
   //Message
    $('form').submit(function(e){
        e.preventDefault();
@@ -264,52 +315,6 @@ class App extends Component {
 
 
 
-  //--------------------------------------Recording-------------------------------------------//
-  //enabled chrome://flags/ -- Experimental Web Platform Features
-  
-var recordButton, stopButton, recorder;
-
-window.onload = function () {
-  recordButton = document.getElementById('record');
-  stopButton = document.getElementById('stop');
-
-  // get audio stream from user's mic
-  navigator.mediaDevices.getUserMedia({
-    audio: true
-  })
-  .then(function (stream) {
-    recordButton.disabled = false;
-    recordButton.addEventListener('click', startRecording);
-    stopButton.addEventListener('click', stopRecording);
-    recorder = new MediaRecorder(stream);
-
-    // listen to dataavailable, which gets triggered whenever we have
-    // an audio blob available
-    recorder.addEventListener('dataavailable', onRecordingReady);
-  });
-};
-
-function startRecording() {
-  recordButton.disabled = true;
-  stopButton.disabled = false;
-
-  recorder.start();
-}
-
-function stopRecording() {
-  recordButton.disabled = false;
-  stopButton.disabled = true;
-
-  // Stopping the recorder will eventually trigger the `dataavailable` event and we can complete the recording process
-  recorder.stop();
-}
-
-function onRecordingReady(e) {
-  var audio = document.getElementById('audio');
-  // e.data contains a blob representing the recording
-  audio.src = URL.createObjectURL(e.data);
-  audio.play();
-}
 
 
   //--------------------------------------TONE-------------------------------------------//
@@ -508,38 +513,8 @@ function onRecordingReady(e) {
     })
 
 
-    //--------------------------------------ANIMEJS-------------------------------------------//
-    //anime.js
-    anime({
-      targets: 'path',
-      strokeDashoffset: function(el) {
-        var pathLength = el.getTotalLength();
-        el.setAttribute('stroke-dasharray', pathLength);
-        return [-pathLength, 0];
-      },
-      stroke: {
-        value: function(el, i) {
-          return 'rgb(200,'+ i * 8 +',150)'; 
-        },
-        easing: 'linear',
-        duration: 2000,
-      },
-      strokeWidth: {
-        value: 6,
-        easing: 'linear',
-        delay: function(el, i) { 
-          return 1200 + (i * 40); 
-        },
-        duration: 800,
-      },
-      delay: function(el, i) { 
-        return i * 60; 
-      },
-      duration: 1200,
-      easing: 'easeOutExpo',
-      loop: true,
-      direction: 'alternate'
-    });
+
+
 
     //--------------------------------------DRUM-------------------------------------------//
     //drum
@@ -1062,10 +1037,18 @@ console.log("up! ");
 
   }
 
+  
 
   handle(){
     alert('move to second component')
-    this.setState({first: false})
+    this.setState({first: "Keyboard2"})
+
+  }
+
+  handleSeq(){
+    alert('move to drum component')
+    this.setState({first: "DrumSequencer"})
+
   }
 
   handleInstrument() { 
@@ -1139,50 +1122,96 @@ console.log("up! ");
     return (
       <div className="App">
         <header className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <h1 className="App-title">Welcome to JamSesh Powered By React</h1>
+          <h1 className="App-title">JamSesh</h1>
         </header>
-
-        <div id="future"></div>
-          <form id="form" id="chat_form">
-              <input id="chat_input" type="text"/>
-              <input type="submit" value="Send"/>
-        </form>
-
-            <p><button id="record">Record audio</button> <button id="stop">Stop</button></p>
-    <p><audio id="audio" controls></audio></p>
+        
         <div>
         <P5Wrapper sketch={this.state.stateSketch} rotation={this.state.rotation} circles={this.state.circles}/>
-        <input type="range" value={this.state.rotation}  min="0"  max="360" step="1" onInput={this.rotationChange.bind(this)}/>
-        <button onClick={this.pressEvent.bind(this)}>Change Sketch</button>
+        
+        </div>
+
+        <div id = "messages">
+        <div id="messageTab">
+        <img src={message} id="messageIcon"></img>
+        </div>
+        <div id="future">
+        <p>Hi!</p>
+        <p>Hi!</p>
+        </div>
+          <form id="form" id="chat_form">
+              <input id="chat_input" type="text"/>
+              <button  id="submit" type="submit" value="Send">Send</button>
+        </form>
+        </div>
+        
+
+
+
+
+        <div id="eq">
+        <div id = "eqTab" onClick={eqPop}>
+        <img src={sound} id="eqSoundIcon"></img>
+        </div>
+        <h3>Volume Control</h3>
+        
+        <div class='eqSliders'>
+        <h4>Drums</h4>
+        <input type="range" min="-10" max="10"/>
+        </div>
+
+        <div class='eqSliders'>
+        <h4>Synth</h4>
+        <input type="range" min="-10" max="10"/>
+        </div>
+
+        <div class='eqSliders'>
+        <h4>Keys</h4>
+        <input type="range" min="-10" max="10"/>
+        </div>
+
         </div>
 
         
-      <div className="component-app">
+      
+        
+        {this.state.first == "Keyboard1" && <Keyboard1/>}
+        {this.state.first == "Keyboard2" && <Keyboard2/>}
+        {this.state.first == "Drum" && <Drum/>}
+        {this.state.first == "DrumSequencer" && <DrumSequencer/>}
 
-        <ul className="set">
-          <li className="white b" id="B4">B4</li>
-          <li className="black as"></li>
-          <li className="white a" id="A4">A4</li>
-          <li className="black gs"></li>
-          <li className="white g" id="G4">G4</li>
-          <li className="black fs"></li>
-          <li className="white f" id="F4">F4</li>
-          <li className="white e" id="E4">E4</li>
-          <li className="black ds"></li>
-          <li className="white d" id="D4">D4</li>
-          <li className="black cs"></li>
-          <li className="white c" id="C4">C4</li>
-        </ul>
-        <input type="range" min="-10" max="10"/>
-
-        </div>
         <button onClick={this.handleSynth.bind(this)}>change synth</button>
         <button onClick={this.handleInstrument.bind(this)}>change instrument</button>
+        <button onClick={this.handleSeq.bind(this)}>sequencer</button>
         <button onClick={this.handle.bind(this)}>move to second page</button>
-        {this.state.first == true && <Pqr/>}
-        {this.state.first == false && <Sqr/>}
-        <Drum/>
+        <DrumSequencer/>
+
+
+
+        <audio id="Big-Rack-Tom-Audio">
+  <source src="https://s3.amazonaws.com/iamjoshellis-codepen/pens-of-rock/drums/Big-Rack-Tom.mp3" preload="auto" type="audio/mp3" />
+</audio>
+<audio id="Crash-Audio">
+  <source src="https://s3.amazonaws.com/iamjoshellis-codepen/pens-of-rock/drums/Crash.mp3" preload="auto" type="audio/mp3" />
+</audio>
+<audio id="Floor-Tom-Audio">
+  <source src="https://s3.amazonaws.com/iamjoshellis-codepen/pens-of-rock/drums/Floor-Tom.mp3" preload="auto" type="audio/mp3" />
+</audio>
+<audio id="Hi-Hat-Closed-Audio">
+  <source src="https://s3.amazonaws.com/iamjoshellis-codepen/pens-of-rock/drums/Hi-Hat-Closed.mp3" preload="auto" type="audio/mp3" />
+</audio>
+<audio id="Hi-Hat-Open-Audio">
+  <source src="https://s3.amazonaws.com/iamjoshellis-codepen/pens-of-rock/drums/High-Hat-Open.mp3" preload="auto" type="audio/mp3" />
+</audio>
+<audio id="Kick-Audio">
+  <source src="https://s3.amazonaws.com/iamjoshellis-codepen/pens-of-rock/drums/Kick.mp3" preload="auto" type="audio/mp3" />
+</audio>
+<audio id="Small-Rack-Tom-Audio">
+  <source src="https://s3.amazonaws.com/iamjoshellis-codepen/pens-of-rock/drums/Small-Rack-Tom.mp3" preload="auto" type="audio/mp3" />
+</audio>
+<audio id="Snare-Audio">
+  <source src="https://s3.amazonaws.com/iamjoshellis-codepen/pens-of-rock/drums/Snare.mp3" preload="auto" type="audio/mp3" />
+</audio>
+
       </div>
     );
   }
@@ -1233,63 +1262,13 @@ render() {
   }
 }
 
-class Pqr extends React.Component {
-  render (){
-    return (<div><h1>First</h1>
-    <section>
-  <article>
-<svg width="252px" height="94px" viewBox="3 11 252 94" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlnsxlink="http://www.w3.org/1999/xlink">
-    
-    <desc>Created with Sketch.</desc>
-    <defs></defs>
-    <path d="M4,80.3307481 L4,103.14209" id="Stroke-3-Copy-2" stroke="#FFFFFF" stroke-width="2" stroke-linecap="square" fill="none"></path>
-    <path d="M12,80.3307481 L12,103.14209" id="Stroke-3-Copy" stroke="#FFFFFF" stroke-width="2" stroke-linecap="square" fill="none"></path>
-    <path d="M20,80.3307481 L20,103.14209" id="Stroke-3" stroke="#FFFFFF" stroke-width="2" stroke-linecap="square" fill="none"></path>
-    <path d="M28,79.2468955 L28,103.14209" id="Stroke-4" stroke="#FFFFFF" stroke-width="2" stroke-linecap="square" fill="none"></path>
-    <path d="M36,78.1629412 L36,103.14209" id="Stroke-5" stroke="#FFFFFF" stroke-width="2" stroke-linecap="square" fill="none"></path>
-    <path d="M44,75.4792747 L44,103.14209" id="Stroke-6" stroke="#FFFFFF" stroke-width="2" stroke-linecap="square" fill="none"></path>
-    <path d="M52,72.7420239 L52,103.14209" id="Stroke-7" stroke="#FFFFFF" stroke-width="2" stroke-linecap="square" fill="none"></path>
-    <path d="M60,69.5063186 L60,103.14209" id="Stroke-8" stroke="#FFFFFF" stroke-width="2" stroke-linecap="square" fill="none"></path>
-    <path d="M68,66.251244 L68,103.14209" id="Stroke-9" stroke="#FFFFFF" stroke-width="2" stroke-linecap="square" fill="none"></path>
-    <path d="M76,61.8968703 L76,103.14209" id="Stroke-10" stroke="#FFFFFF" stroke-width="2" stroke-linecap="square" fill="none"></path>
-    <path d="M84,58.6428398 L84,103.14209" id="Stroke-11" stroke="#FFFFFF" stroke-width="2" stroke-linecap="square" fill="none"></path>
-    <path d="M92,55.3517013 L92,103.14209" id="Stroke-12" stroke="#FFFFFF" stroke-width="2" stroke-linecap="square" fill="none"></path>
-    <path d="M100,52.1459205 L100,103.14209" id="Stroke-13" stroke="#FFFFFF" stroke-width="2" stroke-linecap="square" fill="none"></path>
-    <path d="M108,49.9758708 L108,103.14209" id="Stroke-14" stroke="#FFFFFF" stroke-width="2" stroke-linecap="square" fill="none"></path>
-    <path d="M116,49.9648003 L116,103.14209" id="Stroke-15" stroke="#FFFFFF" stroke-width="2" stroke-linecap="square" fill="none"></path>
-    <path d="M124,52.0421408 L124,103.14209" id="Stroke-16" stroke="#FFFFFF" stroke-width="2" stroke-linecap="square" fill="none"></path>
-    <path d="M132,54.207588 L132,103.14209" id="Stroke-17" stroke="#FFFFFF" stroke-width="2" stroke-linecap="square" fill="none"></path>
-    <path d="M140,57.4549402 L140,103.14209" id="Stroke-18" stroke="#FFFFFF" stroke-width="2" stroke-linecap="square" fill="none"></path>
-    <path d="M148,59.7410947 L148,103.14209" id="Stroke-19" stroke="#FFFFFF" stroke-width="2" stroke-linecap="square" fill="none"></path>
-    <path d="M156,60.7705138 L156,103.14209" id="Stroke-20" stroke="#FFFFFF" stroke-width="2" stroke-linecap="square" fill="none"></path>
-    <path d="M164,59.6868773 L164,103.14209" id="Stroke-21" stroke="#FFFFFF" stroke-width="2" stroke-linecap="square" fill="none"></path>
-    <path d="M172,56.4734051 L172,103.14209" id="Stroke-22" stroke="#FFFFFF" stroke-width="2" stroke-linecap="square" fill="none"></path>
-    <path d="M180,49.799018 L180,103.14209" id="Stroke-23" stroke="#FFFFFF" stroke-width="2" stroke-linecap="square" fill="none"></path>
-    <path d="M188,42.3419581 L188,103.14209" id="Stroke-24" stroke="#FFFFFF" stroke-width="2" stroke-linecap="square" fill="none"></path>
-    <path d="M196,35.8617977 L196,103.14209" id="Stroke-25" stroke="#FFFFFF" stroke-width="2" stroke-linecap="square" fill="none"></path>
-    <path d="M204,29.3524204 L204,103.14209" id="Stroke-26" stroke="#FFFFFF" stroke-width="2" stroke-linecap="square" fill="none"></path>
-    <path d="M212,23.9352737 L212,103.14209" id="Stroke-27" stroke="#FFFFFF" stroke-width="2" stroke-linecap="square" fill="none"></path>
-    <path d="M220,19.5951742 L220,103.14209" id="Stroke-28" stroke="#FFFFFF" stroke-width="2" stroke-linecap="square" fill="none"></path>
-    <path d="M228,18.5101493 L228,103.14209" id="Stroke-29" stroke="#FFFFFF" stroke-width="2" stroke-linecap="square" fill="none"></path>
-    <path d="M236,16.3400995 L236,103.14209" id="Stroke-30" stroke="#FFFFFF" stroke-width="2" stroke-linecap="square" fill="none"></path>
-    <path d="M244,14.1700498 L244,103.14209" id="Stroke-31" stroke="#FFFFFF" stroke-width="2" stroke-linecap="square" fill="none"></path>
-    <path d="M252,12 L252,103.14209" id="Stroke-32" stroke="#FFFFFF" stroke-width="2" stroke-linecap="square" fill="none"></path>
-</svg>
-  </article>
-  <footer>
-    <span>Made with</span> <a href="http://anime-js.com">anime.js</a>
-  </footer>
-  <a class="logo" href="http://anime-js.com"><img src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/1137/anime-logo.png"></img></a>
-</section>
+class Keyboard1 extends React.Component {
 
-    </div>)
-  }
-}
-class Sqr extends React.Component {
+  
   render (){
+
     return (
-    <div>
-      <h1>Second</h1>
+      <div className="component-app">
 
         <ul className="set">
           <li className="white b" id="B4">B4</li>
@@ -1310,105 +1289,42 @@ class Sqr extends React.Component {
         )
   }
 }
+
+class Keyboard2 extends React.Component {
+  render (){
+    return (
+    <div>
+      <h1>Keyboard2</h1>
+
+        <ul className="set">
+          <li className="white b" id="B4">B4</li>
+          <li className="black as"></li>
+          <li className="white a" id="A4">A4</li>
+          <li className="black gs"></li>
+          <li className="white g" id="G4">G4</li>
+          <li className="black fs"></li>
+          <li className="white f" id="F4">F4</li>
+          <li className="white e" id="E4">E4</li>
+          <li className="black ds"></li>
+          <li className="white d" id="D4">D4</li>
+          <li className="black cs"></li>
+          <li className="white c" id="C4">C4</li>
+        </ul>
+
+        </div>
+        )
+  }
+}
+
+
+
+
+
 class Drum extends React.Component {
   render (){
     return (
     <div>
       <h1>Drum</h1>
-
-  <div id="container-sequencer" class="container-sequencer collapse">
-          <div id="sequencer" class="sequencer">
-            <div class="row" data-target-drum="crash">
-              <img src="img/crash.png" alt="Crash"/>
-              <label><input id='crash-01' type="checkbox"/><span></span></label>
-              <label><input id='crash-02' type="checkbox"/><span></span></label>
-              <label><input id='crash-03' type="checkbox"/><span></span></label>
-              <label><input id='crash-04' type="checkbox"/><span></span></label>
-              <label><input id='crash-05' type="checkbox"/><span></span></label>
-              <label><input id='crash-06' type="checkbox"/><span></span></label>
-              <label><input id='crash-07' type="checkbox"/><span></span></label>
-              <label><input id='crash-08' type="checkbox"/><span></span></label>
-            </div>
-            <div class="row" data-target-drum="hiHat">
-              <img src="img/hi-hat.png" alt="Hi hat"/>
-              <label><input id='hiHat-01' type="checkbox"/><span></span></label>
-              <label><input id='hiHat-02' type="checkbox"/><span></span></label>
-              <label><input id='hiHat-03' type="checkbox"/><span></span></label>
-              <label><input id='hiHat-04' type="checkbox"/><span></span></label>
-              <label><input id='hiHat-05' type="checkbox"/><span></span></label>
-              <label><input id='hiHat-06' type="checkbox"/><span></span></label>
-              <label><input id='hiHat-07' type="checkbox"/><span></span></label>
-              <label><input id='hiHat-08' type="checkbox"/><span></span></label>
-            </div>
-            <div class="row" data-target-drum="snare">
-              <img src="img/snare.png" alt="Snare"/>
-              <label><input id='snare-01' type="checkbox"/><span></span></label>
-              <label><input id='snare-02' type="checkbox"/><span></span></label>
-              <label><input id='snare-03' type="checkbox"/><span></span></label>
-              <label><input id='snare-04' type="checkbox"/><span></span></label>
-              <label><input id='snare-05' type="checkbox"/><span></span></label>
-              <label><input id='snare-06' type="checkbox"/><span></span></label>
-              <label><input id='snare-07' type="checkbox"/><span></span></label>
-              <label><input id='snare-08' type="checkbox"/><span></span></label>
-            </div>
-            <div class="row" data-target-drum="rightTom">
-              <img src="img/right-tom.png" alt="Right tom"/><label><input class='rightTom-01' type="checkbox"/><span></span></label>
-              <label><input id='rightTom-02' type="checkbox"/><span></span></label>
-              <label><input id='rightTom-03' type="checkbox"/><span></span></label>
-              <label><input id='rightTom-04' type="checkbox"/><span></span></label>
-              <label><input id='rightTom-05' type="checkbox"/><span></span></label>
-              <label><input id='rightTom-06' type="checkbox"/><span></span></label>
-              <label><input id='rightTom-07' type="checkbox"/><span></span></label>
-              <label><input id='rightTom-08' type="checkbox"/><span></span></label>
-            </div>
-            <div class="row" data-target-drum="leftTom">
-              <img src="img/left-tom.png" alt="Left tom"/>
-              <label><input id='leftTom-01' type="checkbox"/><span></span></label>
-              <label><input id='leftTom-02' type="checkbox"/><span></span></label>
-              <label><input id='leftTom-03' type="checkbox"/><span></span></label>
-              <label><input id='leftTom-04' type="checkbox"/><span></span></label>
-              <label><input id='leftTom-05' type="checkbox"/><span></span></label>
-              <label><input id='leftTom-06' type="checkbox"/><span></span></label>
-              <label><input id='leftTom-07' type="checkbox"/><span></span></label>
-              <label><input id='leftTom-08' type="checkbox"/><span></span></label>
-            </div>
-            <div class="row" data-target-drum="floorTom">
-              <img src="img/floor-tom.png" alt="Floor tom"/>
-              <label><input id='floorTom-01' type="checkbox"/><span></span></label>
-              <label><input id='floorTom-02' type="checkbox"/><span></span></label>
-              <label><input id='floorTom-03' type="checkbox"/><span></span></label>
-              <label><input id='floorTom-04' type="checkbox"/><span></span></label>
-              <label><input id='floorTom-05' type="checkbox"/><span></span></label>
-              <label><input id='floorTom-06' type="checkbox"/><span></span></label>
-              <label><input id='floorTom-07' type="checkbox"/><span></span></label>
-              <label><input id='floorTom-08' type="checkbox"/><span></span></label>
-            </div>
-            <div class="row" data-target-drum="kick">
-              <img src="img/kick.png" alt="Kick"/>
-              <label><input id='kick-01' type="checkbox"/><span></span></label>
-              <label><input id='kick-02' type="checkbox"/><span></span></label>
-              <label><input id='kick-03' type="checkbox"/><span></span></label>
-              <label><input id='kick-04' type="checkbox"/><span></span></label>
-              <label><input id='kick-05' type="checkbox"/><span></span></label>
-              <label><input id='kick-06' type="checkbox"/><span></span></label>
-              <label><input id='kick-07' type="checkbox"/><span></span></label>
-              <label><input id='kick-08' type="checkbox"/><span></span></label>
-            </div>
-            <div class="sequencer-controls">
-              <button id="sequencer-active-btn" class="btn" aria-label="Play"><i class="fa fa-play"></i></button>
-              <button id="sequencer-reset-btn" class="btn">Refresh Sequencer</button>
-              <div class="sequencer-controls-tempo">
-                <button id="bpm-decrease-btn" class="btn" aria-label="Decrease bpm">-</button>
-                <input id="bpm-indicator" type="number" min="100" max="300" size="3" value="150" readonly/>
-                <button id="bpm-increase-btn" class="btn" aria-label="Iecrease bpm">+</button>
-              </div>
-            </div>
-          </div>
-
-          </div>
-       
-
-
 <svg class="drumsvg" version="1.1" xmlns="http://www.w3.org/2000/svg" viewBox="300 300 1400 1400">
 <g id="Drums">
   <g>
@@ -2150,30 +2066,7 @@ class Drum extends React.Component {
 </g>
 </svg>
 
-<audio id="Big-Rack-Tom-Audio">
-  <source src="https://s3.amazonaws.com/iamjoshellis-codepen/pens-of-rock/drums/Big-Rack-Tom.mp3" preload="auto" type="audio/mp3" />
-</audio>
-<audio id="Crash-Audio">
-  <source src="https://s3.amazonaws.com/iamjoshellis-codepen/pens-of-rock/drums/Crash.mp3" preload="auto" type="audio/mp3" />
-</audio>
-<audio id="Floor-Tom-Audio">
-  <source src="https://s3.amazonaws.com/iamjoshellis-codepen/pens-of-rock/drums/Floor-Tom.mp3" preload="auto" type="audio/mp3" />
-</audio>
-<audio id="Hi-Hat-Closed-Audio">
-  <source src="https://s3.amazonaws.com/iamjoshellis-codepen/pens-of-rock/drums/Hi-Hat-Closed.mp3" preload="auto" type="audio/mp3" />
-</audio>
-<audio id="Hi-Hat-Open-Audio">
-  <source src="https://s3.amazonaws.com/iamjoshellis-codepen/pens-of-rock/drums/High-Hat-Open.mp3" preload="auto" type="audio/mp3" />
-</audio>
-<audio id="Kick-Audio">
-  <source src="https://s3.amazonaws.com/iamjoshellis-codepen/pens-of-rock/drums/Kick.mp3" preload="auto" type="audio/mp3" />
-</audio>
-<audio id="Small-Rack-Tom-Audio">
-  <source src="https://s3.amazonaws.com/iamjoshellis-codepen/pens-of-rock/drums/Small-Rack-Tom.mp3" preload="auto" type="audio/mp3" />
-</audio>
-<audio id="Snare-Audio">
-  <source src="https://s3.amazonaws.com/iamjoshellis-codepen/pens-of-rock/drums/Snare.mp3" preload="auto" type="audio/mp3" />
-</audio>
+
 
 
 <div id="footer" class="footer hidden">
@@ -2188,9 +2081,109 @@ class Drum extends React.Component {
 </div>
 
         </div>
-
-
         )
+  }
+}
+
+
+class DrumSequencer extends React.Component {
+  render (){
+    return (
+    <div>
+
+      <div id="container-sequencer" class="container-sequencer collapse">
+          <div id="sequencer" class="sequencer">
+          <div id="openPanel" onClick={seqPop}>View Drum Sequencer</div>
+            <div class="row" data-target-drum="crash">
+              <img src={crash} alt="Crash"/>
+              <label><input id='crash-01' type="checkbox"/><span></span></label>
+              <label><input id='crash-02' type="checkbox"/><span></span></label>
+              <label><input id='crash-03' type="checkbox"/><span></span></label>
+              <label><input id='crash-04' type="checkbox"/><span></span></label>
+              <label><input id='crash-05' type="checkbox"/><span></span></label>
+              <label><input id='crash-06' type="checkbox"/><span></span></label>
+              <label><input id='crash-07' type="checkbox"/><span></span></label>
+              <label><input id='crash-08' type="checkbox"/><span></span></label>
+            </div>
+            <div class="row" data-target-drum="hiHat">
+              <img src={hi} alt="Hi hat"/>
+              <label><input id='hiHat-01' type="checkbox"/><span></span></label>
+              <label><input id='hiHat-02' type="checkbox"/><span></span></label>
+              <label><input id='hiHat-03' type="checkbox"/><span></span></label>
+              <label><input id='hiHat-04' type="checkbox"/><span></span></label>
+              <label><input id='hiHat-05' type="checkbox"/><span></span></label>
+              <label><input id='hiHat-06' type="checkbox"/><span></span></label>
+              <label><input id='hiHat-07' type="checkbox"/><span></span></label>
+              <label><input id='hiHat-08' type="checkbox"/><span></span></label>
+            </div>
+            <div class="row" data-target-drum="snare">
+              <img src={snare} alt="Snare"/>
+              <label><input id='snare-01' type="checkbox"/><span></span></label>
+              <label><input id='snare-02' type="checkbox"/><span></span></label>
+              <label><input id='snare-03' type="checkbox"/><span></span></label>
+              <label><input id='snare-04' type="checkbox"/><span></span></label>
+              <label><input id='snare-05' type="checkbox"/><span></span></label>
+              <label><input id='snare-06' type="checkbox"/><span></span></label>
+              <label><input id='snare-07' type="checkbox"/><span></span></label>
+              <label><input id='snare-08' type="checkbox"/><span></span></label>
+            </div>
+            <div class="row" data-target-drum="rightTom">
+              <img src={right} alt="Right tom"/><label><input class='rightTom-01' type="checkbox"/><span></span></label>
+              <label><input id='rightTom-02' type="checkbox"/><span></span></label>
+              <label><input id='rightTom-03' type="checkbox"/><span></span></label>
+              <label><input id='rightTom-04' type="checkbox"/><span></span></label>
+              <label><input id='rightTom-05' type="checkbox"/><span></span></label>
+              <label><input id='rightTom-06' type="checkbox"/><span></span></label>
+              <label><input id='rightTom-07' type="checkbox"/><span></span></label>
+              <label><input id='rightTom-08' type="checkbox"/><span></span></label>
+            </div>
+            <div class="row" data-target-drum="leftTom">
+              <img src={left} alt="Left tom"/>
+              <label><input id='leftTom-01' type="checkbox"/><span></span></label>
+              <label><input id='leftTom-02' type="checkbox"/><span></span></label>
+              <label><input id='leftTom-03' type="checkbox"/><span></span></label>
+              <label><input id='leftTom-04' type="checkbox"/><span></span></label>
+              <label><input id='leftTom-05' type="checkbox"/><span></span></label>
+              <label><input id='leftTom-06' type="checkbox"/><span></span></label>
+              <label><input id='leftTom-07' type="checkbox"/><span></span></label>
+              <label><input id='leftTom-08' type="checkbox"/><span></span></label>
+            </div>
+            <div class="row" data-target-drum="floorTom">
+              <img src={floor} alt="Floor tom"/>
+              <label><input id='floorTom-01' type="checkbox"/><span></span></label>
+              <label><input id='floorTom-02' type="checkbox"/><span></span></label>
+              <label><input id='floorTom-03' type="checkbox"/><span></span></label>
+              <label><input id='floorTom-04' type="checkbox"/><span></span></label>
+              <label><input id='floorTom-05' type="checkbox"/><span></span></label>
+              <label><input id='floorTom-06' type="checkbox"/><span></span></label>
+              <label><input id='floorTom-07' type="checkbox"/><span></span></label>
+              <label><input id='floorTom-08' type="checkbox"/><span></span></label>
+            </div>
+            <div class="row" data-target-drum="kick">
+              <img src={kick} alt="Kick"/>
+              <label><input id='kick-01' type="checkbox"/><span></span></label>
+              <label><input id='kick-02' type="checkbox"/><span></span></label>
+              <label><input id='kick-03' type="checkbox"/><span></span></label>
+              <label><input id='kick-04' type="checkbox"/><span></span></label>
+              <label><input id='kick-05' type="checkbox"/><span></span></label>
+              <label><input id='kick-06' type="checkbox"/><span></span></label>
+              <label><input id='kick-07' type="checkbox"/><span></span></label>
+              <label><input id='kick-08' type="checkbox"/><span></span></label>
+            </div>
+            <div class="sequencer-controls">
+              <button id="sequencer-active-btn" class="btn" aria-label="Play"><i class="fa fa-play"></i></button>
+              <button id="sequencer-reset-btn" class="btn">Refresh Sequencer</button>
+              <div class="sequencer-controls-tempo">
+                <button id="bpm-decrease-btn" class="btn" aria-label="Decrease bpm">-</button>
+                <input id="bpm-indicator" type="number" min="100" max="300" size="3" value="150" readonly/>
+                <button id="bpm-increase-btn" class="btn" aria-label="Iecrease bpm">+</button>
+              </div>
+            </div>
+          </div>
+
+          </div>
+        </div>
+      )
   }
 }
 export default App;

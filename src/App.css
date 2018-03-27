@@ -8,12 +8,32 @@ g {
        color: black;
     width: 100%;
     height: 50%;
-    background-color: red;
+    background-color: black;
     z-index: -1;
     position: absolute;
     left: 0;
 
 }
+
+
+
+h1 { 
+  margin-top: .3em;
+  margin-bottom: .3em;
+}
+
+
+/*SEQUENCER STYLES*/
+
+
+img {
+  width: 40px;
+  height: 40px;
+}
+
+/*CHAT STYLES*/
+
+
 
 .App {
   text-align: center;
@@ -21,18 +41,25 @@ g {
 
 .App-logo {
   animation: App-logo-spin infinite 20s linear;
-  height: 80px;
+  height: 0px;
 }
 
 .App-header {
   background-color: #222;
-  height: 150px;
+  height: 60px;
   padding: 20px;
   color: white;
+  border-bottom: 1px solid orange;
 }
 
 .App-title {
   font-size: 1.5em;
+  position: relative;
+  color: orange;
+  margin-top: 0px;
+  vertical-align: middle;
+  text-align: left;
+  left:30px;
 }
 
 .App-intro {
@@ -49,6 +76,8 @@ body{
 svg {
   margin: auto;
 }
+
+
 
 
 .drumsvg {
@@ -69,7 +98,7 @@ i:hover {
 }
 ul {
   height:18.875em; width:34em;
-  margin:5em auto; padding:3em 0 0 3em; position:relative; 
+  margin:1em auto; padding:3em 0 0 3em; position:relative; 
   border:1px solid #160801; border-radius:1em; 
   background:-webkit-gradient(linear, right bottom, left top, color-stop(0%,rgba(0,0,0,0.3)), color-stop(100%,rgba(0,0,0,0))), url('https://f.cl.ly/items/2q1f3t0C3R1b0g081w3n/vwood.png');
 box-shadow:0 0 50px rgba(0,0,0,0.5) inset, 0 1px rgba(212,152,125,0.2) inset,0 5px 15px rgba(0,0,0,0.5); }
@@ -141,7 +170,148 @@ ul li:last-child { border-radius:0 5px 5px 5px; }
   vertical-align: middle;
 }
 
+h3 {
+
+}
+
+h4 {
+
+  border-top:1px solid black;
+  padding-top: 20px;
+  margin-top: 0px;
+  margin-bottom:0px;
+}
+
+.eqSliders {
+  padding-bottom: 20px;
+
+}
+
+#eqTab {
+      width: 59px;
+    height: 59px;
+    background: #222;
+    position: absolute;
+    right: -59px;
+    border-bottom: 1px solid orange;
+    border-top:1px solid orange;
+    border-right:1px solid orange;
+    top: 7px;
+
+}
+
+#eqSoundIcon {
+  width: 30px;
+  height: 30px;
+  top: 13px;
+  position: relative;
+}
+
+#eq {
+  background-color: orange;
+  position: fixed;
+  width: 200px;
+  height: 100vh;
+  left:-200px;
+  z-index: 10;
+
+}
+
+#messages {
+  background-color: orange;
+  width: 200px;
+  height: 100vh;
+  position: fixed;
+  left: -200px;
+  z-index: 10;
+  
+}
+
+#messageIcon {
+  width: 30px;
+  height: 30px;
+  top: 13px;
+  position: relative;
+}
+
+#messageTab {
+  top: 72px;
+    width: 59px;
+    height: 59px;
+    background: #222;
+    position: absolute;
+    right: -59px;
+    border-bottom: 1px solid orange;
+    border-top:1px solid orange;
+    border-right:1px solid orange;
+
+}
+
+
+#chat_input {
+    height: 100%;
+    width: 70%;
+    position:absolute; 
+    left: 0px;
+}
+
+#submit {
+  position: absolute;
+  right: 0;
+  width: 30%;
+  height: 100%;
+
+}
+
+#chat_form { 
+    position: absolute;
+    bottom: 27px;
+    /* bottom: -12px; */
+    /* vertical-align: bottom; */
+    bottom: 0px;
+    right: 0;
+    height: 31px;
+    background: black;
+    width: 100%;
+}
+
+/*#future p {
+  //left: 20px;
+  position: fixed;
+  text-align: left;
+}*/
+
+#future {
+    right: 0px;
+    position: relative;
+    background-color: red;
+    width: 100%;
+
+}
+
+
+
+#openPanel{ 
+  transition: 0.5s;
+  text-decoration: white;
+  color: white;
+  width: 100vw;
+  background-color: black;
+  position: relative;
+      height: 27px;
+
+  
+    top: -27px;
+    z-index: 11;
+
+}
+
 .sequencer {
+  width: 100vw;
+   position: fixed;
+  bottom: -360px;;
+  z-index: 10;
+  background-color: #222;
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
@@ -169,6 +339,9 @@ ul li:last-child { border-radius:0 5px 5px 5px; }
 
 
 
+
+
+
 .sequencer-controls {
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -186,7 +359,7 @@ ul li:last-child { border-radius:0 5px 5px 5px; }
 .sequencer label span {
   position: relative;
   display: block;
-  width: 5vh;
+  width: 11vw;
     height: 5vh;
     margin: 0.5vh;
   border: 2px solid #89939B;
@@ -230,10 +403,13 @@ input[type=number] {
 
 #bpm-decrease-btn {
   background: red;
+  color: white;
+  text-align: center;
 }
 
 #bpm-increase-btn {
-  background: orange;
+  background: rgb(115, 142, 40);
+  color: white;
 }
 
 canvas {
