@@ -27,6 +27,7 @@ import message from "./img/message.png";
 const socket = io();
 var seqOpen = false; 
 var eqOpen = false;
+var chatOpen = false;
 var synthStatus = false;
 var keyboardState = "instrument";
 var circles =[];
@@ -85,6 +86,22 @@ function eqPop() {
   }
 } 
 
+function chatPop() {
+    
+  if (chatOpen == false) {
+
+    document.getElementById("messages").style.left = "0px"; 
+    document.getElementById("messages").style.transition = ".5s"; 
+    
+    chatOpen = true;
+  } 
+  else if (chatOpen == true) {
+    document.getElementById("messages").style.left = "-200px"; 
+    document.getElementById("messages").style.transition = ".5s"; 
+    chatOpen = false;
+
+  }
+} 
 
 function yo() {
   alert("yo!");
@@ -1547,8 +1564,8 @@ handle(){
         {this.state.first == "Drum" && <Drum/>}
         {this.state.first == "DrumSequencer" && <DrumSequencer/>}
         
-        <button class="button" onClick={this.handleSynth.bind(this)}>Change Synth</button>
-        <button class="button"  onClick={this.handleInstrument.bind(this)}>Change Keyboard/Vibe</button>
+        <button class="button" onClick={this.handleSynth.bind(this)}>CHANGE SYNTH</button>
+        <button class="button"  onClick={this.handleInstrument.bind(this)}>CHANGE KEYBOARD/VIBE</button>
         <button class="button"  onClick={this.handleDrum.bind(this)}>DRUM</button>
         <button class="button"  onClick={this.handle.bind(this)}>KEYBOARD2</button>
         <p><button class="button" id="record">Record audio</button> <button class="button" id="stop">Stop</button></p>
