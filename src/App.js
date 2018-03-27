@@ -67,41 +67,46 @@ var synth2 = new Tone.PolySynth({
   }).toMaster();
 
 
-  
-  function eqPop() {
+
+function eqPop() {
     
-    if (eqOpen == false) {
+  if (eqOpen == false) {
 
-  document.getElementById("eq").style.left = "0px"; 
-  document.getElementById("eq").style.transition = ".5s"; 
-  
-  eqOpen = true;
-} 
-else if (eqOpen == true) {
-  document.getElementById("eq").style.left = "-200px"; 
-  document.getElementById("eq").style.transition = ".5s"; 
-  eqOpen = false;
+    document.getElementById("eq").style.left = "0px"; 
+    document.getElementById("eq").style.transition = ".5s"; 
+    
+    eqOpen = true;
+  } 
+  else if (eqOpen == true) {
+    document.getElementById("eq").style.left = "-200px"; 
+    document.getElementById("eq").style.transition = ".5s"; 
+    eqOpen = false;
 
-}
   }
+} 
 
 
-    function seqPop() {
+function yo() {
+  alert("yo!");
+}
+
+function seqPop() {
     
     if (seqOpen == false) {
-  document.getElementById("sequencer").style.bottom = "0px"; 
-  document.getElementById("sequencer").style.transition = ".5s"; 
-  document.getElementById("openPanel").innerHTML = "Hide Drum Sequencer"; 
-  seqOpen = true;
-} 
-else if (seqOpen == true) {
-  document.getElementById("sequencer").style.bottom = "-360px"; 
-  document.getElementById("sequencer").style.transition = ".5s"; 
-  document.getElementById("openPanel").innerHTML = "View Drum Sequencer"; 
-  console.log("closing");
-  seqOpen = false;
+      document.getElementById("sequencer").style.bottom = "0px"; 
+      document.getElementById("sequencer").style.transition = ".5s"; 
+      document.getElementById("openPanel").innerHTML = "Hide Drum Sequencer"; 
+      seqOpen = true;
+    } 
+    else if (seqOpen == true) {
+      document.getElementById("sequencer").style.bottom = "-360px"; 
+      document.getElementById("sequencer").style.transition = ".5s"; 
+      document.getElementById("openPanel").innerHTML = "View Drum Sequencer"; 
+      console.log("closing");
+      seqOpen = false;
+    }
 }
-  }
+
 
 
 
@@ -488,12 +493,10 @@ function onRecordingReady(e) {
     var i = 1;
     for(var i = circles.length - 1; i > -1; i--){
       circles[i].a = 255 - Math.round(25*i);
-      console.log(i, circles[i].a);
     }
-    console.log('here');
-    this.setState({
-            circles:circles
-          });
+    // this.setState({
+    //         circles:circles
+    //       });
   };
 
 
@@ -1064,6 +1067,297 @@ function onRecordingReady(e) {
   }//End Of componentWillUpdate 
 
   componentDidUpdate(){
+    // DRUM
+
+
+    var snareAudio = $('#Snare-Audio');
+    var snareAudioEl = snareAudio.get(0);
+    snareAudioEl.currentTime = 0;
+
+    var snareDrum = $('#Snare-Drum');
+
+    // Create a new timeline, that's paused by default
+    var snaretl = new TimelineMax({
+      paused: true
+    });
+
+    // The animation tweens
+    snaretl.to(snareDrum, 0.1, {scaleX: 1.04, transformOrigin: "50% 50%", ease: Expo.easeOut})
+           .to(snareDrum, 0.1, {scaleY: 0.9, transformOrigin: "50% 100%", ease: Expo.easeOut}, '0')
+           // The last tween, returns the element to it's original properties
+           .to(snareDrum, 0.4, {scale: 1, transformOrigin: "50% 100%", ease: Elastic.easeOut});
+
+    var snareDrum = $('#Snare-Drum');
+
+    // Create a new timeline, that's paused by default
+    var snaretl = new TimelineMax({
+      paused: true
+    });
+
+    // The animation tweens
+    snaretl.to(snareDrum, 0.1, {scaleX: 1.04, transformOrigin: "50% 50%", ease: Expo.easeOut})
+           .to(snareDrum, 0.1, {scaleY: 0.9, transformOrigin: "50% 100%", ease: Expo.easeOut}, '0')
+           // The last tween, returns the element to it's original properties
+           .to(snareDrum, 0.4, {scale: 1, transformOrigin: "50% 100%", ease: Elastic.easeOut});
+
+      function snare(fromServer){
+        //snare audio & animatin
+        snaretl.restart();
+        snaretl.play();
+        var snareAudioEl = snareAudio.get(0);
+        if(!fromServer) {
+          socket.emit('drumPressed', "snare");
+
+        } else {
+        
+          snareAudioEl.currentTime = 0;
+          snareAudioEl.play();
+        }
+
+
+
+      }
+
+      function crashdrum(fromServer){
+        //crash
+        crashtl.restart();
+        crashtl.play();
+        var crashAudioEl = crashAudio.get(0);
+        if(!fromServer){
+          socket.emit('drumPressed', "crashdrum");
+        } else {
+
+        crashAudioEl.currentTime = 0;
+        crashAudioEl.play();
+       
+        }
+      }
+
+      function rightTom(fromServer){
+        //right tom
+        rightTomtl.restart();
+        rightTomtl.play();
+        var smallTomAudioEl = smallTomAudio.get(0);
+        if(!fromServer) {
+          socket.emit('drumPressed', "rightTom");
+        } else {
+          smallTomAudioEl.currentTime = 0;
+          smallTomAudioEl.play();
+        }
+      }
+
+      function leftTom(fromServer){
+        //lift tom
+        leftTomtl.restart();
+        leftTomtl.play();
+        var bigTomAudioEl = bigTomAudio.get(0);
+        if(!fromServer) {
+          socket.emit('drumPressed', "leftTom");
+        } else {
+          bigTomAudioEl.currentTime = 0;
+          bigTomAudioEl.play();
+        }      
+      }
+
+      function floorTom(fromServer){
+        //Floor Tom
+        floorTomtl.restart();
+        floorTomtl.play();
+        var floorTomAudioEl = floorTomAudio.get(0);
+        if(!fromServer) {
+          socket.emit('drumPressed', "floorTom");
+        } else {
+          floorTomAudioEl.currentTime = 0;
+          floorTomAudioEl.play();
+        }
+      }
+
+      function kick(fromServer){
+        //Kick Drum
+        kicktl.restart();
+        kicktl.play();
+        var kickAudioEl = kickAudio.get(0);
+        if(!fromServer) { 
+          socket.emit('drumPressed', "kick");
+        } else {
+          kickAudioEl.currentTime = 0;
+          kickAudioEl.play();
+        }
+      }
+
+      function hiHat(fromServer){
+        //Hi-Hat
+        hiHattl.restart();
+        hiHattl.play();
+        var hiHatClosedAudioEl = hiHatClosedAudio.get(0);
+        if(!fromServer) { 
+          socket.emit('drumPressed', "hiHat");
+        } else {
+          hiHatClosedAudioEl.currentTime = 0;
+          hiHatClosedAudioEl.play();
+        }
+      }
+
+
+    //crash
+    var crash = $('#Crash');
+    var crashCymbol = $('#Crash-Cymbol');
+    var crashAudio = $('#Crash-Audio');
+    var crashAudioEl = crashAudio.get(0);
+    crashAudioEl.currentTime = 0;
+
+    // Crash timeline
+    var crashtl = new TimelineMax({
+      paused: true
+    });
+    crashtl.to(crashCymbol, 0.1, {rotation: 8, transformOrigin: "50% 50%"})
+           .to(crashCymbol,1.5, {rotation: 0, transformOrigin: "50% 50%", ease: Elastic.easeOut.config(2.5, 0.3)});
+   
+    //Right tom 
+    // Right tom drum varibles
+    var rightTomDrumAll = $('#Tom-Right-All');
+    var rightTomDrum = $('#Tom-Right-Drum');
+    var smallTomAudio = $('#Small-Rack-Tom-Audio');
+
+    // Right tom drum timeline
+    var rightTomtl = new TimelineMax({
+      paused: true
+    });
+    rightTomtl.to(rightTomDrum, 0.1, {scaleX: 1.04, transformOrigin: "50% 50%", ease: Expo.easeOut})
+              .to(rightTomDrum, 0.1, {scaleY: 0.95, transformOrigin: "50% 50%", ease: Expo.easeOut}, '0')
+              .to(rightTomDrumAll, 0.1, {rotation: 2.5, transformOrigin: "0 50%", ease: Elastic.easeOut}, '0')
+              .to(rightTomDrum, 0.4, {scale: 1, transformOrigin: "50% 50%", ease: Elastic.easeOut})
+              .to(rightTomDrumAll, 0.6, {rotation: 0, transformOrigin: "0 50%", ease: Elastic.easeOut}, '-=0.4');
+
+
+
+    // Left Tom
+    // Left tom drum varibles
+    var leftTomDrumAll = $('#Tom-Left-All');
+    var leftTomDrum = $('#Tom-Left-Drum');
+    var bigTomAudio = $('#Big-Rack-Tom-Audio');
+
+    // Left tom drum timeline
+    var leftTomtl = new TimelineMax({
+      paused: true
+    });
+    leftTomtl.to(leftTomDrum, 0.1, {scaleX: 1.04, transformOrigin: "50% 50%", ease: Expo.easeOut})
+            .to(leftTomDrum, 0.1, {scaleY: 0.95, transformOrigin: "50% 50%", ease: Expo.easeOut}, '0')
+            .to(leftTomDrumAll, 0.1, {rotation: -2.5, transformOrigin: "100% 50%", ease: Elastic.easeOut}, '0')
+            .to(leftTomDrum, 0.4, {scale: 1, transformOrigin: "50% 50%", ease: Elastic.easeOut})
+            .to(leftTomDrumAll, 0.6, {rotation: 0, transformOrigin: "100% 50%", ease: Elastic.easeOut}, '-=0.4');
+
+
+    //Floor Tom
+    // Floor tom drum varibles
+    var floorTomDrumAll = $('#Floor-Tom');
+    var floorTomAudio = $('#Floor-Tom-Audio');
+
+    // Floor tom drum timeline
+    var floorTomtl = new TimelineMax({
+      paused: true
+    });
+    floorTomtl.to(floorTomDrumAll, 0.1, {scaleX: 1.02, transformOrigin: "50% 50%", ease: Expo.easeOut})
+              .to(floorTomDrumAll, 0.1, {scaleY: 0.95, transformOrigin: "50% 100%", ease: Expo.easeOut}, '0')
+              .to(floorTomDrumAll, 0.4, {scale: 1, transformOrigin: "50% 100%", ease: Elastic.easeOut});
+
+    //Kick Drum
+    // Kick drum varibles
+    var kickDrumAll = $('#Kick');
+    var kickAudio = $('#Kick-Audio');
+
+    // Kick drum timeline
+    var kicktl = new TimelineMax({
+      paused: true
+    });
+    kicktl.to(kickDrumAll, 0.1, {scale: 1.02, transformOrigin: "50% 100%", ease: Expo.easeOut})
+          .to(kickDrumAll, 0.4, {scale: 1, transformOrigin: "50% 100%", ease: Elastic.easeOut});
+
+
+    //Hi-Hat
+
+    // Hi-hat varibles
+    var hiHatAll = $('#Hi-Hat');
+    var hiHatTop = $('#Hi-Hat-Top');
+    var hiHatBottom = $('#Hi-Hat-Bottom');
+    var hiHatClosedAudio = $('#Hi-Hat-Closed-Audio');
+
+    // Hi-hat timeline
+    var hiHattl = new TimelineMax({
+      paused: true
+    }); 
+    hiHattl.to([hiHatTop, hiHatBottom], 0.1, {rotation: -4, transformOrigin: "50% 50%"})
+           .to([hiHatTop, hiHatBottom], 0.6, {rotation: 0, transformOrigin: "50% 50%", ease: Elastic.easeOut.config(1.5, 0.2)});
+
+
+    //All mouse interaction for drum
+    //DOM Button
+    $('#snaredr').click(function(){
+            snare(false);
+    }); 
+    $('#crashdr').click(function(){
+      crashdrum(false);
+    });
+    $('#right-tomdr').click(function(){
+      rightTom(false);
+
+    });
+    $('#left-tomdr').click(function(){
+      leftTom(false);
+    });
+    $('#floortomdr').click(function(){
+      floorTom(false);
+    });
+    $('#kickdr').click(function(){
+      kick(false);
+    });
+    $('#hiHatdr').click(function(){
+      hiHat(false);
+    });
+    //Graphic Key 
+    $('#Key-72').click(function(){
+      snare(false);
+    });
+    $('#Key-71').click(function(){
+      floorTom(false);
+    });
+    $('#Key-70').click(function(){
+      crashdrum(false);
+    });
+    $('#Key-89').click(function(){
+      rightTom(false);
+    });
+    $('#Key-84').click(function(){
+      leftTom(false);
+    });
+    $('#Key-66').click(function(){
+      kick(false);
+    });
+    $('#Key-74').click(function(){
+      hiHat(false);
+    });
+    //Graphical Interface
+    $('#Snare').click(function(){
+      snare(false);
+    });
+    $('#Floor-Tom').click(function(){
+      floorTom(false);
+    });
+    $('#Crash').click(function(){
+      crashdrum(false);
+    });
+    $('#Tom-Right-All').click(function(){
+      rightTom(false);
+    });
+    $('#Tom-Left-All').click(function(){
+      leftTom(false);
+    });
+    $('#Kick').click(function(){
+      kick(false);
+    });
+    $('#Hi-Hat').click(function(){
+      hiHat(false);
+    });
 
   //TONE STUFF
   var synth2 = new Tone.PolySynth(6, Tone.Synth, {
@@ -1087,25 +1381,6 @@ function onRecordingReady(e) {
       }
     }).toMaster();
   //var code = $.ui.keyCode;
-
-  document.addEventListener('keypress', (event) => {
-    const keyName = event.key;
-
-    console.log("hey! ", keyName);
-  });
-
-document.addEventListener('keydown', (event) => {
-const keyName = event.key;
-  console.log(keyName.concat(4));
-  console.log(keyName+4);
-
-
-});
-
-document.addEventListener('keyup', (event) => {
-
-console.log("up! ");
-});
 
 
     //attach a listener to all of the buttons
@@ -1132,23 +1407,21 @@ console.log("up! ");
   }
 
   
-
-  handle(){
-    alert('move to second component')
+handle(){
     this.setState({first: "Keyboard2"})
-
+    keyboardState = 'instrument';
+    //$('ul li.white').style.background = "-webkit-linear-gradient(top, orange 0%,#fff 100%)";
   }
 
-  handleSeq(){
-    alert('move to drum component')
-    this.setState({first: "DrumSequencer"})
-
+  handleDrum(){
+    this.setState({first: "Drum"})
+    keyboardState ='drum'
   }
 
   handleInstrument() { 
-    console.log("it was", keyboardState);
     var data = '';
 
+    console.log("it was 1");
     switch (keyboardState) {
       case "vibe":
         data = 'instrument';
@@ -1164,12 +1437,6 @@ console.log("up! ");
 
     }
     keyboardState = data;
-  }
-
-  handleDrumKey() { 
-    console.log("it was", keyboardState);
-
-    keyboardState = 'drum';
   }
 
   handleSynth() {
@@ -1213,6 +1480,7 @@ console.log("up! ");
     }
 
     }
+
 
 //main render
 //app render
@@ -1279,12 +1547,11 @@ console.log("up! ");
         {this.state.first == "Drum" && <Drum/>}
         {this.state.first == "DrumSequencer" && <DrumSequencer/>}
         
-        <button onClick={this.handleSynth.bind(this)}>change synth</button>
-        <button onClick={this.handleInstrument.bind(this)}>change instrument</button>
-        <button onClick={this.handleSeq.bind(this)}>sequencer</button>
-        <button onClick={this.handle.bind(this)}>move to second page</button>
-        <button onClick={this.handleDrumKey.bind(this)}>Drum</button>
-        <p><button id="record">Record audio</button> <button id="stop">Stop</button></p>
+        <button class="button" onClick={this.handleSynth.bind(this)}>change synth</button>
+        <button class="button"  onClick={this.handleInstrument.bind(this)}>change instrument</button>
+        <button class="button"  onClick={this.handleDrum.bind(this)}>DRUM</button>
+        <button class="button"  onClick={this.handle.bind(this)}>KEYBOARD2</button>
+        <p><button class="button" id="record">Record audio</button> <button class="button" id="stop">Stop</button></p>
         <p><audio id="audio" controls></audio></p>
 
         <DrumSequencer/>

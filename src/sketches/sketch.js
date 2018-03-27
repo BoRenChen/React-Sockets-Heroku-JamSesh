@@ -156,16 +156,6 @@ function rectMaker(rect, xpos) {
   }
 
   p.circles = function() {
-      // for (let i = 0; i < 1; i++) {
-      //   let circle = {
-      //     x: Math.floor(Math.random() * (window.innerWidth - 80) + 60),
-      //     y: Math.floor(Math.random() * (window.innerHeight - 80) + 60),
-      //     diameter: Math.floor(Math.random() * 30 + 20),
-      //     dx: (Math.random() - 0.5) * 4,
-      //     dy: (Math.random() - 0.5) * 4
-      //   };
-      //   circles.push(circle);
-      // }
       console.log(circles);
   };
   const changeVelocity = c => {
