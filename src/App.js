@@ -1547,8 +1547,8 @@ handle(){
         {this.state.first == "Drum" && <Drum/>}
         {this.state.first == "DrumSequencer" && <DrumSequencer/>}
         
-        <button class="button" onClick={this.handleSynth.bind(this)}>change synth</button>
-        <button class="button"  onClick={this.handleInstrument.bind(this)}>change instrument</button>
+        <button class="button" onClick={this.handleSynth.bind(this)}>Change Synth</button>
+        <button class="button"  onClick={this.handleInstrument.bind(this)}>Change Keyboard/Vibe</button>
         <button class="button"  onClick={this.handleDrum.bind(this)}>DRUM</button>
         <button class="button"  onClick={this.handle.bind(this)}>KEYBOARD2</button>
         <p><button class="button" id="record">Record audio</button> <button class="button" id="stop">Stop</button></p>
