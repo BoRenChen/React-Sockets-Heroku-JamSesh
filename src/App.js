@@ -1718,9 +1718,6 @@ function onRecordingReady(e) {
         <img src={message} id="messageIcon"></img>
         </div>
         <div id="future">
-        <p>Hi!</p>
-        <p>Sean: Hisdfsdfsdfsdfsdfsf sfdsf dfsdfs sfsdf s sdfsd !</p>
-        <p>why!</p>
         </div>
           <form id="form" id="chat_form">
               <input id="chat_input" type="text"/>
