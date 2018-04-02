@@ -6,7 +6,7 @@ import anime from 'animejs';
 import io from 'socket.io-client';
 import Tone from "tone";
 import {TimelineMax, Ease, Expo, Elastic} from "gsap";
-import { Howl } from 'howler';
+import { Howl, Howler } from 'howler';
 import P5Wrapper from 'react-p5-wrapper';
 import sketch from './sketches/sketch';
 import sketch2 from './sketches/sketch2';
@@ -189,7 +189,7 @@ class App extends Component {
    });
   socket.on('PianoKeyPress', function(data){
   //  console.log("PianoPressFromServer" + data)
-      synth2.triggerAttack(data);
+      synth2.triggerAttack(data, undefined, keyVol);
    });
   socket.on('PianoKeyRelease', function(data){
    // console.log("PianoReleaseFromServer" + data)
@@ -332,7 +332,7 @@ class App extends Component {
 
   socket.on('VibeKeyPress', function(data){
           var sound = new Howl({
-            src: [data]
+            src: [data],
           })
           sound.play();
 
@@ -678,7 +678,7 @@ function onRecordingReady(e) {
           socket.emit('drumPressed', "snare");
 
         } else {
-        
+          snareAudioEl.volume = drumVol;
           snareAudioEl.currentTime = 0;
           snareAudioEl.play();
         }
@@ -695,7 +695,7 @@ function onRecordingReady(e) {
         if(!fromServer){
           socket.emit('drumPressed', "crashdrum");
         } else {
-
+        crashAudioEl.volume = drumVol;
         crashAudioEl.currentTime = 0;
         crashAudioEl.play();
        
@@ -710,6 +710,7 @@ function onRecordingReady(e) {
         if(!fromServer) {
           socket.emit('drumPressed', "rightTom");
         } else {
+          smallTomAudioEl.volume = drumVol;
           smallTomAudioEl.currentTime = 0;
           smallTomAudioEl.play();
         }
@@ -723,6 +724,7 @@ function onRecordingReady(e) {
         if(!fromServer) {
           socket.emit('drumPressed', "leftTom");
         } else {
+          bigTomAudioEl.volume = drumVol;
           bigTomAudioEl.currentTime = 0;
           bigTomAudioEl.play();
         }      
@@ -736,6 +738,7 @@ function onRecordingReady(e) {
         if(!fromServer) {
           socket.emit('drumPressed', "floorTom");
         } else {
+          floorTomAudioEl.volume = drumVol;
           floorTomAudioEl.currentTime = 0;
           floorTomAudioEl.play();
         }
@@ -749,6 +752,7 @@ function onRecordingReady(e) {
         if(!fromServer) { 
           socket.emit('drumPressed', "kick");
         } else {
+          kickAudioEl.volume = drumVol;
           kickAudioEl.currentTime = 0;
           kickAudioEl.play();
         }
@@ -762,6 +766,7 @@ function onRecordingReady(e) {
         if(!fromServer) { 
           socket.emit('drumPressed', "hiHat");
         } else {
+          hiHatClosedAudioEl.volume = drumVol;
           hiHatClosedAudioEl.currentTime = 0;
           hiHatClosedAudioEl.play();
         }
@@ -1511,6 +1516,17 @@ function onRecordingReady(e) {
       var currentVal = input.value;
       synthVol = currentVal;
     }
+    handleKeyVolume(){
+      var input = document.getElementById("keySlider");
+      var currentVal = input.value;
+      keyVol = currentVal;
+      Howler.volume(keyVol);
+    }
+    handleDrumVolume(){
+      var input = document.getElementById("drumSlider");
+      var currentVal = input.value;
+      drumVol = currentVal;
+    }
 
 
 
@@ -1556,7 +1572,7 @@ function onRecordingReady(e) {
         
         <div class='eqSliders'>
         <h4>Drums</h4>
-        <input type="range" min="-10" max="10"/>
+        <input id="drumSlider" onChange={this.handleDrumVolume.bind(this)} type="range" min="0.0" max="1.0" step=".01"/>
         </div>
 
         <div class='eqSliders'>
@@ -1566,7 +1582,7 @@ function onRecordingReady(e) {
 
         <div class='eqSliders'>
         <h4>Keys</h4>
-        <input type="range" min="-10" max="10"/>
+        <input id="keySlider" onChange={this.handleKeyVolume.bind(this)} type="range" min="0.0" max="1.0" step=".01"/>
         </div>
 
         </div>
