@@ -190,12 +190,12 @@ class App extends Component {
   socket.on('PianoKeyPress', function(data){
   //  console.log("PianoPressFromServer" + data)
       synth2.triggerAttack(data, undefined, keyVol);
-   });
+      addNewCircle(100);
+   }.bind(this));
   socket.on('PianoKeyRelease', function(data){
    // console.log("PianoReleaseFromServer" + data)
       synth2.triggerRelease(data);
-      addNewCircle(100);
-   }.bind(this));
+   });
   socket.on('changeSynthStatus', function(data){
     console.log('change synth status to ' + data)
     synthStatus = data;
@@ -264,6 +264,8 @@ class App extends Component {
       default:
         break;
     }
+    addNewCircle(600);
+
   });
     socket.on('broad', function(data) {
    $('#future').append(data+ "<br/>");
@@ -499,7 +501,7 @@ function onRecordingReady(e) {
       g:Math.floor(Math.random() * Math.floor(255)),
       b:Math.floor(Math.random() * Math.floor(255)),
       a:Math.floor(255), 
-      diameter: Math.floor(Math.random() * 30 + d),
+      diameter: Math.floor(Math.random() * d),
       dx: (Math.random() - 0.5) * 4,
       dy: (Math.random() - 0.5) * 4
     };
