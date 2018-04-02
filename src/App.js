@@ -20,11 +20,22 @@ import right from "./img/right-tom.png";
 import snare from "./img/snare.png";
 import sound from "./img/orangeVolume.png";
 import message from "./img/message.png";
+import leftArrow from "./img/arrowLeft.png";
+import rightArrow from "./img/arrowRight.png";
+
+
+import c from "./sounds/snares3.mp3";
+
+
+
+
 
 
 
 //GLOBAL
 const socket = io();
+
+
 var seqOpen = false; 
 var eqOpen = false;
 var chatOpen = false;
@@ -72,39 +83,60 @@ var synth2 = new Tone.PolySynth({
 
 
 
+function toggleSequencerLeft() {
+  document.getElementById("sequencer1").style.left = "100%";
+  document.getElementById("sequencer2").style.right = "0%";
+  window.event.stopPropagation();
+}
+
+function toggleSequencerRight() {
+  document.getElementById("sequencer1").style.left = "0%";
+  document.getElementById("sequencer2").style.right = "100%";
+}
+
 function eqPop() {
     
   if (eqOpen == false) {
 
     document.getElementById("eq").style.left = "0px"; 
-    document.getElementById("eq").style.transition = ".5s"; 
+    document.getElementById("eq").style.transition = ".5s";
+    
     
     eqOpen = true;
   } 
   else if (eqOpen == true) {
     document.getElementById("eq").style.left = "-200px"; 
     document.getElementById("eq").style.transition = ".5s"; 
+    
     eqOpen = false;
 
   }
 } 
 
-function chatPop() {
-    
+
+
+function chatPop () {
   if (chatOpen == false) {
 
     document.getElementById("messages").style.left = "0px"; 
+    document.getElementById("eqTab").style.right = "0"; 
     document.getElementById("messages").style.transition = ".5s"; 
-    
     chatOpen = true;
+
   } 
   else if (chatOpen == true) {
     document.getElementById("messages").style.left = "-200px"; 
-    document.getElementById("messages").style.transition = ".5s"; 
+    document.getElementById("eq").style.zIndex = "10"; 
+    document.getElementById("messages").style.transition = ".5s";  
+    document.getElementById("eqTab").style.right = "-59px"; 
+
+
     chatOpen = false;
 
   }
-} 
+
+}
+
 
 function yo() {
   alert("yo!");
@@ -115,13 +147,17 @@ function seqPop() {
     if (seqOpen == false) {
       document.getElementById("sequencer").style.bottom = "0px"; 
       document.getElementById("sequencer").style.transition = ".5s"; 
-      document.getElementById("openPanel").innerHTML = "Hide Drum Sequencer"; 
+      document.getElementById("viewSequencer").innerHTML = "Hide Drum Sequencer";
+      document.getElementById("sequenceToggleLeft").style.zIndex = "11"
+    document.getElementById("sequenceToggleRight").style.zIndex = "11" 
       seqOpen = true;
     } 
     else if (seqOpen == true) {
       document.getElementById("sequencer").style.bottom = "-360px"; 
       document.getElementById("sequencer").style.transition = ".5s"; 
-      document.getElementById("openPanel").innerHTML = "View Drum Sequencer"; 
+      document.getElementById("viewSequencer").innerHTML = "View Drum Sequencer"; 
+      document.getElementById("sequenceToggleLeft").style.zIndex = "10"
+    document.getElementById("sequenceToggleRight").style.zIndex = "10"
       console.log("closing");
       seqOpen = false;
     }
@@ -240,6 +276,7 @@ class App extends Component {
   socket.on('drumPress', function(data){
     console.log('drumPress ' + data)
     switch(data){
+
       case 'snare':
         snare(true);
         break;
@@ -261,6 +298,27 @@ class App extends Component {
       case 'crashdrum':
         crashdrum(true);
         break;     
+        case 'cVibe':
+        cVibe(true);
+        break;
+        case 'eVibe':
+        eVibe(true);
+        break;
+        case 'fVibe':
+        fVibe(true);
+        break;
+        case 'pVibe':
+        cVibe(true);
+        break;
+        case 'qVibe':
+        qVibe(true);
+        break;
+        case 'sVibe':
+        sVibe(true);
+        break;
+        case 'gVibe':
+        gVibe(true);
+            break;
       default:
         break;
     }
@@ -552,7 +610,7 @@ function onRecordingReady(e) {
             var keyName = event.key;
             console.log(vibe[keyName])
             var note = vibe[keyName];
-        
+            console.log(note,"note!!!")
 
              if (typeof(note) != 'undefined') {
                 socket.emit('VibeKeyPressed', note);
@@ -774,6 +832,73 @@ function onRecordingReady(e) {
         }
       }
 
+      function cVibe(fromServer){
+        //crash
+        
+        if(!fromServer){
+          socket.emit('VibeKeyPressed', "https://crossorigin.me/https://s3.amazonaws.com/keydown-pro/snares3.mp3"
+            );
+        } else {
+        }
+      }
+
+
+      function eVibe(fromServer){
+        //crash
+        
+        if(!fromServer){
+          socket.emit('VibeKeyPressed', "https://s3.amazonaws.com/keydown-pro/percs4.mp3"
+            );
+        } else {
+        }
+      }
+
+      function fVibe(fromServer){
+
+        
+        if(!fromServer){
+          socket.emit('VibeKeyPressed', "https://s3.amazonaws.com/keydown-pro/percs6.wav"
+            );
+        } else {
+        }
+      }
+
+      function pVibe(fromServer){
+
+        if(!fromServer){
+          socket.emit('VibeKeyPressed', "https://crossorigin.me/https://s3.amazonaws.com/keydown-pro/tones6.wav"
+            );
+        } else {
+        }
+      }
+
+      function qVibe(fromServer){
+
+        if(!fromServer){
+          socket.emit('VibeKeyPressed', "https://crossorigin.me/https://s3.amazonaws.com/keydown-pro/kicks2.mp3"
+            );
+        } else {
+        }
+      }
+
+      function sVibe(fromServer){
+        if(!fromServer){
+          socket.emit('VibeKeyPressed', "https://s3.amazonaws.com/keydown-pro/percs3.mp3"
+            );
+        } else {
+        }
+      }
+
+      function gVibe(fromServer){
+        if(!fromServer){
+          socket.emit('VibeKeyPressed', "https://s3.amazonaws.com/keydown-pro/percs8.wav"
+            );
+        } else {
+        }
+      }
+
+
+
 
     //crash
     var crash = $('#Crash');
@@ -781,6 +906,7 @@ function onRecordingReady(e) {
     var crashAudio = $('#Crash-Audio');
     var crashAudioEl = crashAudio.get(0);
     crashAudioEl.currentTime = 0;
+
 
     // Crash timeline
     var crashtl = new TimelineMax({
@@ -960,6 +1086,27 @@ function onRecordingReady(e) {
         switch(current.parent().attr('data-target-drum')){
           case 'snare':
             snare(false);
+            break;
+            case 'cVibe':
+            cVibe(false);
+            break;
+            case 'eVibe':
+            eVibe(false);
+            break;
+            case 'fVibe':
+            fVibe(false);
+            break;
+            case 'pVibe':
+            cVibe(false);
+            break;
+            case 'qVibe':
+            qVibe(false);
+            break;
+            case 'sVibe':
+            sVibe(false);
+            break;
+            case 'gVibe':
+            gVibe(false);
             break;
           case 'hiHat':
             hiHat(false);
@@ -1145,6 +1292,24 @@ function onRecordingReady(e) {
 
 
       }
+
+      function cVibe(fromServer){
+        console.log("hitihitihit");
+       
+        //crash
+        var cVibeAudio = c;
+        var cVibeAudioEl = cVibeAudio.get(0);
+        if(!fromServer){
+          socket.emit('drumPressed', "cVibe");
+        } else {
+
+        cVibeAudioEl.currentTime = 0;
+        cVibeAudioEl.play();
+       
+        }
+      }
+
+
 
       function crashdrum(fromServer){
         //crash
@@ -1549,12 +1714,13 @@ function onRecordingReady(e) {
         </div>
 
         <div id = "messages">
-        <div id="messageTab">
+        <div id="messageTab" onClick={chatPop}>
         <img src={message} id="messageIcon"></img>
         </div>
         <div id="future">
         <p>Hi!</p>
-        <p>Hi!</p>
+        <p>Sean: Hisdfsdfsdfsdfsdfsf sfdsf dfsdfs sfsdf s sdfsd !</p>
+        <p>why!</p>
         </div>
           <form id="form" id="chat_form">
               <input id="chat_input" type="text"/>
@@ -2514,7 +2680,21 @@ class DrumSequencer extends React.Component {
 
       <div id="container-sequencer" class="container-sequencer collapse">
           <div id="sequencer" class="sequencer">
-          <div id="openPanel" onClick={seqPop}>View Drum Sequencer</div>
+          <div id="openPanel" onClick={seqPop}>
+          <p id= "viewSequencer">View Drum Sequencer</p>
+
+          
+          </div>
+
+          <div id="sequenceToggleLeft" onClick={toggleSequencerLeft}>
+          <img src={leftArrow} id="leftArrow"></img>
+          </div> 
+
+          <div id="sequenceToggleRight"  onClick={toggleSequencerRight}>
+          <img src={rightArrow} id="rightArrow"></img>
+          </div>
+         
+            <div id="sequencer1">
             <div class="row" data-target-drum="crash">
               <img src={crash} alt="Crash"/>
               <label><input id='crash-01' type="checkbox"/><span></span></label>
@@ -2591,6 +2771,96 @@ class DrumSequencer extends React.Component {
               <label><input id='kick-07' type="checkbox"/><span></span></label>
               <label><input id='kick-08' type="checkbox"/><span></span></label>
             </div>
+            </div>
+
+
+
+            <div id="sequencer2">
+            <div class="row" data-target-drum="eVibe">
+              <img src={crash} alt="Crash"/>
+              <label><input id='eVibe-01' type="checkbox"/><span></span></label>
+              <label><input id='eVibe-02' type="checkbox"/><span></span></label>
+              <label><input id='eVibe-03' type="checkbox"/><span></span></label>
+              <label><input id='eVibe-04' type="checkbox"/><span></span></label>
+              <label><input id='eVibe-05' type="checkbox"/><span></span></label>
+              <label><input id='eVibe-06' type="checkbox"/><span></span></label>
+              <label><input id='eVibe-07' type="checkbox"/><span></span></label>
+              <label><input id='eVibe-08' type="checkbox"/><span></span></label>
+            </div>
+            <div class="row" data-target-drum="fVibe">
+              <img src={hi} alt="Hi hat"/>
+              <label><input id='fVibe-01' type="checkbox"/><span></span></label>
+              <label><input id='fVibe-02' type="checkbox"/><span></span></label>
+              <label><input id='fVibe-03' type="checkbox"/><span></span></label>
+              <label><input id='fVibe-04' type="checkbox"/><span></span></label>
+              <label><input id='fVibe-05' type="checkbox"/><span></span></label>
+              <label><input id='fVibe-06' type="checkbox"/><span></span></label>
+              <label><input id='fVibe-07' type="checkbox"/><span></span></label>
+              <label><input id='fVibe-08' type="checkbox"/><span></span></label>
+            </div>
+            <div class="row" data-target-drum="pVibe">
+              <img src={snare} alt="Snare"/>
+              <label><input id='pVibe-01' type="checkbox"/><span></span></label>
+              <label><input id='pVibe-02' type="checkbox"/><span></span></label>
+              <label><input id='pVibe-03' type="checkbox"/><span></span></label>
+              <label><input id='pVibe-04' type="checkbox"/><span></span></label>
+              <label><input id='pVibe-05' type="checkbox"/><span></span></label>
+              <label><input id='pVibe-06' type="checkbox"/><span></span></label>
+              <label><input id='pVibe-07' type="checkbox"/><span></span></label>
+              <label><input id='pVibe-08' type="checkbox"/><span></span></label>
+            </div>
+            <div class="row" data-target-drum="qVibe">
+              <img src={right} alt="Right tom"/><label><input class='rightTom-01' type="checkbox"/><span></span></label>
+              <label><input id='qVibe-02' type="checkbox"/><span></span></label>
+              <label><input id='qVibe-03' type="checkbox"/><span></span></label>
+              <label><input id='qVibe-04' type="checkbox"/><span></span></label>
+              <label><input id='qVibe-05' type="checkbox"/><span></span></label>
+              <label><input id='qVibe-06' type="checkbox"/><span></span></label>
+              <label><input id='qVibe-07' type="checkbox"/><span></span></label>
+              <label><input id='qVibe-08' type="checkbox"/><span></span></label>
+            </div>
+            <div class="row" data-target-drum="sVibe">
+              <img src={left} alt="Left tom"/>
+              <label><input id='sVibe-01' type="checkbox"/><span></span></label>
+              <label><input id='sVibe-02' type="checkbox"/><span></span></label>
+              <label><input id='sVibe-03' type="checkbox"/><span></span></label>
+              <label><input id='sVibe-04' type="checkbox"/><span></span></label>
+              <label><input id='sVibe-05' type="checkbox"/><span></span></label>
+              <label><input id='sVibe-06' type="checkbox"/><span></span></label>
+              <label><input id='sVibe-07' type="checkbox"/><span></span></label>
+              <label><input id='sVibe-08' type="checkbox"/><span></span></label>
+            </div>
+            <div class="row" data-target-drum="gVibe">
+              <img src={floor} alt="Floor tom"/>
+              <label><input id='gVibe-01' type="checkbox"/><span></span></label>
+              <label><input id='gVibe-02' type="checkbox"/><span></span></label>
+              <label><input id='gVibe-03' type="checkbox"/><span></span></label>
+              <label><input id='gVibe-04' type="checkbox"/><span></span></label>
+              <label><input id='gVibe-05' type="checkbox"/><span></span></label>
+              <label><input id='gVibe-06' type="checkbox"/><span></span></label>
+              <label><input id='gVibe-07' type="checkbox"/><span></span></label>
+              <label><input id='gVibe-08' type="checkbox"/><span></span></label>
+            </div>
+            <div class="row" data-target-drum="cVibe">
+              <img src={kick} alt="Kick"/>
+              <label><input id='cVibe-01' type="checkbox"/><span></span></label>
+              <label><input id='cVibe-02' type="checkbox"/><span></span></label>
+              <label><input id='cVibe-03' type="checkbox"/><span></span></label>
+              <label><input id='cVibe-04' type="checkbox"/><span></span></label>
+              <label><input id='cVibe-05' type="checkbox"/><span></span></label>
+              <label><input id='cVibe-06' type="checkbox"/><span></span></label>
+              <label><input id='cVibe-07' type="checkbox"/><span></span></label>
+              <label><input id='cVibe-08' type="checkbox"/><span></span></label>
+            </div>
+            </div>
+            
+           
+
+
+
+
+
+
             <div class="sequencer-controls">
               <button id="sequencer-active-btn" class="btn" aria-label="Play"><i class="fa fa-play"></i></button>
               <button id="sequencer-reset-btn" class="btn">Refresh Sequencer</button>
@@ -2600,7 +2870,16 @@ class DrumSequencer extends React.Component {
                 <button id="bpm-increase-btn" class="btn" aria-label="Iecrease bpm">+</button>
               </div>
             </div>
-          </div>
+            </div>
+          
+          
+
+
+
+
+
+
+
 
           </div>
         </div>

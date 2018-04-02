@@ -42,7 +42,6 @@ function removeDrum(item) {
 }
 
 
-
 // Sockets Connection
 io.on('connection', client => {
   	client.emit('hello', { message: 'hello!!! from server!' })
