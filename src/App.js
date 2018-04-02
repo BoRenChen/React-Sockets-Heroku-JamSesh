@@ -31,6 +31,7 @@ var chatOpen = false;
 var synthStatus = false;
 var keyboardState = "instrument";
 var circles =[];
+var synthVol = 1.0;
 var synth2 = new Tone.PolySynth({
   "portamento" : 0.01,
   "oscillator" : {
@@ -176,7 +177,7 @@ class App extends Component {
 
   socket.on("press", function(data){
    // console.log('press' + data);
-    synth.triggerAttack(data);
+    synth.triggerAttack(data, "0", synthVol);
   });
 
   socket.on('release', function(data){
@@ -1421,14 +1422,18 @@ function onRecordingReady(e) {
       })
     })
 
+    $('#synthSlider').click(function() {
+      alert( "Handler for .change() called." );
+    });
+
   }
 
   
-handle(){
-    this.setState({first: "Keyboard2"})
-    keyboardState = 'instrument';
-    //$('ul li.white').style.background = "-webkit-linear-gradient(top, orange 0%,#fff 100%)";
-  }
+  handle(){
+      this.setState({first: "Keyboard2"})
+      keyboardState = 'instrument';
+      //$('ul li.white').style.background = "-webkit-linear-gradient(top, orange 0%,#fff 100%)";
+    }
 
   handleDrum(){
     this.setState({first: "Drum"})
@@ -1498,6 +1503,13 @@ handle(){
 
     }
 
+    handleSynthVolume(){
+      var input = document.getElementById("synthSlider");
+      var currentVal = input.value;
+      synthVol = currentVal;
+    }
+
+
 
 //main render
 //app render
@@ -1546,7 +1558,7 @@ handle(){
 
         <div class='eqSliders'>
         <h4>Synth</h4>
-        <input type="range" min="-10" max="10"/>
+        <input id="synthSlider" onChange={this.handleSynthVolume.bind(this)} type="range" min="0.0" max="1.0" step=".01"/>
         </div>
 
         <div class='eqSliders'>
