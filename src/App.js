@@ -32,6 +32,8 @@ var synthStatus = false;
 var keyboardState = "instrument";
 var circles =[];
 var synthVol = 1.0;
+var keyVol = 1.0;
+var drumVol = 1.0;
 var synth2 = new Tone.PolySynth({
   "portamento" : 0.01,
   "oscillator" : {
@@ -177,7 +179,8 @@ class App extends Component {
 
   socket.on("press", function(data){
    // console.log('press' + data);
-    synth.triggerAttack(data, "0", synthVol);
+   //Methods which accept time, no argument (undefined) will be interpreted as "now" (i.e. the audioContext.currentTime).
+    synth.triggerAttack(data, undefined, synthVol);
   });
 
   socket.on('release', function(data){
