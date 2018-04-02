@@ -86,6 +86,10 @@ else if (eqOpen == true) {
   }
 
 
+function yo() {
+  alert("yo!");
+}
+
     function seqPop() {
     
     if (seqOpen == false) {
@@ -1046,12 +1050,11 @@ console.log("up! ");
   handle(){
     alert('move to second component')
     this.setState({first: "Keyboard2"})
-
+    //$('ul li.white').style.background = "-webkit-linear-gradient(top, orange 0%,#fff 100%)";
   }
 
-  handleSeq(){
-    alert('move to drum component')
-    this.setState({first: "DrumSequencer"})
+  handleDrum(){
+    this.setState({first: "Drum"})
 
   }
 
@@ -1183,10 +1186,10 @@ console.log("up! ");
         {this.state.first == "Drum" && <Drum/>}
         {this.state.first == "DrumSequencer" && <DrumSequencer/>}
 
-        <button onClick={this.handleSynth.bind(this)}>change synth</button>
-        <button onClick={this.handleInstrument.bind(this)}>change instrument</button>
-        <button onClick={this.handleSeq.bind(this)}>sequencer</button>
-        <button onClick={this.handle.bind(this)}>move to second page</button>
+        <button class="button" onClick={this.handleSynth.bind(this)}>change synth</button>
+        <button class="button"  onClick={this.handleInstrument.bind(this)}>change instrument</button>
+        <button class="button"  onClick={this.handleDrum.bind(this)}>DRUM</button>
+        <button class="button"  onClick={this.handle.bind(this)}>KEYBOARD2</button>
         <DrumSequencer/>
 
 
@@ -1298,8 +1301,6 @@ class Keyboard2 extends React.Component {
   render (){
     return (
     <div>
-      <h1>Keyboard2</h1>
-
         <ul className="set">
           <li className="white b" id="B4">B4</li>
           <li className="black as"></li>
@@ -1328,7 +1329,7 @@ class Drum extends React.Component {
   render (){
     return (
     <div>
-      <h1>Drum</h1>
+    
 <svg class="drumsvg" version="1.1" xmlns="http://www.w3.org/2000/svg" viewBox="300 300 1400 1400">
 <g id="Drums">
   <g>
@@ -2061,7 +2062,7 @@ class Drum extends React.Component {
         c-6.6,0-12-5.4-12-12v-107c0-6.6,5.4-12,12-12h107c6.6,0,12,5.4,12,12V638.5z"/>
       <text transform="matrix(1 0 0 1 1190.5742 607.7119)" fill="#FDFFFC" font-family="'Montserrat'" font-size="76.2579">Y</text>
     </g>
-    <g id="Key-84">
+    <g  onClick={yo} id="Key-84">
       <path fill="none" stroke="#FDFFFC" stroke-width="9" stroke-miterlimit="10" d="M928.5,638.5c0,6.6-5.4,12-12,12h-107
         c-6.6,0-12-5.4-12-12v-107c0-6.6,5.4-12,12-12h107c6.6,0,12,5.4,12,12V638.5z"/>
       <text transform="matrix(1 0 0 1 841.3369 607.7119)" fill="#FDFFFC" font-family="'Montserrat'" font-size="76.2579">T</text>
@@ -2073,16 +2074,7 @@ class Drum extends React.Component {
 
 
 
-<div id="footer" class="footer hidden">
 
-        <button id='crashdr'>Crash</button>
-        <button id='floortomdr'>FTom</button>
-        <button id='left-tomdr'>LTom</button>
-        <button id='kickdr'>Kick</button>
-        <button id='right-tomdr'>RTom</button>
-        <button id='snaredr'>Snare</button>
-        <button id='hiHatdr'>HiHat</button>
-</div>
 
         </div>
         )

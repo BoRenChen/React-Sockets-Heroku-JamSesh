@@ -4,6 +4,31 @@ canvas {
   
 }
 
+/*background: -webkit-linear-gradient(top, orange 0%,#fff 100%);
+*/
+.button {
+      background-color: #222;
+    color: orange;
+    padding: 10px;
+    border: 1px solid orange;
+    margin: 5px;
+}
+
+.button {
+      background-color: #222;
+    color: orange;
+    padding: 10px;
+    border: 1px solid orange;
+    margin: 5px;
+}
+
+.drumButton {
+
+  background-color: orange;
+}
+
+
+
 g {
        color: black;
     width: 100%;
@@ -26,6 +51,8 @@ h1 {
 /*SEQUENCER STYLES*/
 
 
+
+
 img {
   width: 40px;
   height: 40px;
@@ -37,6 +64,15 @@ img {
 
 .App {
   text-align: center;
+}
+
+
+
+
+.sequencer-controls .btn, input[type=number] {
+  color: white;
+  text-align: center;
+
 }
 
 .App-logo {
@@ -60,6 +96,7 @@ img {
   vertical-align: middle;
   text-align: left;
   left:30px;
+  width: 50vw;
 }
 
 .App-intro {
@@ -81,7 +118,7 @@ svg {
 
 
 .drumsvg {
-  height: 100vh;
+  height: 70vh;
   width: 100vw;
   display: block;
   -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
@@ -111,6 +148,10 @@ ul .white {
   border-radius:0 0 5px 5px;
   box-shadow:-1px 0 0 rgba(255,255,255,0.8) inset, 0 0 5px #ccc inset, 0 0 3px rgba(0,0,0,0.2);
   background: linear-gradient(top, #eee 0%,#fff 100%);
+}
+
+.white {
+  background: linear-gradient(top, #eee 0%,orange 100%);
 }
 
 ul .white:active {
@@ -292,22 +333,25 @@ h4 {
 
 
 #openPanel{ 
-  transition: 0.5s;
-  text-decoration: white;
-  color: white;
-  width: 100vw;
-  background-color: black;
-  position: relative;
-      height: 27px;
-
-  
-    top: -27px;
+      -webkit-transition: .5s;
+    -o-transition: .5s;
+    transition: .5s;
+    -webkit-text-decoration: #fff;
+    text-decoration: #fff;
+    color: black;
+    width: 100vw;
+    background-color: orange;
+    position: relative;
+    height: 27px;
+    top: -22px;
     z-index: 11;
+    padding-top: 5px;
 
 }
 
 .sequencer {
   width: 100vw;
+  height: 360px !important;
    position: fixed;
   bottom: -360px;;
   z-index: 10;
@@ -368,7 +412,8 @@ h4 {
 }
 
 .sequencer label input[type=checkbox]:checked ~ span {
-  background: #89939B;
+  background: orange;
+  border: 2px solid orange;
 }
 
 .sequencer label.active input[type=checkbox]:checked ~ span {
@@ -399,6 +444,22 @@ input[type=number] {
   background-color: red;
   background:  url("play.png") no-repeat top;
   background-size: contain;
+}
+
+#sequencer-reset-btn {
+  color: orange;
+    position: relative;
+    left: 4%;
+    border: 2px solid;
+    width: 50%;
+}
+
+#sequencer-reset-btn:active {
+    color: white;
+}
+
+#sequencer-reset-btn:hover {
+    color: white;
 }
 
 #bpm-decrease-btn {
