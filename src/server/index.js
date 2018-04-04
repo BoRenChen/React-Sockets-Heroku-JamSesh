@@ -4,6 +4,9 @@ const app = express();
 const server = require('http').createServer(app);
 const io = require('socket.io')(server);
 const port = process.env.PORT || 3000;
+var colors = ["rgb(128,0,0)","rgb(225,165,0)","rgb(0,128,128)", "rgb(210,105,30)", "rgb(0,128,0)"];
+var activeColors = [];
+
 
 app.use(express.static(path.join(__dirname, '../../build')));
 
@@ -48,8 +51,16 @@ io.on('connection', client => {
 
 
 	client.on('join', function(data) {
+			let newUser = {id: client.id, color: colors[0]};
+			activeColors.push(newUser);  
+			console.log("active", activeColors);
+
+			colors.shift();
+			console.log("inactive", colors);
+			client.emit("newUser", activeColors);
 	     	console.log('joined the server from App.js - from server');
-	     	console.log(client.id);
+	     	console.log(client.id, "called join!!!!");
+
 	//sending drum data to user (array)
 	client.emit('drumData', drumSequencer);
 	        client.emit('welcomeMsg', 'Connected to socket')
@@ -123,7 +134,24 @@ io.on('connection', client => {
 	    });
 	    client.on('disconnect', function () {
 	    console.log('Client disconnected...');
-	      client.emit('disconnected');
+
+	    
+	    	
+
+	    	colorLeaving = activeColors.filter(function(obj) {
+				return obj.id == client.id;
+			});
+			colors.push(colorLeaving[0].color);
+			console.log("colors", colors)
+			console.log("leave",colorLeaving);
+
+			activeColors = activeColors.filter(function(obj) {
+				return obj.id !== client.id;
+			});
+			console.log("act",activeColors);
+			console.log("active", activeColors);
+
+	      client.emit('disconnected', activeColors);
 	    });
 
 });

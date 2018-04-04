@@ -324,7 +324,7 @@ h4 {
 #future {
     right: 0px;
     position: absolute;
-   
+    font-size: 14px;
     width: 100%;
     bottom: 113px;
 
@@ -449,15 +449,10 @@ h4 {
 }
 
 
-
-#rightArrow {
-  height: 100%;
-  width: auto;
-}
-
-#leftArrow {
-  height: 100%;
-  width: auto;
+#leftArrow, #rightArrow {
+  height: 72%;
+    width: auto;
+    margin-top: 4px;
 }
 
 
@@ -558,9 +553,54 @@ input[type=number] {
 }
 
 #bpm-increase-btn {
+
   background: rgb(115, 142, 40);
   color: white;
 }
+
+
+.userIcon {
+  width: 100%;
+  height: auto;
+}
+
+.userBoxes {
+  width: 20px;
+  height: 20px;
+  
+  position: absolute;
+  top: 20px;
+}
+
+#user1 {
+  right: 20px;
+  background-color: #222;
+}
+
+#user2 {
+  right: 60px;
+  background-color: #222;
+
+}
+
+#user3 {
+  right: 100px;
+  background-color: #222;
+  
+}
+
+#user4 {
+  right: 140px;
+  background-color: #222;
+  
+}
+
+#user5 {
+  right: 180px;
+  background-color: #222;
+  
+}
+
 
 canvas {
     width: 100%;

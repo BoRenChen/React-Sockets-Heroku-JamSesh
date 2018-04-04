@@ -22,6 +22,7 @@ import sound from "./img/orangeVolume.png";
 import message from "./img/message.png";
 import leftArrow from "./img/arrowLeft.png";
 import rightArrow from "./img/arrowRight.png";
+import userIcon from "./img/user.png";
 
 
 import c from "./sounds/snares3.mp3";
@@ -45,6 +46,11 @@ var circles =[];
 var synthVol = 1.0;
 var keyVol = 1.0;
 var drumVol = 1.0;
+var userColor;
+var activeColors = [];
+
+
+
 var synth2 = new Tone.PolySynth({
   "portamento" : 0.01,
   "oscillator" : {
@@ -176,6 +182,8 @@ socket.on('hello!!', ({ message }) =>
 
 
 
+
+
   //--------------------------------------App Class Start-------------------------------------------//
 class App extends Component {
 
@@ -212,6 +220,65 @@ class App extends Component {
      // console.log('joining the server - from client');
       socket.emit('join', 'Sending from App.js to Socket server.');
    });
+
+  socket.on('newUser', function(data) {
+    activeColors = data;
+
+    
+
+    document.getElementById("user1").style.backgroundColor = "#222";
+    document.getElementById("user2").style.backgroundColor = "#222";
+    document.getElementById("user3").style.backgroundColor = "#222";
+    document.getElementById("user4").style.backgroundColor = "#222";
+    document.getElementById("user5").style.backgroundColor = "#222";
+    let i;
+    let plusOne;
+
+
+    console.log("chaaaaa");
+
+    for (i = 0; i < activeColors.length; i++) {
+      plusOne = i+1;
+      document.getElementById("user"+plusOne).style.backgroundColor = activeColors[i].color;
+
+    }
+    // document.getElementById("user1").style.backgroundColor = activeColors[0].color;
+    // document.getElementById("user2").style.backgroundColor = activeColors[1].color;
+    // document.getElementById("user3").style.backgroundColor = activeColors[2].color;
+    // document.getElementById("user4").style.backgroundColor = activeColors[3].color;
+    // document.getElementById("user5").style.backgroundColor = activeColors[4].color;
+
+    });
+
+
+
+  socket.on('disconnected', function(data) {
+    activeColors = data;
+
+    document.getElementById("user1").style.backgroundColor = "#222";
+    document.getElementById("user2").style.backgroundColor = "#222";
+    document.getElementById("user3").style.backgroundColor = "#222";
+    document.getElementById("user4").style.backgroundColor = "#222";
+    document.getElementById("user5").style.backgroundColor = "#222";
+
+    let i;
+    let plusOne;
+
+    console.log("changed");
+
+    for (i = 0; i < activeColors.length; i++) {
+      plusOne = i+1;
+      document.getElementById("user"+plusOne).style.backgroundColor = activeColors[i].color;
+
+    }
+
+    // document.getElementById("user1").style.backgroundColor = activeColors[0].color;
+    // document.getElementById("user2").style.backgroundColor = activeColors[1].color;
+    // document.getElementById("user3").style.backgroundColor = activeColors[2].color;
+    // document.getElementById("user4").style.backgroundColor = activeColors[3].color;
+    // document.getElementById("user5").style.backgroundColor = activeColors[4].color;
+    document.getElementById('record');
+    });
 
   socket.on("press", function(data){
    // console.log('press' + data);
@@ -326,7 +393,9 @@ class App extends Component {
 
   });
     socket.on('broad', function(data) {
-   $('#future').append(data+ "<br/>");
+      let text = "<p>"+data+"</p>";
+   $('#future').append(text);
+   console.log(text);
      });
 
 
@@ -1706,6 +1775,25 @@ function onRecordingReady(e) {
       <div className="App">
         <header className="App-header">
           <h1 className="App-title">JamSesh</h1>
+          <div id="user1" class="userBoxes">
+            <img src={userIcon} class="userIcon"></img>
+          </div>
+          <div id="user2" class="userBoxes">
+            <img src={userIcon} class="userIcon"></img>
+          </div>
+
+          <div id="user3" class="userBoxes">
+            <img src={userIcon} class="userIcon"></img>
+          </div>
+
+          <div id="user4" class="userBoxes">
+            <img src={userIcon} class="userIcon"></img>
+          </div>
+
+          <div id="user5" class="userBoxes">
+            <img src={userIcon} class="userIcon"></img>
+          </div>
+
         </header>
         
         <div>
