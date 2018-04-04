@@ -98,6 +98,20 @@ io.on('connection', client => {
 	    	client.broadcast.emit('drumPress', data);
 	    	client.emit("drumPress", data);
 	    });
+
+
+	    client.on('newMemberJoined', function(data){
+	    	//client.emit('newMember', data);
+	    	client.broadcast.emit('newMember', data);
+	    });
+
+	    client.on('memberLeft', function(data){
+	    	//client.emit('newMember', data);
+	    	client.broadcast.emit('memberLeft', data);
+	    });
+
+
+
 	    client.on('VibeKeyPressed', function(data){
 	    	console.log('VibeKeyPressed', data);
 	    	client.broadcast.emit('VibeKeyPress', data);
@@ -142,14 +156,11 @@ io.on('connection', client => {
 				return obj.id == client.id;
 			});
 			colors.push(colorLeaving[0].color);
-			console.log("colors", colors)
-			console.log("leave",colorLeaving);
 
 			activeColors = activeColors.filter(function(obj) {
 				return obj.id !== client.id;
 			});
-			console.log("act",activeColors);
-			console.log("active", activeColors);
+			
 
 	      client.emit('disconnected', activeColors);
 	    });
