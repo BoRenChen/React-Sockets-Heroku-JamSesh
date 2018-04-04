@@ -57,6 +57,7 @@ io.on('connection', client => {
 
 			colors.shift();
 			console.log("inactive", colors);
+			client.broadcast.emit("newUser", activeColors);
 			client.emit("newUser", activeColors);
 	     	console.log('joined the server from App.js - from server');
 	     	console.log(client.id, "called join!!!!");
@@ -162,7 +163,8 @@ io.on('connection', client => {
 			});
 			
 
-	      client.emit('disconnected', activeColors);
+	      // client.emit('disconnected', activeColors);
+	      client.broadcast.emit('disconnected', activeColors);
 	    });
 
 });

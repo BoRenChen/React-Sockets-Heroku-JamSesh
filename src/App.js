@@ -221,11 +221,34 @@ class App extends Component {
       socket.emit('join', 'Sending from App.js to Socket server.');
    });
 
-  socket.on('newUser', function(data) {
-    activeColors = data;
+
+  // socket.on('newMember', function(data) {
+  //    // console.log('joining the server - from client');
+  //     activeColors = data;
 
     
+    
+  //   document.getElementById("user1").style.backgroundColor = "#222";
+  //   document.getElementById("user2").style.backgroundColor = "#222";
+  //   document.getElementById("user3").style.backgroundColor = "#222";
+  //   document.getElementById("user4").style.backgroundColor = "#222";
+  //   document.getElementById("user5").style.backgroundColor = "#222";
+  //   let i;
+  //   let plusOne;
 
+
+  //   console.log("chaaaaa");
+
+  //   for (i = 0; i < activeColors.length; i++) {
+  //     plusOne = i+1;
+  //     document.getElementById("user"+plusOne).style.backgroundColor = activeColors[i].color;
+
+  //   }
+  //  });
+
+
+  socket.on('newUser', function(data) {
+    activeColors = data;
     document.getElementById("user1").style.backgroundColor = "#222";
     document.getElementById("user2").style.backgroundColor = "#222";
     document.getElementById("user3").style.backgroundColor = "#222";
@@ -254,7 +277,7 @@ class App extends Component {
 
   socket.on('disconnected', function(data) {
     activeColors = data;
-
+    
     document.getElementById("user1").style.backgroundColor = "#222";
     document.getElementById("user2").style.backgroundColor = "#222";
     document.getElementById("user3").style.backgroundColor = "#222";
@@ -277,8 +300,38 @@ class App extends Component {
     // document.getElementById("user3").style.backgroundColor = activeColors[2].color;
     // document.getElementById("user4").style.backgroundColor = activeColors[3].color;
     // document.getElementById("user5").style.backgroundColor = activeColors[4].color;
-    document.getElementById('record');
+    
     });
+
+
+
+    // socket.on('memberLeft', function(data) {
+    // activeColors = data;
+    // document.getElementById("user1").style.backgroundColor = "#222";
+    // document.getElementById("user2").style.backgroundColor = "#222";
+    // document.getElementById("user3").style.backgroundColor = "#222";
+    // document.getElementById("user4").style.backgroundColor = "#222";
+    // document.getElementById("user5").style.backgroundColor = "#222";
+
+    // let i;
+    // let plusOne;
+
+    // console.log("memberLeft!!!!!!!");
+
+    // for (i = 0; i < activeColors.length; i++) {
+    //   plusOne = i+1;
+    //   document.getElementById("user"+plusOne).style.backgroundColor = activeColors[i].color;
+
+    // }
+
+    // // document.getElementById("user1").style.backgroundColor = activeColors[0].color;
+    // // document.getElementById("user2").style.backgroundColor = activeColors[1].color;
+    // // document.getElementById("user3").style.backgroundColor = activeColors[2].color;
+    // // document.getElementById("user4").style.backgroundColor = activeColors[3].color;
+    // // document.getElementById("user5").style.backgroundColor = activeColors[4].color;
+    // document.getElementById('record');
+    // });
+
 
   socket.on("press", function(data){
    // console.log('press' + data);
