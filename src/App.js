@@ -5,7 +5,7 @@ import $ from 'jquery';
 import anime from 'animejs';
 import io from 'socket.io-client';
 import Tone from "tone";
-import {TimelineMax, Ease, Expo, Elastic} from "gsap";
+import {TimelineMax, Ease, Expo, Elastic, TweenMax} from "gsap";
 import { Howl, Howler } from 'howler';
 import P5Wrapper from 'react-p5-wrapper';
 import sketch from './sketches/sketch';
@@ -222,31 +222,6 @@ class App extends Component {
    });
 
 
-  // socket.on('newMember', function(data) {
-  //    // console.log('joining the server - from client');
-  //     activeColors = data;
-
-    
-    
-  //   document.getElementById("user1").style.backgroundColor = "#222";
-  //   document.getElementById("user2").style.backgroundColor = "#222";
-  //   document.getElementById("user3").style.backgroundColor = "#222";
-  //   document.getElementById("user4").style.backgroundColor = "#222";
-  //   document.getElementById("user5").style.backgroundColor = "#222";
-  //   let i;
-  //   let plusOne;
-
-
-  //   console.log("chaaaaa");
-
-  //   for (i = 0; i < activeColors.length; i++) {
-  //     plusOne = i+1;
-  //     document.getElementById("user"+plusOne).style.backgroundColor = activeColors[i].color;
-
-  //   }
-  //  });
-
-
   socket.on('newUser', function(data) {
     activeColors = data;
     document.getElementById("user1").style.backgroundColor = "#222";
@@ -254,6 +229,11 @@ class App extends Component {
     document.getElementById("user3").style.backgroundColor = "#222";
     document.getElementById("user4").style.backgroundColor = "#222";
     document.getElementById("user5").style.backgroundColor = "#222";
+    document.getElementById("user6").style.backgroundColor = "#222";
+    document.getElementById("user7").style.backgroundColor = "#222";
+    document.getElementById("user8").style.backgroundColor = "#222";
+    document.getElementById("user9").style.backgroundColor = "#222";
+    document.getElementById("user10").style.backgroundColor = "#222";
     let i;
     let plusOne;
 
@@ -262,75 +242,14 @@ class App extends Component {
 
     for (i = 0; i < activeColors.length; i++) {
       plusOne = i+1;
-      document.getElementById("user"+plusOne).style.backgroundColor = activeColors[i].color;
-
-    }
-    // document.getElementById("user1").style.backgroundColor = activeColors[0].color;
-    // document.getElementById("user2").style.backgroundColor = activeColors[1].color;
-    // document.getElementById("user3").style.backgroundColor = activeColors[2].color;
-    // document.getElementById("user4").style.backgroundColor = activeColors[3].color;
-    // document.getElementById("user5").style.backgroundColor = activeColors[4].color;
-
-    });
-
-
-
-  socket.on('disconnected', function(data) {
-    activeColors = data;
-    
-    document.getElementById("user1").style.backgroundColor = "#222";
-    document.getElementById("user2").style.backgroundColor = "#222";
-    document.getElementById("user3").style.backgroundColor = "#222";
-    document.getElementById("user4").style.backgroundColor = "#222";
-    document.getElementById("user5").style.backgroundColor = "#222";
-
-    let i;
-    let plusOne;
-
-    console.log("changed");
-
-    for (i = 0; i < activeColors.length; i++) {
-      plusOne = i+1;
-      document.getElementById("user"+plusOne).style.backgroundColor = activeColors[i].color;
+      let user = document.getElementById("user"+plusOne);
+      if(user){
+        user.style.backgroundColor = activeColors[i].color;
+      }
 
     }
 
-    // document.getElementById("user1").style.backgroundColor = activeColors[0].color;
-    // document.getElementById("user2").style.backgroundColor = activeColors[1].color;
-    // document.getElementById("user3").style.backgroundColor = activeColors[2].color;
-    // document.getElementById("user4").style.backgroundColor = activeColors[3].color;
-    // document.getElementById("user5").style.backgroundColor = activeColors[4].color;
-    
     });
-
-
-
-    // socket.on('memberLeft', function(data) {
-    // activeColors = data;
-    // document.getElementById("user1").style.backgroundColor = "#222";
-    // document.getElementById("user2").style.backgroundColor = "#222";
-    // document.getElementById("user3").style.backgroundColor = "#222";
-    // document.getElementById("user4").style.backgroundColor = "#222";
-    // document.getElementById("user5").style.backgroundColor = "#222";
-
-    // let i;
-    // let plusOne;
-
-    // console.log("memberLeft!!!!!!!");
-
-    // for (i = 0; i < activeColors.length; i++) {
-    //   plusOne = i+1;
-    //   document.getElementById("user"+plusOne).style.backgroundColor = activeColors[i].color;
-
-    // }
-
-    // // document.getElementById("user1").style.backgroundColor = activeColors[0].color;
-    // // document.getElementById("user2").style.backgroundColor = activeColors[1].color;
-    // // document.getElementById("user3").style.backgroundColor = activeColors[2].color;
-    // // document.getElementById("user4").style.backgroundColor = activeColors[3].color;
-    // // document.getElementById("user5").style.backgroundColor = activeColors[4].color;
-    // document.getElementById('record');
-    // });
 
 
   socket.on("press", function(data){
@@ -569,12 +488,754 @@ function onRecordingReady(e) {
   audio.src = URL.createObjectURL(e.data);
   audio.play();
 }
+  //--------------------------------------Vibe-------------------------------------------//
+  TweenMax.to($("#3_light"), 0, {
+alpha: 0
+})
 
+function button3(upOrDown) {
+  
+  if(upOrDown == "down") {
+
+  TweenMax.to( $("#3_light"), .1, {
+    alpha: 1
+  }) 
+  
+}
+  
+  if(upOrDown == "up") {
+
+  TweenMax.to( $("#3_light"), 1, {
+    alpha: 0
+  }) 
+  
+}
+  
+  
+}
+
+$("#3_light").on("click", button3);
+
+//button4
+TweenMax.to($("#4_light"), 0, {
+alpha: 0
+})
+
+function button4(upOrDown) {
+  
+  if (upOrDown == "down") {
+
+  TweenMax.to( $("#4_light"), .1, {
+    alpha: 1
+  })
+}
+  
+  if (upOrDown == "up") {
+
+  TweenMax.to( $("#4_light"), 1, {
+    alpha: 0
+  })
+  
+ }
+  
+}
+
+$("#4_light").on("click", button4);
+
+//button5
+TweenMax.to($("#5_light"), 0, {
+alpha: 0
+})
+
+function button5(upOrDown) {
+
+  if(upOrDown == "down") {
+  
+  TweenMax.to( $("#5_light"), .1, {
+    alpha: 1
+  })
+}
+
+  if(upOrDown == "up") {
+    
+    TweenMax.to( $("#5_light"), .3, {
+      alpha: 0
+    })
+    
+  }
+  
+  
+}
+  
+$("#5_light").on("click", button5);
+
+//button6
+TweenMax.to($("#6_light"), 0, {
+alpha: 0
+})
+
+function button6(upOrDown) {
+  
+  if(upOrDown == "down") {
+
+  TweenMax.to( $("#6_light"), .1, {
+    alpha: 1
+  })
+}
+  
+  if(upOrDown == "up") {
+
+    TweenMax.to( $("#6_light"), .3, {
+      alpha: 0
+    })
+    
+  }
+  
+  
+}
+
+$("#6_light").on("click", button6);
+
+//button7
+TweenMax.to($("#7_light"), 0, {
+alpha: 0
+})
+
+function button7(upOrDown) {
+  
+  if(upOrDown == "down") {
+
+  TweenMax.to( $("#7_light"), .1, {
+    alpha: 1
+  })
+}
+  
+  if(upOrDown == "up") {
+
+  TweenMax.to( $("#7_light"), 1, {
+    alpha: 0
+  })
+}
+  }
+
+$("#7_light").on("click", button7);
+
+//button8
+TweenMax.to($("#8_light"), 0, {
+alpha: 0
+})
+
+function button8(upOrDown) {
+  
+  if(upOrDown == "down") {
+
+  TweenMax.to( $("#8_light"), .1, {
+    alpha: 1
+  })
+}
+  
+  if(upOrDown == "up") {
+
+  TweenMax.to( $("#8_light"), 1, {
+    alpha: 0
+  })
+}
+}
+
+$("#8_light").on("click", button8);
+
+//button_e
+TweenMax.to($("#e_light"), 0, {
+alpha: 0
+})
+
+function button_e(upOrDown) {
+  
+  if(upOrDown == "down") {
+
+  TweenMax.to( $("#e_light"), .1, {
+    alpha: 1
+  })
+}
+  
+  if(upOrDown == "up") {
+
+  TweenMax.to( $("#e_light"), 1, {
+    alpha: 0
+  })
+}
+}
+
+$("#e_light").on("click", button_e);
+
+//button_r
+TweenMax.to($("#r_light"), 0, {
+alpha: 0
+})
+
+function button_r(upOrDown) {
+  
+  if(upOrDown == "down") {
+
+  TweenMax.to( $("#r_light"), .1, {
+    alpha: 1
+  })
+}
+  
+  if(upOrDown == "up") {
+
+  TweenMax.to( $("#r_light"), 1, {
+    alpha: 0
+  })
+}
+}
+
+$("#r_light").on("click", button_r);
+
+//button_t
+TweenMax.to($("#t_light"), 0, {
+alpha: 0
+})
+
+function button_t(upOrDown) {
+  
+  if(upOrDown == "down") {
+
+  TweenMax.to( $("#t_light"), .1, {
+    alpha: 1
+    })
+}
+  
+  if(upOrDown == "up") {
+
+  TweenMax.to( $("#t_light"), 1, {
+    alpha: 0
+  })
+}
+}
+
+$("#t_light").on("click", button_t);
+
+//button_y
+TweenMax.to($("#y_light"), 0, {
+alpha: 0
+})
+
+function button_y(upOrDown) {
+  
+  if(upOrDown == "down") {
+
+  TweenMax.to( $("#y_light"), .1, {
+    alpha: 1
+  })
+}
+  
+   if(upOrDown == "up") {
+
+  TweenMax.to( $("#y_light"), 1, {
+    alpha: 0
+  })
+}
+}
+
+$("#y_light").on("click", button_y);
+
+//button_u
+TweenMax.to($("#u_light"), 0, {
+alpha: 0
+})
+
+function button_u(upOrDown) {
+  
+  if(upOrDown == "down") {
+
+  TweenMax.to( $("#u_light"), .1, {
+    alpha: 1
+  })
+}
+  
+  if(upOrDown == "up") {
+
+  TweenMax.to( $("#u_light"), 1, {
+    alpha: 0
+  })
+}
+}
+
+$("#u_light").on("click", button_u);
+
+//button_i
+TweenMax.to($("#i_light"), 0, {
+alpha: 0
+})
+
+function button_i(upOrDown) {
+  
+  if(upOrDown == "down") {
+
+  TweenMax.to( $("#i_light"), .1, {
+    alpha: 1
+  })
+}
+
+  if(upOrDown == "up") {
+
+  TweenMax.to( $("#i_light"), 1, {
+    alpha: 0
+  })
+}
+}
+
+$("#i_light").on("click", button_i);
+
+//button_s
+TweenMax.to($("#s_light"), 0, {
+alpha: 0
+})
+
+function button_s(upOrDown) {
+  
+  if(upOrDown == "down") {
+
+  TweenMax.to( $("#s_light"), .1, {
+    alpha: 1
+  })
+}
+  
+  if(upOrDown == "up") {
+
+  TweenMax.to( $("#s_light"), 1, {
+    alpha: 0
+  })
+}
+}
+
+$("#s_light").on("click", button_s);
+
+//button_d
+TweenMax.to($("#d_light"), 0, {
+alpha: 0
+})
+
+function button_d(upOrDown) {
+  
+  if(upOrDown == "down") {
+
+  TweenMax.to( $("#d_light"), .1, {
+    alpha: 1
+  })
+}
+  
+  if(upOrDown == "up") {
+
+  TweenMax.to( $("#d_light"), 1, {
+    alpha: 0
+  })
+}
+}
+
+$("#d_light").on("click", button_d);
+
+//button_f
+TweenMax.to($("#f_light"), 0, {
+alpha: 0
+})
+
+function button_f(upOrDown) {
+  
+  if(upOrDown == "down") {
+
+  TweenMax.to( $("#f_light"), .1, {
+    alpha: 1
+  })
+}
+  
+  if(upOrDown == "up") {
+
+  TweenMax.to( $("#f_light"), 1, {
+    alpha: 0
+  })
+}
+}
+
+$("#f_light").on("click", button_f);
+
+//button_g
+TweenMax.to($("#g_light"), 0, {
+alpha: 0
+})
+
+function button_g(upOrDown) {
+  
+  if(upOrDown == "down") {
+
+  TweenMax.to( $("#g_light"), .1, {
+    alpha: 1
+  })
+}
+  
+  if(upOrDown == "up") {
+
+  TweenMax.to( $("#g_light"), 1, {
+    alpha: 0
+  })
+}
+}
+
+$("#g_light").on("click", button_g);
+
+//button_h
+TweenMax.to($("#h_light"), 0, {
+alpha: 0
+})
+
+function button_h(upOrDown) {
+  
+  if(upOrDown == "down") {
+
+  TweenMax.to( $("#h_light"), .1, {
+    alpha: 1
+  })
+}
+  
+  if(upOrDown == "up") {
+
+  TweenMax.to( $("#h_light"), 1, {
+    alpha: 0
+  })
+}
+}
+
+$("#h_light").on("click", button_h);
+
+//button_j
+TweenMax.to($("#j_light"), 0, {
+alpha: 0
+})
+
+function button_j(upOrDown) {
+  
+  if(upOrDown == "down") {
+
+  TweenMax.to( $("#j_light"), .1, {
+    alpha: 1
+  })
+}
+  
+  if(upOrDown == "up") {
+
+  TweenMax.to( $("#j_light"), 1, {
+    alpha: 0
+  })
+}
+}
+
+$("#j_light").on("click", button_j);
+
+//button_x
+TweenMax.to($("#x_light"), 0, {
+alpha: 0
+})
+
+function button_x(upOrDown) {
+  
+  if(upOrDown == "down") {
+
+  TweenMax.to( $("#x_light"), .1, {
+    alpha: 1
+    })
+}
+  
+  if(upOrDown == "up") {
+
+  TweenMax.to( $("#x_light"), 1, {
+    alpha: 0
+  })
+}
+}
+
+$("#x_light").on("click", button_x);
+
+//button_c
+TweenMax.to($("#c_light"), 0, {
+alpha: 0
+})
+
+function button_c(upOrDown) {
+  
+  if(upOrDown == "down") {
+
+  TweenMax.to( $("#c_light"), .1, {
+    alpha: 1
+  })
+}
+  
+  if(upOrDown == "up") {
+
+  TweenMax.to( $("#c_light"), 1, {
+    alpha: 0
+  })
+}
+}
+
+$("#c_light").on("click", button_c);
+
+//button_v
+TweenMax.to($("#v_light"), 0, {
+alpha: 0
+})
+
+function button_v(upOrDown) {
+  
+  if(upOrDown == "down") {
+
+  TweenMax.to( $("#v_light"), .1, {
+    alpha: 1
+  })
+}
+  
+  if(upOrDown == "up") {
+
+  TweenMax.to( $("#v_light"), 1, {
+    alpha: 0
+    })
+}
+}
+
+$("#v_light").on("click", button_v);
+
+//button_b
+TweenMax.to($("#b_light"), 0, {
+alpha: 0
+})
+
+function button_b(upOrDown) {
+  
+  if(upOrDown == "down") {
+
+  TweenMax.to( $("#b_light"), .1, {
+    alpha: 1
+  })
+}
+  
+  if(upOrDown == "up") {
+
+  TweenMax.to( $("#b_light"), 1, {
+    alpha: 0
+  })
+}
+}
+
+$("#b_light").on("click", button_b);
+
+//button_n
+TweenMax.to($("#n_light"), 0, {
+alpha: 0
+})
+
+function button_n(upOrDown) {
+  
+  if(upOrDown == "down") {
+
+  TweenMax.to( $("#n_light"), .1, {
+    alpha: 1
+  })
+}
+  
+  if(upOrDown == "up") {
+
+  TweenMax.to( $("#n_light"), 1, {
+    alpha: 0
+  })
+}
+}
+
+$("#n_light").on("click", button_n);
+
+//button_m
+TweenMax.to($("#m_light"), 0, {
+alpha: 0
+})
+
+function button_m(upOrDown) {
+  
+  if(upOrDown == "down") {
+
+  TweenMax.to( $("#m_light"), .1, {
+    alpha: 1
+  })
+}
+  
+  if(upOrDown == "up") {
+
+  TweenMax.to( $("#m_light"), 1, {
+    alpha: 0
+  })
+}
+}
+
+$("#m_light").on("click", button_m);
+
+//keyboard commands
+$("body").on("keydown", handleKeyPress);
+$("body").on("keyup", handleKeyUp);
+
+function handleKeyPress(event) {
+  console.log(event);
+  
+  //3 = 51
+  if ( event.which == 51 ) {
+     button3("down");
+  }
+  //4 = 52
+  if ( event.which == 52 ) {
+     button4("down");
+  }
+  //5 = 53
+  if ( event.which == 53 ) {
+     button5("down");
+  }
+  //6 = 54
+  if ( event.which == 54 ) {
+     button6("down");
+  }
+  //7 = 55
+  if ( event.which == 55 ) {
+     button7("down");
+  }
+  //8 = 56
+  if ( event.which == 56 ) {
+     button8("down");
+  }
+  //e = 69
+  if ( event.which == 69 ) {
+     button_e("down");
+  }
+  //r = 82
+  if ( event.which == 82 ) {
+     button_r("down");
+  }
+  //t = 84
+  if ( event.which == 84 ) {
+     button_t("down");
+  }
+  //y = 89
+  if ( event.which == 89 ) {
+     button_y("down");
+  }
+  //u = 85
+  if ( event.which == 85 ) {
+     button_u("down");
+  }
+  //i = 73
+  if ( event.which == 73 ) {
+     button_i("down");
+  }
+  //s = 83
+  if ( event.which == 83 ) {
+     button_s("down");
+  }
+  //d = 68
+  if ( event.which == 68 ) {
+     button_d("down");
+  }
+  //f = 70
+  if ( event.which == 70 ) {
+     button_f("down");
+  }
+  //g = 71
+  if ( event.which == 71 ) {
+     button_g("down");
+  }
+  //h = 72
+  if ( event.which == 72 ) {
+     button_h("down");
+  }
+  //j = 74
+  if ( event.which == 74 ) {
+     button_j("down");
+  }
+  //x = 88
+  if ( event.which == 88 ) {
+     button_x("down");
+  }
+  //c = 67
+  if ( event.which == 67 ) {
+     button_c("down");
+  }
+  //v = 86
+  if ( event.which == 86 ) {
+     button_v("down");
+  }
+  //b = 66
+  if ( event.which == 66 ) {
+     button_b("down");
+  }
+  //n = 78
+  if ( event.which == 78 ) {
+     button_n("down");
+  }
+  //m = 77
+  if ( event.which == 77 ) {
+     button_m("down");
+  }
+}
+function handleKeyUp(event) {
+  
+  if(event.which == 51) {
+    button3("up"); }
+  if(event.which == 52) {
+    button4("up"); }
+  if(event.which == 53) {
+    button5("up"); }
+  if(event.which == 54) {
+    button6("up"); }
+  if(event.which == 55) {
+    button7("up"); }
+  if(event.which == 56) {
+    button8("up"); }
+  if(event.which == 69) {
+    button_e("up"); }
+  if(event.which == 82) {
+    button_r("up"); }
+  if(event.which == 84) {
+    button_t("up"); }
+  if(event.which == 89) {
+    button_y("up"); }
+  if(event.which == 85) {
+    button_u("up"); }
+  if(event.which == 73) {
+    button_i("up"); }
+  if(event.which == 83) {
+    button_s("up"); }
+  if(event.which == 68) {
+    button_d("up"); }
+  if(event.which == 70) {
+    button_f("up"); }
+  if(event.which == 71) {
+    button_g("up"); }
+  if(event.which == 72) {
+    button_h("up"); }
+  if(event.which == 74) {
+    button_j("up"); }
+  if(event.which == 88) {
+    button_x("up"); }
+  if(event.which == 67) {
+    button_c("up"); }
+  if(event.which == 86) {
+    button_v("up"); }
+  if(event.which == 66) {
+    button_b("up"); }
+  if(event.which == 78) {
+    button_n("up"); }
+  if(event.which == 77) {
+    button_m("up"); }
+}
 
   //--------------------------------------TONE-------------------------------------------//
 
   
-  //var code = $.ui.keyCode;
+
 
   //KEYBOARD
 
@@ -1744,10 +2405,13 @@ function onRecordingReady(e) {
     switch (keyboardState) {
       case "vibe":
         data = 'instrument';
+        this.setState({first:"Keyboard1"})
         break;
 
       case "instrument":
         data = 'vibe';
+        this.setState({first:"Vibe"})
+
         break;  
 
       default:
@@ -1850,7 +2514,26 @@ function onRecordingReady(e) {
 
           <div id="user5" class="userBoxes">
             <img src={userIcon} class="userIcon"></img>
+          </div>          
+          <div id="user6" class="userBoxes">
+            <img src={userIcon} class="userIcon"></img>
           </div>
+          <div id="user7" class="userBoxes">
+            <img src={userIcon} class="userIcon"></img>
+          </div>
+
+          <div id="user8" class="userBoxes">
+            <img src={userIcon} class="userIcon"></img>
+          </div>
+
+          <div id="user9" class="userBoxes">
+            <img src={userIcon} class="userIcon"></img>
+          </div>
+
+          <div id="user10" class="userBoxes">
+            <img src={userIcon} class="userIcon"></img>
+          </div>
+
 
         </header>
         
@@ -1910,6 +2593,7 @@ function onRecordingReady(e) {
         {this.state.first == "Keyboard2" && <Keyboard2/>}
         {this.state.first == "Drum" && <Drum/>}
         {this.state.first == "DrumSequencer" && <DrumSequencer/>}
+        {this.state.first == "Vibe" && <Vibe/>}
         
         <button class="button" onClick={this.handleSynth.bind(this)}>CHANGE SYNTH</button>
         <button class="button"  onClick={this.handleInstrument.bind(this)}>CHANGE KEYBOARD/VIBE</button>
@@ -1919,8 +2603,6 @@ function onRecordingReady(e) {
         <p><audio id="audio" controls></audio></p>
 
         <DrumSequencer/>
-
-
 
         <audio id="Big-Rack-Tom-Audio">
   <source src="https://s3.amazonaws.com/iamjoshellis-codepen/pens-of-rock/drums/Big-Rack-Tom.mp3" preload="auto" type="audio/mp3" />
@@ -2059,7 +2741,6 @@ class Drum extends React.Component {
   render (){
     return (
     <div>
-      <h1>Drum</h1>
 <svg class="drumsvg" version="1.1" xmlns="http://www.w3.org/2000/svg" viewBox="300 300 1400 1400">
 <g id="Drums">
   <g>
@@ -3031,6 +3712,129 @@ class DrumSequencer extends React.Component {
 
           </div>
         </div>
+      )
+  }
+}
+
+
+
+class Vibe extends React.Component {
+  render (){
+    return (
+    <svg version="1.1" id="launchpadsvg" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 600">
+<g id="outside">
+  <path fill="#B3B3B3" d="M239.3,130.7h3.9c3.7,0,6.8,3.1,6.8,6.8v24.1c0,3.7-3.1,6.8-6.8,6.8h-3.9c-3.7,0-6.8-3.1-6.8-6.8v-24.1
+    C232.5,133.7,235.6,130.7,239.3,130.7z"/>
+  <path id="outer_x5F_rectangle" fill="#B3B3B3" stroke="#CCCCCC" stroke-width="4" stroke-miterlimit="10" d="M617.9,507H183.6
+    c-17.6,0-31.8-14.3-31.8-31.8V201.8c0-17.6,14.3-31.8,31.8-31.8h434.3c17.6,0,31.8,14.3,31.8,31.8v273.3
+    C649.8,492.7,635.5,507,617.9,507z"/>
+  <path id="inner_x5F_rectangle" fill="#FFFFFF" d="M614.9,498.5H186.6c-15,0-27.1-12.2-27.1-27.1V204.5c0-15,12.2-27.1,27.1-27.1
+    h428.3c15,0,27.1,12.2,27.1,27.1v266.9C642.1,486.4,629.9,498.5,614.9,498.5z"/>
+  <text transform="matrix(1 0 0 1 485.9997 481)" fill="#CCCCCC" font-family="'Prototype'" font-size="32">Vibe</text>
+  <path fill="none" stroke="#B3B3B3" stroke-width="7" stroke-miterlimit="10" d="M240.5,131v-24c0,0,1.4-49.3,43.6-49.3
+    S316.5-15,316.5-15"/>
+</g>
+<g id="buttons">
+  
+    <circle id='3_button' fill="#FFFFFF" stroke="#CCCCCC" stroke-width="6" stroke-miterlimit="10" cx="241.6" cy="220.4" r="23.2"/>
+  
+    <circle id='4_button' fill="#FFFFFF" stroke="#CCCCCC" stroke-width="6" stroke-miterlimit="10" cx="305.6" cy="220.4" r="23.2"/>
+  
+    <circle id="5_button" fill="#FFFFFF" stroke="#CCCCCC" stroke-width="6" stroke-miterlimit="10" cx="369.6" cy="220.4" r="23.2"/>
+  
+    <circle id="6_button" fill="#FFFFFF" stroke="#CCCCCC" stroke-width="6" stroke-miterlimit="10" cx="433.6" cy="220.4" r="23.2"/>
+  
+    <circle id="7_button" fill="#FFFFFF" stroke="#CCCCCC" stroke-width="6" stroke-miterlimit="10" cx="497.6" cy="220.4" r="23.2"/>
+  
+    <circle id="8_button" fill="#FFFFFF" stroke="#CCCCCC" stroke-width="6" stroke-miterlimit="10" cx="561.6" cy="220.4" r="23.2"/>
+  
+    <circle id="e_button" fill="#FFFFFF" stroke="#CCCCCC" stroke-width="6" stroke-miterlimit="10" cx="261.6" cy="286.4" r="23.2"/>
+  
+    <circle id="r_button" fill="#FFFFFF" stroke="#CCCCCC" stroke-width="6" stroke-miterlimit="10" cx="325.6" cy="286.4" r="23.2"/>
+  
+    <circle id="t_button" fill="#FFFFFF" stroke="#CCCCCC" stroke-width="6" stroke-miterlimit="10" cx="389.6" cy="286.4" r="23.2"/>
+  
+    <circle id="y_button" fill="#FFFFFF" stroke="#CCCCCC" stroke-width="6" stroke-miterlimit="10" cx="453.6" cy="286.4" r="23.2"/>
+  
+    <circle id="u_button" fill="#FFFFFF" stroke="#CCCCCC" stroke-width="6" stroke-miterlimit="10" cx="517.6" cy="286.4" r="23.2"/>
+  
+    <circle id="i_button" fill="#FFFFFF" stroke="#CCCCCC" stroke-width="6" stroke-miterlimit="10" cx="581.6" cy="286.4" r="23.2"/>
+  
+    <circle id="s_button" fill="#FFFFFF" stroke="#CCCCCC" stroke-width="6" stroke-miterlimit="10" cx="219.6" cy="352.4" r="23.2"/>
+  
+    <circle id="d_button" fill="#FFFFFF" stroke="#CCCCCC" stroke-width="6" stroke-miterlimit="10" cx="283.6" cy="352.4" r="23.2"/>
+  
+    <circle id="f_button" fill="#FFFFFF" stroke="#CCCCCC" stroke-width="6" stroke-miterlimit="10" cx="347.6" cy="352.4" r="23.2"/>
+  
+    <circle id="g_button" fill="#FFFFFF" stroke="#CCCCCC" stroke-width="6" stroke-miterlimit="10" cx="411.6" cy="352.4" r="23.2"/>
+  
+    <circle id="h_button" fill="#FFFFFF" stroke="#CCCCCC" stroke-width="6" stroke-miterlimit="10" cx="475.6" cy="352.4" r="23.2"/>
+  
+    <circle id="j_button" fill="#FFFFFF" stroke="#CCCCCC" stroke-width="6" stroke-miterlimit="10" cx="539.6" cy="352.4" r="23.2"/>
+  
+    <circle id="x_button" fill="#FFFFFF" stroke="#CCCCCC" stroke-width="6" stroke-miterlimit="10" cx="244.6" cy="418.4" r="23.2"/>
+  
+    <circle id="c_button" fill="#FFFFFF" stroke="#CCCCCC" stroke-width="6" stroke-miterlimit="10" cx="308.6" cy="418.4" r="23.2"/>
+  
+    <circle id="v_button" fill="#FFFFFF" stroke="#CCCCCC" stroke-width="6" stroke-miterlimit="10" cx="372.6" cy="418.4" r="23.2"/>
+  
+    <circle id="b_x5F_button" fill="#FFFFFF" stroke="#CCCCCC" stroke-width="6" stroke-miterlimit="10" cx="436.6" cy="418.4" r="23.2"/>
+  
+    <circle id="n_button" fill="#FFFFFF" stroke="#CCCCCC" stroke-width="6" stroke-miterlimit="10" cx="500.6" cy="418.4" r="23.2"/>
+  
+    <circle id="m_button" fill="#FFFFFF" stroke="#CCCCCC" stroke-width="6" stroke-miterlimit="10" cx="564.6" cy="418.4" r="23.2"/>
+</g>
+<g id="lights">
+  
+    <circle id="3_light" fill="#FFFFFF" stroke="#FF7BAC" stroke-width="6" stroke-miterlimit="10" cx="241.6" cy="220.4" r="23.2"/>
+  
+    <circle id="4_light" fill="#FFFFFF" stroke="#FF7BAC" stroke-width="6" stroke-miterlimit="10" cx="305.6" cy="220.4" r="23.2"/>
+  
+    <circle id="5_light" fill="#FFFFFF" stroke="#FF7BAC" stroke-width="6" stroke-miterlimit="10" cx="369.6" cy="220.4" r="23.2"/>
+  
+    <circle id="6_light" fill="#FFFFFF" stroke="#FF7BAC" stroke-width="6" stroke-miterlimit="10" cx="433.6" cy="220.4" r="23.2"/>
+  
+    <circle id="7_light" fill="#FFFFFF" stroke="#FF7BAC" stroke-width="6" stroke-miterlimit="10" cx="497.6" cy="220.4" r="23.2"/>
+  
+    <circle id="8_light" fill="#FFFFFF" stroke="#FF7BAC" stroke-width="6" stroke-miterlimit="10" cx="561.6" cy="220.4" r="23.2"/>
+  
+    <circle id="e_light" fill="#FFFFFF" stroke="#00FFFF" stroke-width="6" stroke-miterlimit="10" cx="261.6" cy="286.4" r="23.2"/>
+  
+    <circle id="r_light" fill="#FFFFFF" stroke="#00FFFF" stroke-width="6" stroke-miterlimit="10" cx="325.6" cy="286.4" r="23.2"/>
+  
+    <circle id="t_light" fill="#FFFFFF" stroke="#00FFFF" stroke-width="6" stroke-miterlimit="10" cx="389.6" cy="286.4" r="23.2"/>
+  
+    <circle id="y_light" fill="#FFFFFF" stroke="#00FFFF" stroke-width="6" stroke-miterlimit="10" cx="453.6" cy="286.4" r="23.2"/>
+  
+    <circle id="u_light" fill="#FFFFFF" stroke="#00FFFF" stroke-width="6" stroke-miterlimit="10" cx="517.6" cy="286.4" r="23.2"/>
+  
+    <circle id="i_light" fill="#FFFFFF" stroke="#00FFFF" stroke-width="6" stroke-miterlimit="10" cx="581.6" cy="286.4" r="23.2"/>
+  
+    <circle id="s_light" fill="#FFFFFF" stroke="#AB00FF" stroke-width="6" stroke-miterlimit="10" cx="219.6" cy="352.4" r="23.2"/>
+  
+    <circle id="d_light" fill="#FFFFFF" stroke="#AB00FF" stroke-width="6" stroke-miterlimit="10" cx="283.6" cy="352.4" r="23.2"/>
+  
+    <circle id="f_light" fill="#FFFFFF" stroke="#AB00FF" stroke-width="6" stroke-miterlimit="10" cx="347.6" cy="352.4" r="23.2"/>
+  
+    <circle id="g_light" fill="#FFFFFF" stroke="#AB00FF" stroke-width="6" stroke-miterlimit="10" cx="411.6" cy="352.4" r="23.2"/>
+  
+    <circle id="h_light" fill="#FFFFFF" stroke="#AB00FF" stroke-width="6" stroke-miterlimit="10" cx="475.6" cy="352.4" r="23.2"/>
+  
+    <circle id="j_light" fill="#FFFFFF" stroke="#AB00FF" stroke-width="6" stroke-miterlimit="10" cx="539.6" cy="352.4" r="23.2"/>
+  
+    <circle id="x_light" fill="#FFFFFF" stroke="#00FF00" stroke-width="6" stroke-miterlimit="10" cx="244.6" cy="418.4" r="23.2"/>
+  
+    <circle id="c_light" fill="#FFFFFF" stroke="#00FF00" stroke-width="6" stroke-miterlimit="10" cx="308.6" cy="418.4" r="23.2"/>
+  
+    <circle id="v_light" fill="#FFFFFF" stroke="#00FF00" stroke-width="6" stroke-miterlimit="10" cx="372.6" cy="418.4" r="23.2"/>
+  
+    <circle id="b_light" fill="#FFFFFF" stroke="#00FF00" stroke-width="6" stroke-miterlimit="10" cx="436.6" cy="418.4" r="23.2"/>
+  
+    <circle id="n_light" fill="#FFFFFF" stroke="#00FF00" stroke-width="6" stroke-miterlimit="10" cx="500.6" cy="418.4" r="23.2"/>
+  
+    <circle id="m_light" fill="#FFFFFF" stroke="#00FF00" stroke-width="6" stroke-miterlimit="10" cx="564.6" cy="418.4" r="23.2"/>
+</g>
+</svg>
       )
   }
 }

@@ -19,7 +19,7 @@ canvas {
     padding: 10px;
     border: 1px solid orange;
     margin: 5px;
-}
+}x
 
 .drumButton {
 
@@ -599,6 +599,43 @@ input[type=number] {
   right: 180px;
   background-color: #222;
   
+}
+
+#user6 {
+  right: 220px;
+  background-color: #222;
+  
+}
+
+#user7 {
+  right: 260px;
+  background-color: #222;
+  
+}
+
+#user8 {
+  right: 300px;
+  background-color: #222;
+  
+}
+
+#user9 {
+  right: 340px;
+  background-color: #222;
+  
+}
+
+#user10 {
+  right: 380px;
+  background-color: #222;
+  
+}
+
+#launchpadsvg{
+  height: 70vh;
+  width: 100vw;
+  display: block;
+  -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
 }
 
 

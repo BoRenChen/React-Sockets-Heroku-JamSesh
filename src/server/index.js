@@ -4,7 +4,8 @@ const app = express();
 const server = require('http').createServer(app);
 const io = require('socket.io')(server);
 const port = process.env.PORT || 3000;
-var colors = ["rgb(128,0,0)","rgb(225,165,0)","rgb(0,128,128)", "rgb(210,105,30)", "rgb(0,128,0)"];
+//																								, Yellow			,  cyan			,  GreenYellow		,  HotPink			,  orangeRed				, 
+var colors = ["rgb(128,0,0)","rgb(225,165,0)","rgb(0,128,128)", "rgb(210,105,30)", "rgb(0,128,0)", "rgb(255,255,0)", "rgb(0, 255,255)", "rgb(173,255,47)", "rgb(255,105,180)", "rgb(255,69,0)"];
 var activeColors = [];
 
 
@@ -164,7 +165,7 @@ io.on('connection', client => {
 			
 
 	      // client.emit('disconnected', activeColors);
-	      client.broadcast.emit('disconnected', activeColors);
+	      client.broadcast.emit('newUser', activeColors);
 	    });
 
 });
