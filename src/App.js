@@ -1800,6 +1800,7 @@ function onRecordingReady(e) {
 
     }
 
+
     handleSynthVolume(){
       var input = document.getElementById("synthSlider");
       var currentVal = input.value;
@@ -1809,12 +1810,16 @@ function onRecordingReady(e) {
       var input = document.getElementById("keySlider");
       var currentVal = input.value;
       keyVol = currentVal;
-      Howler.volume(keyVol);
     }
     handleDrumVolume(){
       var input = document.getElementById("drumSlider");
       var currentVal = input.value;
       drumVol = currentVal;
+    }
+    handleVibeVolume(){
+      var input = document.getElementById("vibeSlider");
+      var currentVal = input.value;
+      Howler.volume(currentVal);
     }
 
 
@@ -1889,6 +1894,11 @@ function onRecordingReady(e) {
         <div class='eqSliders'>
         <h4>Keys</h4>
         <input id="keySlider" onChange={this.handleKeyVolume.bind(this)} type="range" min="0.0" max="1.0" step=".01"/>
+        </div>
+
+        <div class='eqSliders'>
+        <h4>Vibe</h4>
+        <input id="vibeSlider" onChange={this.handleVibeVolume.bind(this)} type="range" min="0.0" max="1.0" step=".01"/>
         </div>
 
         </div>
