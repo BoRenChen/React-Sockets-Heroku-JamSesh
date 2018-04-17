@@ -630,12 +630,19 @@ input[type=number] {
   background-color: #222;
   
 }
+.cls-1{fill:#fff;}.cls-1,.cls-2,.cls-3{stroke:#b3b3b3;}.cls-1,.cls-2,.cls-3,.cls-4{stroke-miterlimit:10;stroke-width:8px;}.cls-2{fill:#b3b3b3;}.cls-3,.cls-4{fill:none;}.cls-4{stroke:#000;}
 
+#btn_Menu {
+    position: fixed;
+    bottom: 3vh;
+    width: 100%;
+}
 #launchpadsvg{
   height: 70vh;
-  width: 100vw;
+  width: 90vw;
   display: block;
   -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+  padding-bottom: 6vh;
 }
 
 
@@ -646,4 +653,108 @@ canvas {
     top: 0;
     z-index: -1;
     height: 100%;
+}
+
+.piano {
+
+    outline: 4px solid grey;
+    height: 33.2vh;
+    border-radius: 10px;
+    width: 67.7vw;
+    margin-left: auto;
+    margin-right: auto;
+    /* height: 70vh; */
+    /* width: 90vw; */
+    /* padding-left: 16vw; */
+    /* padding-top: 30vh; */
+    margin-top: 27vh;
+    margin-bottom: 180px;
+    opacity: .9;
+    -webkit-transform: perspective(500px) rotateX(20deg);
+    -webkit-transform-style: preserve-3d;
+}
+
+.piano-key {
+  float: left;
+  border-radius: 0 0 4px 4px;
+}
+
+.piano-key-natural {
+  background: #f5f5f5 -webkit-linear-gradient(top, transparent, #fff, transparent);
+  background: #f5f5f5 linear-gradient(to bottom, transparent, #fff, transparent);
+  border: 1px solid;
+  border-color: rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.3) rgba(0, 0, 0, 0.15);
+  border-right-width: 0;
+  border-bottom-width: 2px;    
+  height: 100%;
+  width: 9.09%; 
+}
+.piano-key-natural:last-child {
+  border-right-width: 1px;
+}
+.piano-key-natural.piano-key-pressed, .piano-key-natural:active {
+  background: #FF69B4 -webkit-linear-gradient(top, #fb8dc4, transparent, #fb8dc4);
+  background: #FF69B4 linear-gradient(to bottom, #fb8dc4, transparent, #fb8dc4);
+  border-bottom-width: 1px;
+  border-left-color: rgb(233,212,96,0.15);
+  box-shadow: inset -2px 0 0 0 rgba(0, 0, 0, 0.15), inset 1px 0 0 0 rgba(0, 0, 0, 0.15);
+}
+
+/* adding external midi input className, blue */
+.piano-key-natural.piano-key-pressed-external, .piano-key-natural:active, .activepiano {
+  background: #59ABE3 -webkit-linear-gradient(top, #6fbdf2, transparent, #6fbdf2);
+  background: #59ABE3 linear-gradient(to bottom, #6fbdf2, transparent, #6fbdf2);
+  border-bottom-width: 1px;
+  border-left-color: rgb(89,171,227,0.15);
+  box-shadow: inset -2px 0 0 0 rgba(0, 0, 0, 0.15), inset 1px 0 0 0 rgba(0, 0, 0, 0.15);
+}
+
+.piano-key-accidental {
+  background: #111 -webkit-linear-gradient(top, transparent, rgba(255, 255, 255, 0.075), transparent);
+  background: #111 linear-gradient(to bottom, transparent, rgba(255, 255, 255, 0.075), transparent);
+  box-shadow: inset 0 0 0 1px #000, inset 0 -4px 0 1px #000, inset 0 -5px 0 1px rgba(255, 255, 255, 0.2);
+  height: 20vh;
+  width: 3.2vw;
+  position: relative;
+  left: 1vw;
+  margin-left: -2.5vw;
+  margin-right: -2.5vw;
+}
+
+.piano-key-accidental.piano-key-pressed, .piano-key-accidental:active {
+  background: #FF69B4 -webkit-linear-gradient(top, transparent, rgba(251,141,196,0.5));
+  background: #FF69B4 linear-gradient(to bottom, transparent, rgba(251,141,196,0.5));
+  box-shadow: inset 0 0 0 1px #FF69B4, inset 0 -2px 0 1px #FF69B4, inset 0 -3px 0 1px rgba(251,141,196,0.2);
+}
+
+/* adding className for external accidental key press */
+.piano-key-accidental.piano-key-pressed-external, .piano-key-accidental:active, .activepianoaccidental {
+  background: #C5EFF7 -webkit-linear-gradient(top, transparent, rgba(89,171,227,0.5));
+  background: #C5EFF7 linear-gradient(to bottom, transparent, rgba(89,171,227,0.5));
+  box-shadow: inset 0 0 0 1px #C5EFF7, inset 0 -2px 0 1px #C5EFF7, inset 0 -3px 0 1px rgba(89,171,227,0.2);
+}
+
+
+#pianoSelectorP{
+
+    position: fixed;
+    font-size: 3em;
+    left: 49%;
+    top: 20%;
+}
+
+#rightArrowPianoDiv{
+    position: fixed;
+    left: 93%;
+    margin-top: 10%;
+    margin-bottom: 10%;
+    margin-left: 2%;
+    margin-right: 2%;
+}
+#leftArrowPianoDiv {
+    position: fixed;
+    margin-top: 10%;
+    margin-bottom: 10%;
+    margin-left: 2%;
+    margin-right: 2%;
 }

@@ -36,7 +36,8 @@ import c from "./sounds/snares3.mp3";
 //GLOBAL
 const socket = io();
 
-
+var pianoKeysDown = [];
+var pianoSelector =4;
 var seqOpen = false; 
 var eqOpen = false;
 var chatOpen = false;
@@ -87,8 +88,24 @@ var synth2 = new Tone.PolySynth({
     }
   }).toMaster();
 
+function remove(array, element) {
+    const index = array.indexOf(element);
+    
+    if (index !== -1) {
+        array.splice(index, 1);
+    }
+}
 
-
+function toggleSelectorLeft() {
+  if(pianoSelector > 1){
+    pianoSelector -= 1;
+  }
+}
+function toggleSelectorRight() {
+  if(pianoSelector < 8){
+    pianoSelector += 1;
+  }
+}
 function toggleSequencerLeft() {
   document.getElementById("sequencer1").style.left = "100%";
   document.getElementById("sequencer2").style.right = "0%";
@@ -489,15 +506,15 @@ function onRecordingReady(e) {
   audio.play();
 }
   //--------------------------------------Vibe-------------------------------------------//
-  TweenMax.to($("#3_light"), 0, {
+  TweenMax.to($("#q_light"), 0, {
 alpha: 0
 })
 
-function button3(upOrDown) {
+function button_q(upOrDown) {
   
   if(upOrDown == "down") {
 
-  TweenMax.to( $("#3_light"), .1, {
+  TweenMax.to( $("#q_light"), .1, {
     alpha: 1
   }) 
   
@@ -505,7 +522,7 @@ function button3(upOrDown) {
   
   if(upOrDown == "up") {
 
-  TweenMax.to( $("#3_light"), 1, {
+  TweenMax.to( $("#q_light"), 1, {
     alpha: 0
   }) 
   
@@ -514,25 +531,25 @@ function button3(upOrDown) {
   
 }
 
-$("#3_light").on("click", button3);
+$("#q_light").on("click", button_q);
 
 //button4
-TweenMax.to($("#4_light"), 0, {
+TweenMax.to($("#w_light"), 0, {
 alpha: 0
 })
 
-function button4(upOrDown) {
+function button_w(upOrDown) {
   
   if (upOrDown == "down") {
 
-  TweenMax.to( $("#4_light"), .1, {
+  TweenMax.to( $("#w_light"), .1, {
     alpha: 1
   })
 }
   
   if (upOrDown == "up") {
 
-  TweenMax.to( $("#4_light"), 1, {
+  TweenMax.to( $("#w_light"), 1, {
     alpha: 0
   })
   
@@ -540,25 +557,25 @@ function button4(upOrDown) {
   
 }
 
-$("#4_light").on("click", button4);
+$("#w_light").on("click", button_w);
 
 //button5
-TweenMax.to($("#5_light"), 0, {
+TweenMax.to($("#o_light"), 0, {
 alpha: 0
 })
 
-function button5(upOrDown) {
+function button_o(upOrDown) {
 
   if(upOrDown == "down") {
   
-  TweenMax.to( $("#5_light"), .1, {
+  TweenMax.to( $("#o_light"), .1, {
     alpha: 1
   })
 }
 
   if(upOrDown == "up") {
     
-    TweenMax.to( $("#5_light"), .3, {
+    TweenMax.to( $("#o_light"), .3, {
       alpha: 0
     })
     
@@ -567,25 +584,25 @@ function button5(upOrDown) {
   
 }
   
-$("#5_light").on("click", button5);
+$("#5_light").on("click", button_o);
 
 //button6
-TweenMax.to($("#6_light"), 0, {
+TweenMax.to($("#p_light"), 0, {
 alpha: 0
 })
 
-function button6(upOrDown) {
+function button_p(upOrDown) {
   
   if(upOrDown == "down") {
 
-  TweenMax.to( $("#6_light"), .1, {
+  TweenMax.to( $("#p_light"), .1, {
     alpha: 1
   })
 }
   
   if(upOrDown == "up") {
 
-    TweenMax.to( $("#6_light"), .3, {
+    TweenMax.to( $("#p_light"), .3, {
       alpha: 0
     })
     
@@ -594,55 +611,200 @@ function button6(upOrDown) {
   
 }
 
-$("#6_light").on("click", button6);
+$("#p_light").on("click", button_p);
 
 //button7
-TweenMax.to($("#7_light"), 0, {
+TweenMax.to($("#a_light"), 0, {
 alpha: 0
 })
 
-function button7(upOrDown) {
+function button_a(upOrDown) {
   
   if(upOrDown == "down") {
 
-  TweenMax.to( $("#7_light"), .1, {
+  TweenMax.to( $("#a_light"), .1, {
     alpha: 1
   })
 }
   
   if(upOrDown == "up") {
 
-  TweenMax.to( $("#7_light"), 1, {
+  TweenMax.to( $("#a_light"), 1, {
     alpha: 0
   })
 }
   }
 
-$("#7_light").on("click", button7);
+$("#a_light").on("click", button_a);
 
-//button8
-TweenMax.to($("#8_light"), 0, {
+//buttonk
+TweenMax.to($("#k_light"), 0, {
 alpha: 0
 })
 
-function button8(upOrDown) {
+function button_k(upOrDown) {
   
   if(upOrDown == "down") {
 
-  TweenMax.to( $("#8_light"), .1, {
+  TweenMax.to( $("#k_light"), .1, {
     alpha: 1
   })
 }
   
   if(upOrDown == "up") {
 
-  TweenMax.to( $("#8_light"), 1, {
+  TweenMax.to( $("#k_light"), 1, {
     alpha: 0
   })
 }
 }
 
-$("#8_light").on("click", button8);
+$("#k_light").on("click", button_k);
+
+
+//buttonl
+TweenMax.to($("#l_light"), 0, {
+alpha: 0
+})
+
+function button_l(upOrDown) {
+  
+  if(upOrDown == "down") {
+
+  TweenMax.to( $("#l_light"), .1, {
+    alpha: 1
+  })
+}
+  
+  if(upOrDown == "up") {
+
+  TweenMax.to( $("#l_light"), 1, {
+    alpha: 0
+  })
+}
+}
+
+$("#l_light").on("click", button_l);
+
+//button186
+TweenMax.to($("#186_light"), 0, {
+alpha: 0
+})
+
+function button_186(upOrDown) {
+  
+  if(upOrDown == "down") {
+
+  TweenMax.to( $("#186_light"), .1, {
+    alpha: 1
+  })
+}
+  
+  if(upOrDown == "up") {
+
+  TweenMax.to( $("#186_light"), 1, {
+    alpha: 0
+  })
+}
+}
+
+$("#186_light").on("click", button_186);
+
+//buttonz
+TweenMax.to($("#z_light"), 0, {
+alpha: 0
+})
+
+function button_z(upOrDown) {
+  
+  if(upOrDown == "down") {
+
+  TweenMax.to( $("#z_light"), .1, {
+    alpha: 1
+  })
+}
+  
+  if(upOrDown == "up") {
+
+  TweenMax.to( $("#z_light"), 1, {
+    alpha: 0
+  })
+}
+}
+
+$("#z_light").on("click", button_z);
+
+//button188
+TweenMax.to($("#188_light"), 0, {
+alpha: 0
+})
+
+function button_188(upOrDown) {
+  
+  if(upOrDown == "down") {
+
+  TweenMax.to( $("#188_light"), .1, {
+    alpha: 1
+  })
+}
+  
+  if(upOrDown == "up") {
+
+  TweenMax.to( $("#188_light"), 1, {
+    alpha: 0
+  })
+}
+}
+
+$("#188_light").on("click", button_188);
+
+//button190
+TweenMax.to($("#190_light"), 0, {
+alpha: 0
+})
+
+function button_190(upOrDown) {
+  
+  if(upOrDown == "down") {
+
+  TweenMax.to( $("#190_light"), .1, {
+    alpha: 1
+  })
+}
+  
+  if(upOrDown == "up") {
+
+  TweenMax.to( $("#190_light"), 1, {
+    alpha: 0
+  })
+}
+}
+
+$("#190_light").on("click", button_190);
+
+//button191
+TweenMax.to($("#191_light"), 0, {
+alpha: 0
+})
+
+function button_191(upOrDown) {
+  
+  if(upOrDown == "down") {
+
+  TweenMax.to( $("#191_light"), .1, {
+    alpha: 1
+  })
+}
+  
+  if(upOrDown == "up") {
+
+  TweenMax.to( $("#191_light"), 1, {
+    alpha: 0
+  })
+}
+}
+
+$("#191_light").on("click", button_191);
 
 //button_e
 TweenMax.to($("#e_light"), 0, {
@@ -1083,29 +1245,53 @@ $("body").on("keyup", handleKeyUp);
 function handleKeyPress(event) {
   console.log(event);
   
-  //3 = 51
-  if ( event.which == 51 ) {
-     button3("down");
+  //q = 51
+  if ( event.which == 81 ) {
+     button_q("down");
   }
   //4 = 52
-  if ( event.which == 52 ) {
-     button4("down");
+  if ( event.which == 87 ) {
+     button_w("down");
   }
   //5 = 53
-  if ( event.which == 53 ) {
-     button5("down");
+  if ( event.which == 79 ) {
+     button_o("down");
   }
   //6 = 54
-  if ( event.which == 54 ) {
-     button6("down");
+  if ( event.which == 80 ) {
+     button_p("down");
   }
-  //7 = 55
-  if ( event.which == 55 ) {
-     button7("down");
+  //a = 55
+  if ( event.which == 65 ) {
+     button_a("down");
   }
-  //8 = 56
-  if ( event.which == 56 ) {
-     button8("down");
+  //k = 56
+  if ( event.which == 75 ) {
+     button_k("down");
+  }
+  //k = 56
+  if ( event.which == 76 ) {
+     button_l("down");
+  }
+  //; = 186
+  if ( event.which == 186 ) {
+     button_186("down");
+  }
+  //z = 90
+  if ( event.which == 90 ) {
+     button_z("down");
+  }
+  //, = 188
+  if ( event.which == 188 ) {
+     button_188("down");
+  }
+  //. = 190
+  if ( event.which == 190 ) {
+     button_190("down");
+  }
+  /// = 191
+  if ( event.which == 191 ) {
+     button_191("down");
   }
   //e = 69
   if ( event.which == 69 ) {
@@ -1180,20 +1366,49 @@ function handleKeyPress(event) {
      button_m("down");
   }
 }
+
 function handleKeyUp(event) {
   
-  if(event.which == 51) {
-    button3("up"); }
-  if(event.which == 52) {
-    button4("up"); }
-  if(event.which == 53) {
-    button5("up"); }
-  if(event.which == 54) {
-    button6("up"); }
-  if(event.which == 55) {
-    button7("up"); }
-  if(event.which == 56) {
-    button8("up"); }
+  if(event.which == 81) {
+    button_q("up"); }
+  if(event.which == 87) {
+    button_w("up"); }
+  if(event.which == 79) {
+    button_o("up"); }
+  if(event.which == 80) {
+    button_p("up"); }
+  //a = 55
+  if ( event.which == 65 ) {
+     button_a("up");
+  }
+  //k = 56
+  if ( event.which == 75 ) {
+     button_k("up");
+  }
+  //k = 56
+  if ( event.which == 76 ) {
+     button_l("up");
+  }
+  //; = 186
+  if ( event.which == 186 ) {
+     button_186("up");
+  }
+  //z = 90
+  if ( event.which == 90 ) {
+     button_z("up");
+  }
+  //, = 188
+  if ( event.which == 188 ) {
+     button_188("up");
+  }
+  //. = 190
+  if ( event.which == 190 ) {
+     button_190("up");
+  }
+  /// = 191
+  if ( event.which == 191 ) {
+     button_191("up");
+  }
   if(event.which == 69) {
     button_e("up"); }
   if(event.which == 82) {
@@ -1246,27 +1461,26 @@ function handleKeyUp(event) {
   // https://github.com/stuartmemo/qwerty-hancock
   keyboard: {
     // Lower octave.
-    a: 'Cl',
-    w: 'C#l',
-    s: 'Dl',
-    e: 'D#l',
-    d: 'El',
-    f: 'Fl',
-    t: 'F#l',
-    g: 'Gl',
-    y: 'G#l',
-    h: 'Al',
-    u: 'A#l',
-    j: 'Bl',
+    a: 'F3',
+    w: 'F#3',
+    s: 'G3',
+    e: 'G#3',
+    d: 'A3',
+    r: 'A#3',
+    f: 'B3',
     // Upper octave.
-    k: 'Cu',
-    o: 'C#u',
-    l: 'Du',
-    p: 'D#u',
-    ';': 'Eu',
-    "'": 'Fu',
-    ']': 'F#u',
-    '\\': 'Gu'
+    g: 'C4',
+    y: 'C#4',
+    h: 'D4',
+    u: 'D#4',
+    j: 'E4',
+    k: 'F4',
+    o: 'F#4',
+    l: 'G4',
+    p: 'G#4',
+    ';': 'A4',
+    "'": 'B4',
+    '[': 'A#4'
       }
     };
 
@@ -1331,7 +1545,82 @@ function handleKeyUp(event) {
 
 
     //--------------INTERACTION---------------//
+$(document).mousedown(function(event) {
+    var ctx;
+    if(event.target.id.includes("piano_key_")){
 
+
+    if(event.target.id.charAt(11) == '#'){
+      ctx = event.target.id.slice(10, 13);
+    }
+      else {
+    ctx = event.target.id.slice(10, 12);
+    }
+
+    if(pianoSelector == 1){
+
+
+    }
+    let lowerPiano = pianoSelector -1;
+    if(ctx.charAt(1)==3){
+      ctx = ctx.charAt(0) + lowerPiano;
+    } else if(ctx.charAt(1) == 4){
+      ctx = ctx.charAt(0) + pianoSelector;
+    }
+    if(ctx.charAt(2)==3){
+      ctx = ctx.charAt(0) + ctx.charAt(1) + lowerPiano;
+    } else if(ctx.charAt(2) ==4){
+      ctx = ctx.charAt(0) + ctx.charAt(1) + pianoSelector;
+    }
+    console.log(ctx + "down");
+
+    if(!pianoKeysDown.includes(ctx)){
+    pianoKeysDown.push(ctx);
+    socket.emit('PianoKeyPressed', ctx);
+    }
+
+    
+
+  }
+});
+
+$('.piano').mouseup(function(event){
+ var ctx;
+    if(event.target.id.includes("piano_key_")){
+
+
+    if(event.target.id.charAt(11) == '#'){
+      ctx = event.target.id.slice(10, 13);
+    }
+      else {
+    ctx = event.target.id.slice(10, 12);
+    }
+
+    if(pianoSelector == 1){
+
+
+    }
+    let lowerPiano = pianoSelector -1;
+    if(ctx.charAt(1)==3){
+      ctx = ctx.charAt(0) + lowerPiano;
+    } else if(ctx.charAt(1) == 4){
+      ctx = ctx.charAt(0) + pianoSelector;
+    }
+    if(ctx.charAt(2)==3){
+      ctx = ctx.charAt(0) + ctx.charAt(1) + lowerPiano;
+    } else if(ctx.charAt(2) ==4){
+      ctx = ctx.charAt(0) + ctx.charAt(1) + pianoSelector;
+    }
+    console.log(ctx + "up");
+    synth2.triggerRelease(ctx);
+
+      socket.emit('PianoKeyReleased', ctx);
+      synth2.triggerRelease(ctx);
+      //pianoKeysDown.filter(e => e !== ctx)
+      remove(pianoKeysDown, ctx);
+  }
+
+});
 
   //rendering 
   function addNewCircle(d){
@@ -1374,17 +1663,49 @@ function handleKeyUp(event) {
           case "instrument":
 
             var key = event.key;
-            
-      if(instrument[key]){
-          var note = instrument[key].replace('l', octave).replace('u', octave + 1);
-      }
-      
-             if (typeof(note) != 'undefined') {
-                socket.emit('PianoKeyPressed', note);
-                //synth2.triggerAttack(note);
+          if(instrument[key]){
+              var ctx = instrument[key];
+              var id = "piano_key_"+ctx
+              var k = document.getElementById(id)
 
-              } else {
-              }
+            let lowerPiano = pianoSelector -1;
+            if(ctx.charAt(1)==3){
+              ctx = ctx.charAt(0) + lowerPiano;
+
+      
+            //make blue
+
+            k.className += " activepiano"
+
+            } else if(ctx.charAt(1) == 4){
+              ctx = ctx.charAt(0) + pianoSelector;
+
+      
+            //make blue
+            k.className += " activepiano"
+
+            }
+            if(ctx.charAt(2)==3){
+              ctx = ctx.charAt(0) + ctx.charAt(1) + lowerPiano;
+      
+            //make blue
+
+            k.className += " activepianoaccidental"
+            } else if(ctx.charAt(2) ==4){
+              ctx = ctx.charAt(0) + ctx.charAt(1) + pianoSelector;
+      
+            //make blue
+
+            k.className += " activepianoaccidental"
+            }
+                if(!pianoKeysDown.includes(ctx)){
+                pianoKeysDown.push(ctx);
+                socket.emit('PianoKeyPressed', ctx);
+                }
+
+
+          } 
+
           break;
 
 
@@ -1443,11 +1764,35 @@ function handleKeyUp(event) {
       var key = event.key;
       
       if(instrument[key]){
-          var note = instrument[key].replace('l', octave).replace('u', octave + 1);
-      }
+          var ctx = instrument[key];
+          var id = "piano_key_"+ctx
+          var k = document.getElementById(id)
+        let lowerPiano = pianoSelector -1;
+        if(ctx.charAt(1)==3){
+          ctx = ctx.charAt(0) + lowerPiano;
+
+          k.className = k.className.replace(/ activepiano/g, "");
+           
+        } else if(ctx.charAt(1) == 4){
+          ctx = ctx.charAt(0) + pianoSelector;
+          k.className = k.className.replace(/ activepiano/g, "");
+           
+        }
+        if(ctx.charAt(2)==3){
+          ctx = ctx.charAt(0) + ctx.charAt(1) + lowerPiano;
+          k.className = k.className.replace(/ activepianoaccidental/g, "");
+        } else if(ctx.charAt(2) ==4){
+          ctx = ctx.charAt(0) + ctx.charAt(1) + pianoSelector;
+          k.className = k.className.replace(/ activepianoaccidental/g, "");
+        }
+
+
+          }
       
-      socket.emit('PianoKeyReleased', note);
-      synth2.triggerRelease(note);
+      socket.emit('PianoKeyReleased', ctx);
+      synth2.triggerRelease(ctx);
+      //pianoKeysDown.filter(e => e !== ctx)
+      remove(pianoKeysDown, ctx);
 
     }
 
@@ -1465,6 +1810,9 @@ function handleKeyUp(event) {
         //Play sound base on content of the li
         socket.emit('buttonPressed', e.target.textContent);
       })
+
+
+
       button.addEventListener('mouseup', function(e){
         //release on mouseup
         //synth.triggerRelease()
@@ -2025,6 +2373,7 @@ function handleKeyUp(event) {
   }//End Of componentWillUpdate 
 
   componentDidUpdate(){
+
     // DRUM
 
 
@@ -2416,6 +2765,7 @@ function handleKeyUp(event) {
 
       default:
         data = 'instrument';
+        this.setState({first:"Keyboard1"})
         break;
 
     }
@@ -2594,14 +2944,14 @@ function handleKeyUp(event) {
         {this.state.first == "Drum" && <Drum/>}
         {this.state.first == "DrumSequencer" && <DrumSequencer/>}
         {this.state.first == "Vibe" && <Vibe/>}
-        
+        <div id="btn_Menu">
         <button class="button" onClick={this.handleSynth.bind(this)}>CHANGE SYNTH</button>
         <button class="button"  onClick={this.handleInstrument.bind(this)}>CHANGE KEYBOARD/VIBE</button>
         <button class="button"  onClick={this.handleDrum.bind(this)}>DRUM</button>
         <button class="button"  onClick={this.handle.bind(this)}>KEYBOARD2</button>
         <p><button class="button" id="record">Record audio</button> <button class="button" id="stop">Stop</button></p>
         <p><audio id="audio" controls></audio></p>
-
+        </div>
         <DrumSequencer/>
 
         <audio id="Big-Rack-Tom-Audio">
@@ -2685,24 +3035,41 @@ class Keyboard1 extends React.Component {
   render (){
 
     return (
-      <div className="component-app">
+      <div>
+          <div id="leftArrowPianoDiv" onClick={toggleSelectorLeft}>
+          <img src={leftArrow} id="leftArrowPiano"></img>
 
-        <ul className="set">
-          <li className="white b" id="B4">B4</li>
-          <li className="black as"></li>
-          <li className="white a" id="A4">A4</li>
-          <li className="black gs"></li>
-          <li className="white g" id="G4">G4</li>
-          <li className="black fs"></li>
-          <li className="white f" id="F4">F4</li>
-          <li className="white e" id="E4">E4</li>
-          <li className="black ds"></li>
-          <li className="white d" id="D4">D4</li>
-          <li className="black cs"></li>
-          <li className="white c" id="C4">C4</li>
-        </ul>
+          </div> 
 
+          <div id="rightArrowPianoDiv"  onClick={toggleSelectorRight}>
+          <img src={rightArrow} id="rightArrowPiano"></img>
+          </div>
+
+          <p id="pianoSelectorP">{pianoSelector}</p>
+
+    <div className="piano">
+      <div className="piano-key piano-key-natural piano-key-octave-3 piano-key-F piano-key-Eb piano-key-F3 piano-key-Eb3" id="piano_key_F3" data-note="F3"></div>
+      <div className="piano-key piano-key-accidental piano-key-octave-3 piano-key-F# piano-key-Gb piano-key-F#3 piano-key-Gb3" id="piano_key_F#3" data-note="F#3"></div>
+      <div className="piano-key piano-key-natural piano-key-octave-3 piano-key-G piano-key-G3" id="piano_key_G3" data-note="G3"></div>
+      <div className="piano-key piano-key-accidental piano-key-octave-3 piano-key-G# piano-key-Ab piano-key-G#3 piano-key-Ab3" id="piano_key_G#3" data-note="G#3"></div>
+      <div className="piano-key piano-key-natural piano-key-octave-3 piano-key-A piano-key-A3" id="piano_key_A3" data-note="A3"></div>
+      <div className="piano-key piano-key-accidental piano-key-octave-3 piano-key-A# piano-key-Bb piano-key-A#3 piano-key-Bb3" id="piano_key_A#3" data-note="A#3"></div>
+      <div className="piano-key piano-key-natural piano-key-octave-3 piano-key-B piano-key-Cb piano-key-B3 piano-key-Cb3" id="piano_key_B3" data-note="B3"></div>
+      <div className="piano-key piano-key-natural piano-key-octave-4 piano-key-C piano-key-B# piano-key-C4 piano-key-B#4" id="piano_key_C4" data-note="C4"></div>
+      <div className="piano-key piano-key-accidental piano-key-octave-4 piano-key-C# piano-key-Db piano-key-C#4 piano-key-Db4" id="piano_key_C#4" data-note="C#4"></div>
+      <div className="piano-key piano-key-natural piano-key-octave-4 piano-key-D piano-key-D4" id="piano_key_D4" data-note="D4"></div>
+      <div className="piano-key piano-key-accidental piano-key-octave-4 piano-key-D# piano-key-Eb piano-key-D#4 piano-key-Eb4" id="piano_key_D#4" data-note="D#4"></div>
+      <div className="piano-key piano-key-natural piano-key-octave-4 piano-key-E piano-key-Fb piano-key-E4 piano-key-Fb4" id="piano_key_E4" data-note="E4"></div>
+      <div className="piano-key piano-key-natural piano-key-octave-4 piano-key-F piano-key-Eb piano-key-F4 piano-key-Eb4" id="piano_key_F4" data-note="F4"></div>
+      <div className="piano-key piano-key-accidental piano-key-octave-4 piano-key-F# piano-key-Gb piano-key-F#4 piano-key-Gb4" id="piano_key_F#4" data-note="F#4"></div>
+      <div className="piano-key piano-key-natural piano-key-octave-4 piano-key-G piano-key-G4" id="piano_key_G4" data-note="G4"></div>
+      <div className="piano-key piano-key-accidental piano-key-octave-4 piano-key-G# piano-key-Ab piano-key-G#4 piano-key-Ab4" id="piano_key_G#4" data-note="G#4"></div>
+      <div className="piano-key piano-key-natural piano-key-octave-4 piano-key-A piano-key-A4" id="piano_key_A4" data-note="Al"></div>
+      <div className="piano-key piano-key-accidental piano-key-octave-4 piano-key-A# piano-key-Bb piano-key-A#4 piano-key-Bb4" id="piano_key_A#4" data-note="A#4"></div>
+      <div className="piano-key piano-key-natural piano-key-octave-4 piano-key-B piano-key-Cb piano-key-B4 piano-key-Cb4" id="piano_key_B4" data-note="B4"></div>
+    </div>
         </div>
+
         )
   }
 }
@@ -2749,72 +3116,72 @@ class Drum extends React.Component {
     <g id="Snare">
       <g id="Snare-Drum">
         
-          <rect x="1219" y="885" fill="#0BC1F8" stroke="#333333" stroke-width="8" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" width="223" height="110"/>
-        <line fill="none" stroke="#0891BA" stroke-width="8" stroke-miterlimit="10" x1="1438" y1="914" x2="1223" y2="914"/>
+          <rect x="1219" y="885" fill="#0BC1F8" stroke="#333333" strokeWidth="8" strokeMiterlimit="round" stroke-linejoin="round" stroke-miterlimit="10" width="223" height="110"/>
+        <line fill="none" stroke="#0891BA" strokeWidth="8" stroke-miterlimit="10" x1="1438" y1="914" x2="1223" y2="914"/>
         <g>
           
-            <path fill="#EEFAF9" stroke="#333333" stroke-width="6" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" d="
+            <path fill="#EEFAF9" stroke="#333333" strokeWidth="6" strokeMiterlimit="round" stroke-linejoin="round" stroke-miterlimit="10" d="
             M1227,950c0,4.4-3.6,8-8,8l0,0c-4.4,0-8-3.6-8-8v-20c0-4.4,3.6-8,8-8l0,0c4.4,0,8,3.6,8,8V950z"/>
           
-            <path fill="#EEFAF9" stroke="#333333" stroke-width="6" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" d="
+            <path fill="#EEFAF9" stroke="#333333" strokeWidth="6" strokeMiterlimit="round" stroke-linejoin="round" stroke-miterlimit="10" d="
             M1450,950c0,4.4-3.6,8-8,8l0,0c-4.4,0-8-3.6-8-8v-20c0-4.4,3.6-8,8-8l0,0c4.4,0,8,3.6,8,8V950z"/>
           <g>
             
-              <line fill="none" stroke="#333333" stroke-width="8" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" x1="1293" y1="971" x2="1293" y2="958"/>
+              <line fill="none" stroke="#333333" strokeWidth="8" strokeMiterlimit="round" stroke-linejoin="round" stroke-miterlimit="10" x1="1293" y1="971" x2="1293" y2="958"/>
             
-              <line fill="none" stroke="#333333" stroke-width="8" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" x1="1293" y1="922" x2="1293" y2="909"/>
+              <line fill="none" stroke="#333333" strokeWidth="8" strokeMiterlimit="round" stroke-linejoin="round" stroke-miterlimit="10" x1="1293" y1="922" x2="1293" y2="909"/>
             
-              <path fill="#EEFAF9" stroke="#333333" stroke-width="6" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" d="
+              <path fill="#EEFAF9" stroke="#333333" strokeWidth="6" strokeMiterlimit="round" stroke-linejoin="round" stroke-miterlimit="10" d="
               M1301,950c0,4.4-3.6,8-8,8l0,0c-4.4,0-8-3.6-8-8v-20c0-4.4,3.6-8,8-8l0,0c4.4,0,8,3.6,8,8V950z"/>
           </g>
           <g>
             
-              <line fill="none" stroke="#333333" stroke-width="8" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" x1="1368" y1="971" x2="1368" y2="958"/>
+              <line fill="none" stroke="#333333" strokeWidth="8" strokeMiterlimit="round" stroke-linejoin="round" stroke-miterlimit="10" x1="1368" y1="971" x2="1368" y2="958"/>
             
-              <line fill="none" stroke="#333333" stroke-width="8" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" x1="1368" y1="922" x2="1368" y2="909"/>
+              <line fill="none" stroke="#333333" strokeWidth="8" strokeMiterlimit="round" stroke-linejoin="round" stroke-miterlimit="10" x1="1368" y1="922" x2="1368" y2="909"/>
             
-              <path fill="#EEFAF9" stroke="#333333" stroke-width="6" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" d="
+              <path fill="#EEFAF9" stroke="#333333" strokeWidth="6" strokeMiterlimit="round" stroke-linejoin="round" stroke-miterlimit="10" d="
               M1376,950c0,4.4-3.6,8-8,8l0,0c-4.4,0-8-3.6-8-8v-20c0-4.4,3.6-8,8-8l0,0c4.4,0,8,3.6,8,8V950z"/>
           </g>
         </g>
         
-          <rect x="1209" y="885" fill="#EEFAF9" stroke="#333333" stroke-width="8" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" width="241" height="21"/>
+          <rect x="1209" y="885" fill="#EEFAF9" stroke="#333333" strokeWidth="8" strokeMiterlimit="round" stroke-linejoin="round" stroke-miterlimit="10" width="241" height="21"/>
         
-          <rect x="1209" y="974" fill="#EEFAF9" stroke="#333333" stroke-width="8" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" width="241" height="21"/>
-        <line fill="none" stroke="#BCECE8" stroke-width="4" stroke-miterlimit="10" x1="1213" y1="900" x2="1446" y2="900"/>
-        <line fill="none" stroke="#BCECE8" stroke-width="4" stroke-miterlimit="10" x1="1213" y1="989" x2="1446" y2="989"/>
+          <rect x="1209" y="974" fill="#EEFAF9" stroke="#333333" strokeWidth="8" strokeMiterlimit="round" stroke-linejoin="round" stroke-miterlimit="10" width="241" height="21"/>
+        <line fill="none" stroke="#BCECE8" strokeWidth="4" stroke-miterlimit="10" x1="1213" y1="900" x2="1446" y2="900"/>
+        <line fill="none" stroke="#BCECE8" strokeWidth="4" stroke-miterlimit="10" x1="1213" y1="989" x2="1446" y2="989"/>
       </g>
       <g id="Snare-Stand">
         
-          <rect x="1321" y="1087" fill="#EEFAF9" stroke="#333333" stroke-width="6" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" width="17" height="95"/>
+          <rect x="1321" y="1087" fill="#EEFAF9" stroke="#333333" strokeWidth="6" strokeMiterlimit="round" stroke-linejoin="round" stroke-miterlimit="10" width="17" height="95"/>
         <g>
           <g>
             
-              <path fill="#EEFAF9" stroke="#333333" stroke-width="6" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" d="
+              <path fill="#EEFAF9" stroke="#333333" strokeWidth="6" strokeMiterlimit="round" stroke-linejoin="round" stroke-miterlimit="10" d="
               M1403.4,1256c-3.4,3.4-8.8,3.3-12.1-0.1l-66.7-66.7c-3.4-3.4-3.5-8.7-0.1-12.1l0,0c3.4-3.4,8.8-3.3,12.1,0.1l66.7,66.7
               C1406.6,1247.2,1406.7,1252.6,1403.4,1256L1403.4,1256z"/>
             
-              <line fill="none" stroke="#BCECE8" stroke-width="4" stroke-miterlimit="10" x1="1395.4" y1="1252.8" x2="1328.2" y2="1185.6"/>
+              <line fill="none" stroke="#BCECE8" strokeWidth="4" stroke-miterlimit="10" x1="1395.4" y1="1252.8" x2="1328.2" y2="1185.6"/>
             
-              <path fill="#5C5C5C" stroke="#333333" stroke-width="6" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" d="
+              <path fill="#5C5C5C" stroke="#333333" strokeWidth="6" strokeMiterlimit="round" stroke-linejoin="round" stroke-miterlimit="10" d="
               M1403.8,1244.4l-12,12c0,0,6.4,10.8,8,12.4c4.7,4.7,11.9,4.3,16.6-0.4c4.7-4.7,5.1-11.9,0.5-16.6
               C1415.3,1250.4,1403.8,1244.4,1403.8,1244.4z"/>
           </g>
           <g>
             
-              <path fill="#EEFAF9" stroke="#333333" stroke-width="6" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" d="
+              <path fill="#EEFAF9" stroke="#333333" strokeWidth="6" strokeMiterlimit="round" stroke-linejoin="round" stroke-miterlimit="10" d="
               M1257.5,1255.7c-3.4-3.4-3.3-8.8,0.1-12.1l66.7-66.7c3.4-3.4,8.7-3.5,12.1-0.1l0,0c3.4,3.4,3.3,8.8-0.1,12.1l-66.7,66.7
               C1266.2,1259,1260.8,1259.1,1257.5,1255.7L1257.5,1255.7z"/>
             
-              <line fill="none" stroke="#BCECE8" stroke-width="4" stroke-miterlimit="10" x1="1265.7" y1="1252.8" x2="1330.5" y2="1187.9"/>
+              <line fill="none" stroke="#BCECE8" strokeWidth="4" stroke-miterlimit="10" x1="1265.7" y1="1252.8" x2="1330.5" y2="1187.9"/>
             
-              <path fill="#5C5C5C" stroke="#333333" stroke-width="6" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" d="
+              <path fill="#5C5C5C" stroke="#333333" strokeWidth="6" strokeMiterlimit="round" stroke-linejoin="round" stroke-miterlimit="10" d="
               M1269,1256.1l-12-12c0,0-10.8,6.4-12.4,8c-4.7,4.7-4.3,11.9,0.4,16.6c4.7,4.7,11.9,5.1,16.6,0.5
               C1263,1267.7,1269,1256.1,1269,1256.1z"/>
           </g>
           <g>
             
-              <path fill="#EEFAF9" stroke="#333333" stroke-width="6" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" d="
+              <path fill="#EEFAF9" stroke="#333333" strokeWidth="6" strokeMiterlimit="round" stroke-linejoin="round" stroke-miterlimit="10" d="
               M1317.1,1182.8c0-7.5,6-13.5,13.5-13.5s13.5,6,13.5,13.5c0,7.5-6,13.5-13.5,13.5S1317.1,1190.2,1317.1,1182.8z"/>
             <path fill="#333333" d="M1333,1179.5c-1.8-1.3-4.3-0.9-5.6,0.9c-1.3,1.8-0.9,4.3,0.9,5.6c1.8,1.3,4.3,0.9,5.6-0.9
               C1335.2,1183.3,1334.8,1180.8,1333,1179.5z"/>
@@ -2824,52 +3191,52 @@ class Drum extends React.Component {
           <g>
             <g>
               
-                <path fill="#5C5C5C" stroke="#333333" stroke-width="6" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" d="
+                <path fill="#5C5C5C" stroke="#333333" strokeWidth="6" strokeMiterlimit="round" stroke-linejoin="round" stroke-miterlimit="10" d="
                 M1210,979.6c0-3.7-2.8-6.6-6.5-6.6c-3.7,0-6.5,3-6.5,6.6V992h13V979.6z"/>
               
-                <path fill="#EEFAF9" stroke="#333333" stroke-width="6" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" d="
+                <path fill="#EEFAF9" stroke="#333333" strokeWidth="6" strokeMiterlimit="round" stroke-linejoin="round" stroke-miterlimit="10" d="
                 M1210,997.3V992h-13v10c0,3.6,2.5,7.1,6.1,7.5l122.3,13.6l1.2-12.9L1210,997.3z"/>
               <path fill="#BCECE8" d="M1203.8,1006.6l118.8,13.3l0.2-2l-121.6-13.6C1201.6,1005.5,1202.6,1006.4,1203.8,1006.6z"/>
             </g>
             <g>
               
-                <path fill="#EEFAF9" stroke="#333333" stroke-width="6" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" d="
+                <path fill="#EEFAF9" stroke="#333333" strokeWidth="6" strokeMiterlimit="round" stroke-linejoin="round" stroke-miterlimit="10" d="
                 M1462,992h-13v5.3l-114.7,12.8l1.6,12.9l120.5-13.5c3.6-0.4,5.5-4,5.5-7.5l0,0V992z"/>
               <path fill="#BCECE8" d="M1338.5,1017.7l0.2,2l117.8-13.1c1.1-0.1,1.9-0.9,2.5-1.9L1338.5,1017.7z"/>
               
-                <path fill="#5C5C5C" stroke="#333333" stroke-width="6" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" d="
+                <path fill="#5C5C5C" stroke="#333333" strokeWidth="6" strokeMiterlimit="round" stroke-linejoin="round" stroke-miterlimit="10" d="
                 M1462,979.6c0-3.7-2.8-6.6-6.5-6.6c-3.7,0-6.5,3-6.5,6.6V992h13V979.6z"/>
             </g>
           </g>
           <g>
             <g>
               
-                <rect x="1323.6" y="1017" transform="matrix(1 5.709041e-03 -5.709041e-03 1 6.0417 -7.5767)" fill="#EEFAF9" stroke="#333333" stroke-width="6" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" width="13" height="75"/>
+                <rect x="1323.6" y="1017" transform="matrix(1 5.709041e-03 -5.709041e-03 1 6.0417 -7.5767)" fill="#EEFAF9" stroke="#333333" strokeWidth="6" strokeMiterlimit="round" stroke-linejoin="round" stroke-miterlimit="10" width="13" height="75"/>
               
-                <circle fill="#EEFAF9" stroke="#333333" stroke-width="6" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" cx="1330.6" cy="1016.8" r="8.5"/>
+                <circle fill="#EEFAF9" stroke="#333333" strokeWidth="6" strokeMiterlimit="round" stroke-linejoin="round" stroke-miterlimit="10" cx="1330.6" cy="1016.8" r="8.5"/>
               <circle fill="#333333" cx="1330.6" cy="1016.8" r="2"/>
             </g>
             <g>
               
-                <path fill="#EEFAF9" stroke="#333333" stroke-width="6" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" d="
+                <path fill="#EEFAF9" stroke="#333333" strokeWidth="6" strokeMiterlimit="round" stroke-linejoin="round" stroke-miterlimit="10" d="
                 M1418.4,1004.6c-2.5-2.6-6.6-2.6-9.2-0.1l-83.8,82.9l9.1,9.2l83.8-82.9C1420.9,1011.2,1420.9,1007.1,1418.4,1004.6z"/>
-              <line fill="none" stroke="#BCECE8" stroke-width="2" stroke-miterlimit="10" x1="1408.9" y1="1017" x2="1344.2" y2="1081"/>
+              <line fill="none" stroke="#BCECE8" strokeWidth="2" stroke-miterlimit="10" x1="1408.9" y1="1017" x2="1344.2" y2="1081"/>
               
-                <circle fill="#EEFAF9" stroke="#333333" stroke-width="6" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" cx="1414.6" cy="1007.8" r="8.5"/>
+                <circle fill="#EEFAF9" stroke="#333333" strokeWidth="6" strokeMiterlimit="round" stroke-linejoin="round" stroke-miterlimit="10" cx="1414.6" cy="1007.8" r="8.5"/>
               <circle fill="#333333" cx="1414.6" cy="1007.8" r="2"/>
             </g>
             <g>
               
-                <path fill="#EEFAF9" stroke="#333333" stroke-width="6" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" d="
+                <path fill="#EEFAF9" stroke="#333333" strokeWidth="6" strokeMiterlimit="round" stroke-linejoin="round" stroke-miterlimit="10" d="
                 M1243.7,1003.6c-2.6,2.5-2.6,6.6-0.1,9.2l82.9,83.8l9.2-9.1l-82.9-83.8C1250.4,1001.1,1246.3,1001.1,1243.7,1003.6z"/>
-              <line fill="none" stroke="#BCECE8" stroke-width="2" stroke-miterlimit="10" x1="1247.8" y1="1011" x2="1317.1" y2="1081"/>
+              <line fill="none" stroke="#BCECE8" strokeWidth="2" stroke-miterlimit="10" x1="1247.8" y1="1011" x2="1317.1" y2="1081"/>
               
-                <circle fill="#EEFAF9" stroke="#333333" stroke-width="6" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" cx="1248.6" cy="1007.8" r="8.5"/>
+                <circle fill="#EEFAF9" stroke="#333333" strokeWidth="6" strokeMiterlimit="round" stroke-linejoin="round" stroke-miterlimit="10" cx="1248.6" cy="1007.8" r="8.5"/>
               <circle fill="#333333" cx="1248.6" cy="1007.8" r="2"/>
             </g>
           </g>
           
-            <path fill="#EEFAF9" stroke="#333333" stroke-width="6" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" d="
+            <path fill="#EEFAF9" stroke="#333333" strokeWidth="6" strokeMiterlimit="round" stroke-linejoin="round" stroke-miterlimit="10" d="
             M1348,1089.1c0,4.9-4,8.9-8.9,8.9h-18.2c-4.9,0-8.9-4-8.9-8.9v-4.2c0-4.9,4-8.9,8.9-8.9h18.2c4.9,0,8.9,4,8.9,8.9V1089.1z"/>
         </g>
       </g>
@@ -2877,100 +3244,100 @@ class Drum extends React.Component {
     <g id="Floor-Tom">
       <g id="Floor-Tom-Drum">
         
-          <rect x="541" y="878" fill="#0BC1F8" stroke="#333333" stroke-width="8" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" width="287" height="320"/>
-        <line fill="none" stroke="#0891BA" stroke-width="8" stroke-miterlimit="10" x1="824" y1="907" x2="545" y2="907"/>
+          <rect x="541" y="878" fill="#0BC1F8" stroke="#333333" strokeWidth="8" strokeMiterlimit="round" stroke-linejoin="round" stroke-miterlimit="10" width="287" height="320"/>
+        <line fill="none" stroke="#0891BA" strokeWidth="8" stroke-miterlimit="10" x1="824" y1="907" x2="545" y2="907"/>
         <g>
           <g>
             
-              <path fill="#EEFAF9" stroke="#333333" stroke-width="6" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" d="
+              <path fill="#EEFAF9" stroke="#333333" strokeWidth="6" strokeMiterlimit="round" stroke-linejoin="round" stroke-miterlimit="10" d="
               M549,940c0,4.4-3.6,8-8,8l0,0c-4.4,0-8-3.6-8-8v-20c0-4.4,3.6-8,8-8l0,0c4.4,0,8,3.6,8,8V940z"/>
             
-              <path fill="#EEFAF9" stroke="#333333" stroke-width="6" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" d="
+              <path fill="#EEFAF9" stroke="#333333" strokeWidth="6" strokeMiterlimit="round" stroke-linejoin="round" stroke-miterlimit="10" d="
               M836,940c0,4.4-3.6,8-8,8l0,0c-4.4,0-8-3.6-8-8v-20c0-4.4,3.6-8,8-8l0,0c4.4,0,8,3.6,8,8V940z"/>
             <g>
               
-                <line fill="none" stroke="#333333" stroke-width="8" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" x1="637" y1="912" x2="637" y2="899"/>
+                <line fill="none" stroke="#333333" strokeWidth="8" strokeMiterlimit="round" stroke-linejoin="round" stroke-miterlimit="10" x1="637" y1="912" x2="637" y2="899"/>
               
-                <path fill="#EEFAF9" stroke="#333333" stroke-width="6" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" d="
+                <path fill="#EEFAF9" stroke="#333333" strokeWidth="6" strokeMiterlimit="round" stroke-linejoin="round" stroke-miterlimit="10" d="
                 M645,940c0,4.4-3.6,8-8,8l0,0c-4.4,0-8-3.6-8-8v-20c0-4.4,3.6-8,8-8l0,0c4.4,0,8,3.6,8,8V940z"/>
             </g>
             <g>
               
-                <line fill="none" stroke="#333333" stroke-width="8" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" x1="732" y1="912" x2="732" y2="899"/>
+                <line fill="none" stroke="#333333" strokeWidth="8" strokeMiterlimit="round" stroke-linejoin="round" stroke-miterlimit="10" x1="732" y1="912" x2="732" y2="899"/>
               
-                <path fill="#EEFAF9" stroke="#333333" stroke-width="6" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" d="
+                <path fill="#EEFAF9" stroke="#333333" strokeWidth="6" strokeMiterlimit="round" stroke-linejoin="round" stroke-miterlimit="10" d="
                 M740,940c0,4.4-3.6,8-8,8l0,0c-4.4,0-8-3.6-8-8v-20c0-4.4,3.6-8,8-8l0,0c4.4,0,8,3.6,8,8V940z"/>
             </g>
           </g>
           
-            <rect x="532" y="878" fill="#EEFAF9" stroke="#333333" stroke-width="8" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" width="304" height="21"/>
-          <line fill="none" stroke="#BCECE8" stroke-width="4" stroke-miterlimit="10" x1="536" y1="893" x2="832" y2="893"/>
+            <rect x="532" y="878" fill="#EEFAF9" stroke="#333333" strokeWidth="8" strokeMiterlimit="round" stroke-linejoin="round" stroke-miterlimit="10" width="304" height="21"/>
+          <line fill="none" stroke="#BCECE8" strokeWidth="4" stroke-miterlimit="10" x1="536" y1="893" x2="832" y2="893"/>
         </g>
         <g>
           <g>
             
-              <path fill="#EEFAF9" stroke="#333333" stroke-width="6" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" d="
+              <path fill="#EEFAF9" stroke="#333333" strokeWidth="6" strokeMiterlimit="round" stroke-linejoin="round" stroke-miterlimit="10" d="
               M836,1156c0,4.4-3.6,8-8,8l0,0c-4.4,0-8-3.6-8-8v-20c0-4.4,3.6-8,8-8l0,0c4.4,0,8,3.6,8,8V1156z"/>
             
-              <path fill="#EEFAF9" stroke="#333333" stroke-width="6" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" d="
+              <path fill="#EEFAF9" stroke="#333333" strokeWidth="6" strokeMiterlimit="round" stroke-linejoin="round" stroke-miterlimit="10" d="
               M549,1156c0,4.4-3.6,8-8,8l0,0c-4.4,0-8-3.6-8-8v-20c0-4.4,3.6-8,8-8l0,0c4.4,0,8,3.6,8,8V1156z"/>
             <g>
               
-                <line fill="none" stroke="#333333" stroke-width="8" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" x1="732" y1="1164" x2="732" y2="1177"/>
+                <line fill="none" stroke="#333333" strokeWidth="8" strokeMiterlimit="round" stroke-linejoin="round" stroke-miterlimit="10" x1="732" y1="1164" x2="732" y2="1177"/>
               
-                <path fill="#EEFAF9" stroke="#333333" stroke-width="6" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" d="
+                <path fill="#EEFAF9" stroke="#333333" strokeWidth="6" strokeMiterlimit="round" stroke-linejoin="round" stroke-miterlimit="10" d="
                 M740,1156c0,4.4-3.6,8-8,8l0,0c-4.4,0-8-3.6-8-8v-20c0-4.4,3.6-8,8-8l0,0c4.4,0,8,3.6,8,8V1156z"/>
             </g>
             <g>
               
-                <line fill="none" stroke="#333333" stroke-width="8" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" x1="637" y1="1164" x2="637" y2="1177"/>
+                <line fill="none" stroke="#333333" strokeWidth="8" strokeMiterlimit="round" stroke-linejoin="round" stroke-miterlimit="10" x1="637" y1="1164" x2="637" y2="1177"/>
               
-                <path fill="#EEFAF9" stroke="#333333" stroke-width="6" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" d="
+                <path fill="#EEFAF9" stroke="#333333" strokeWidth="6" strokeMiterlimit="round" stroke-linejoin="round" stroke-miterlimit="10" d="
                 M645,1156c0,4.4-3.6,8-8,8l0,0c-4.4,0-8-3.6-8-8v-20c0-4.4,3.6-8,8-8l0,0c4.4,0,8,3.6,8,8V1156z"/>
             </g>
           </g>
           
-            <rect x="533" y="1177" fill="#EEFAF9" stroke="#333333" stroke-width="8" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" width="304" height="21"/>
-          <line fill="none" stroke="#BCECE8" stroke-width="4" stroke-miterlimit="10" x1="537" y1="1192" x2="833" y2="1192"/>
+            <rect x="533" y="1177" fill="#EEFAF9" stroke="#333333" strokeWidth="8" strokeMiterlimit="round" stroke-linejoin="round" stroke-miterlimit="10" width="304" height="21"/>
+          <line fill="none" stroke="#BCECE8" strokeWidth="4" stroke-miterlimit="10" x1="537" y1="1192" x2="833" y2="1192"/>
         </g>
       </g>
       <g id="Floor-Tom-Legs">
         <g>
           
-            <path fill="#EEFAF9" stroke="#333333" stroke-width="6" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" d="
+            <path fill="#EEFAF9" stroke="#333333" strokeWidth="6" strokeMiterlimit="round" stroke-linejoin="round" stroke-miterlimit="10" d="
             M526.3,1122.8l-11.3,52.7v76.2c0,3.1,2.4,5.7,5.5,5.7s5.5-2.5,5.5-5.7v-75l11.3-52.7l11.2-52.7l3.6-16.6l-10.9-2.2
             L526.3,1122.8z"/>
           
-            <path fill="#5C5C5C" stroke="#333333" stroke-width="6" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" d="
+            <path fill="#5C5C5C" stroke="#333333" strokeWidth="6" strokeMiterlimit="round" stroke-linejoin="round" stroke-miterlimit="10" d="
             M533.5,1245L533.5,1245l-6.8-11h-11l-6.6,11h0c-1.3,2-2,4.6-2,7.3c0,7.8,6.3,14.2,14.2,14.2s14.2-6.6,14.2-14.4
             C535.3,1249.6,534.7,1247,533.5,1245z"/>
           
-            <path fill="#EEFAF9" stroke="#333333" stroke-width="6" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" d="
+            <path fill="#EEFAF9" stroke="#333333" strokeWidth="6" strokeMiterlimit="round" stroke-linejoin="round" stroke-miterlimit="10" d="
             M553,1014c0-5.6-4.9-10.2-10.5-10.2s-10.5,4.6-10.5,10.2v58h21V1014z"/>
         </g>
         <g>
           
-            <path fill="#EEFAF9" stroke="#333333" stroke-width="6" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" d="
+            <path fill="#EEFAF9" stroke="#333333" strokeWidth="6" strokeMiterlimit="round" stroke-linejoin="round" stroke-miterlimit="10" d="
             M681,1251.7c0,3.1,2.4,5.7,5.5,5.7s5.5-2.5,5.5-5.7V1070h-11V1251.7z"/>
           
-            <path fill="#5C5C5C" stroke="#333333" stroke-width="6" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" d="
+            <path fill="#5C5C5C" stroke="#333333" strokeWidth="6" strokeMiterlimit="round" stroke-linejoin="round" stroke-miterlimit="10" d="
             M699.5,1245L699.5,1245l-6.8-11h-11l-6.6,11h0c-1.3,2-2,4.6-2,7.3c0,7.8,6.3,14.2,14.2,14.2s14.2-6.6,14.2-14.4
             C701.3,1249.6,700.7,1247,699.5,1245z"/>
           
-            <path fill="#EEFAF9" stroke="#333333" stroke-width="6" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" d="
+            <path fill="#EEFAF9" stroke="#333333" strokeWidth="6" strokeMiterlimit="round" stroke-linejoin="round" stroke-miterlimit="10" d="
             M697,1014c0-5.6-4.9-10.2-10.5-10.2s-10.5,4.6-10.5,10.2v58h21V1014z"/>
         </g>
         <g>
           
-            <path fill="#EEFAF9" stroke="#333333" stroke-width="6" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" d="
+            <path fill="#EEFAF9" stroke="#333333" strokeWidth="6" strokeMiterlimit="round" stroke-linejoin="round" stroke-miterlimit="10" d="
             M843.6,1122.8l-14.2-70.5l-10.7,2.2l3.4,16.6l10.5,52.7l10.4,52.7v75c0,3.1,2.4,5.7,5.5,5.7s5.5-2.5,5.5-5.7v-76.2
             L843.6,1122.8z"/>
           
-            <path fill="#5C5C5C" stroke="#333333" stroke-width="6" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" d="
+            <path fill="#5C5C5C" stroke="#333333" strokeWidth="6" strokeMiterlimit="round" stroke-linejoin="round" stroke-miterlimit="10" d="
             M861.5,1245L861.5,1245l-6.8-11h-11l-6.6,11h0c-1.3,2-2,4.6-2,7.3c0,7.8,6.3,14.2,14.2,14.2s14.2-6.6,14.2-14.4
             C863.3,1249.6,862.7,1247,861.5,1245z"/>
           
-            <path fill="#EEFAF9" stroke="#333333" stroke-width="6" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" d="
+            <path fill="#EEFAF9" stroke="#333333" strokeWidth="6" strokeMiterlimit="round" stroke-linejoin="round" stroke-miterlimit="10" d="
             M816,1014c0-5.6,4.9-10.2,10.5-10.2s10.5,4.6,10.5,10.2v58h-21V1014z"/>
         </g>
       </g>
@@ -2978,65 +3345,65 @@ class Drum extends React.Component {
     <g id="Hi-Hat">
       <g id="Hi-Hat-Stand-Top">
         
-          <path fill="#EEFAF9" stroke="#333333" stroke-width="6" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" d="
+          <path fill="#EEFAF9" stroke="#333333" strokeWidth="6" strokeMiterlimit="round" stroke-linejoin="round" stroke-miterlimit="10" d="
           M1494,849V731.2c0-3.1-2.4-5.7-5.5-5.7c-3.1,0-5.5,2.5-5.5,5.7V849H1494z"/>
         
-          <path fill="#EEFAF9" stroke="#333333" stroke-width="6" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" d="
+          <path fill="#EEFAF9" stroke="#333333" strokeWidth="6" strokeMiterlimit="round" stroke-linejoin="round" stroke-miterlimit="10" d="
           M1497,998.8c0,4.6-3.7,8.2-8.2,8.2h-0.5c-4.6,0-8.2-3.7-8.2-8.2V761.2c0-4.6,3.7-8.2,8.2-8.2h0.5c4.6,0,8.2,3.7,8.2,8.2V998.8z"
           />
         <rect x="1483" y="800" fill="#BCECE8" width="11" height="78"/>
         
-          <path fill="#5C5C5C" stroke="#333333" stroke-width="6" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" d="
+          <path fill="#5C5C5C" stroke="#333333" strokeWidth="6" strokeMiterlimit="round" stroke-linejoin="round" stroke-miterlimit="10" d="
           M1502.7,775c0-1-0.7-0.6-0.7-0.7v-0.5c0-4.6-3-7.8-7.6-7.8h-10.5c-4.6,0-8.9,3.2-8.9,7.8v0.5c0,0.1,0.7-0.3,0.7,0.7H1502.7z"/>
         <g id="Hi-Hat-Top">
           
-            <path fill="#FDE74C" stroke="#333333" stroke-width="6" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" d="
+            <path fill="#FDE74C" stroke="#333333" strokeWidth="6" strokeMiterlimit="round" stroke-linejoin="round" stroke-miterlimit="10" d="
             M1579.8,789.7l-33-0.8c-23-0.5-32.8-4.5-39.5-9c0,0,0.1,0.2,0.1,0.2c-3.5-2.8-7.9-4.2-12.7-4.2c-1.5,0-5.9,0-5.9,0
             s-4.4,0-5.9,0c-4.8,0-9.3,1.4-12.8,4.2c0,0,0-0.1,0-0.1c-6.6,4.5-16.6,8.4-39.6,8.9l-33.5,0.7c-3.7,0-7,2.7-7,6.4v0.1
             c0,3.7,3.6,6.7,7.3,6.7h91.4h91.4c3.7,0,5.8-3,5.8-6.7v-0.1C1586,792.5,1583.5,789.7,1579.8,789.7z"/>
           
-            <line fill="none" stroke="#FEF5B7" stroke-width="4" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" x1="1479" y1="783" x2="1497" y2="783"/>
+            <line fill="none" stroke="#FEF5B7" strokeWidth="4" strokeMiterlimit="round" stroke-linejoin="round" stroke-miterlimit="10" x1="1479" y1="783" x2="1497" y2="783"/>
         </g>
       </g>
       <g id="Hi-Hat-Bottom">
         
-          <path fill="#FDE74C" stroke="#333333" stroke-width="6" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" d="
+          <path fill="#FDE74C" stroke="#333333" strokeWidth="6" strokeMiterlimit="round" stroke-linejoin="round" stroke-miterlimit="10" d="
           M1397,818.3l32.8,0.8c23,0.5,33.2,4.5,39.2,9v0c4,2.8,9,4.9,13.8,4.9c1.5,0,5.9,0,5.9,0s4.4,0,5.9,0c4.8,0,9.3-1.9,12.8-4.7
           l0-0.1c6.6-4.5,16.6-8.5,39.6-9.1l32.8-0.8c3.7,0,6.2-2.8,6.2-6.5v-0.1c0-3.7-2.2-5.8-5.8-5.8h-91.4h-91.4
           c-3.7,0-7.3,2.1-7.3,5.8v0.1C1390,815.6,1393.3,818.3,1397,818.3z"/>
         
-          <line opacity="0.3" fill="none" stroke="#BEAD39" stroke-width="4" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" x1="1479" y1="826" x2="1497" y2="826"/>
+          <line opacity="0.3" fill="none" stroke="#BEAD39" strokeWidth="4" strokeMiterlimit="round" stroke-linejoin="round" stroke-miterlimit="10" x1="1479" y1="826" x2="1497" y2="826"/>
       </g>
       <g id="Hi-Hat-Stand">
         
-          <rect x="1480" y="833" fill="#EEFAF9" stroke="#333333" stroke-width="6" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" width="17" height="367"/>
+          <rect x="1480" y="833" fill="#EEFAF9" stroke="#333333" strokeWidth="6" strokeMiterlimit="round" stroke-linejoin="round" stroke-miterlimit="10" width="17" height="367"/>
         <g>
           <g>
             
-              <path fill="#EEFAF9" stroke="#333333" stroke-width="6" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" d="
+              <path fill="#EEFAF9" stroke="#333333" strokeWidth="6" strokeMiterlimit="round" stroke-linejoin="round" stroke-miterlimit="10" d="
               M1561.8,1272c-3.4,3.4-8.8,3.3-12.1-0.1l-66.7-66.7c-3.4-3.4-3.5-8.7-0.1-12.1l0,0c3.4-3.4,8.8-3.3,12.1,0.1l66.7,66.7
               C1565.1,1263.2,1565.2,1268.6,1561.8,1272L1561.8,1272z"/>
             
-              <line fill="none" stroke="#BCECE8" stroke-width="4" stroke-miterlimit="10" x1="1553.9" y1="1268.8" x2="1486.7" y2="1201.6"/>
+              <line fill="none" stroke="#BCECE8" strokeWidth="4" stroke-miterlimit="10" x1="1553.9" y1="1268.8" x2="1486.7" y2="1201.6"/>
             
-              <path fill="#5C5C5C" stroke="#333333" stroke-width="6" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" d="
+              <path fill="#5C5C5C" stroke="#333333" strokeWidth="6" strokeMiterlimit="round" stroke-linejoin="round" stroke-miterlimit="10" d="
               M1562.2,1260.4l-12,12c0,0,6.4,10.8,8,12.4c4.7,4.7,11.9,4.3,16.6-0.4c4.7-4.7,5.1-11.9,0.5-16.6
               C1573.8,1266.4,1562.2,1260.4,1562.2,1260.4z"/>
           </g>
           <g>
             
-              <path fill="#EEFAF9" stroke="#333333" stroke-width="6" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" d="
+              <path fill="#EEFAF9" stroke="#333333" strokeWidth="6" strokeMiterlimit="round" stroke-linejoin="round" stroke-miterlimit="10" d="
               M1416,1271.7c-3.4-3.4-3.3-8.8,0.1-12.1l66.7-66.7c3.4-3.4,8.7-3.5,12.1-0.1l0,0c3.4,3.4,3.3,8.8-0.1,12.1l-66.7,66.7
               C1424.7,1275,1419.3,1275.1,1416,1271.7L1416,1271.7z"/>
-            <line fill="none" stroke="#BCECE8" stroke-width="4" stroke-miterlimit="10" x1="1424.2" y1="1268.8" x2="1489" y2="1203.9"/>
+            <line fill="none" stroke="#BCECE8" strokeWidth="4" stroke-miterlimit="10" x1="1424.2" y1="1268.8" x2="1489" y2="1203.9"/>
             
-              <path fill="#5C5C5C" stroke="#333333" stroke-width="6" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" d="
+              <path fill="#5C5C5C" stroke="#333333" strokeWidth="6" strokeMiterlimit="round" stroke-linejoin="round" stroke-miterlimit="10" d="
               M1427.5,1272.1l-12-12c0,0-10.8,6.4-12.4,8c-4.7,4.7-4.3,11.9,0.4,16.6c4.7,4.7,11.9,5.1,16.6,0.5
               C1421.5,1283.7,1427.5,1272.1,1427.5,1272.1z"/>
           </g>
           <g>
             
-              <path fill="#EEFAF9" stroke="#333333" stroke-width="6" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" d="
+              <path fill="#EEFAF9" stroke="#333333" strokeWidth="6" strokeMiterlimit="round" stroke-linejoin="round" stroke-miterlimit="10" d="
               M1475.6,1198.8c0-7.5,6-13.5,13.5-13.5s13.5,6,13.5,13.5c0,7.5-6,13.5-13.5,13.5S1475.6,1206.2,1475.6,1198.8z"/>
             <path fill="#333333" d="M1491.5,1195.5c-1.8-1.3-4.3-0.9-5.6,0.9c-1.3,1.8-0.9,4.3,0.9,5.6c1.8,1.3,4.3,0.9,5.6-0.9
               C1493.7,1199.3,1493.3,1196.8,1491.5,1195.5z"/>
@@ -3044,14 +3411,14 @@ class Drum extends React.Component {
         </g>
         <g>
           
-            <circle fill="#EEFAF9" stroke="#333333" stroke-width="6" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" cx="1504.7" cy="998.5" r="10"/>
+            <circle fill="#EEFAF9" stroke="#333333" strokeWidth="6" strokeMiterlimit="round" stroke-linejoin="round" stroke-miterlimit="10" cx="1504.7" cy="998.5" r="10"/>
           
-            <path fill="#EEFAF9" stroke="#333333" stroke-width="6" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" d="
+            <path fill="#EEFAF9" stroke="#333333" strokeWidth="6" strokeMiterlimit="round" stroke-linejoin="round" stroke-miterlimit="10" d="
             M1502,1010.1c0,6-4.9,10.9-10.9,10.9h-5.1c-6,0-10.9-4.9-10.9-10.9v-22.1c0-6,4.9-10.9,10.9-10.9h5.1c6,0,10.9,4.9,10.9,10.9
             V1010.1z"/>
         </g>
         
-          <path fill="#5C5C5C" stroke="#333333" stroke-width="6" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" d="
+          <path fill="#5C5C5C" stroke="#333333" strokeWidth="6" strokeMiterlimit="round" stroke-linejoin="round" stroke-miterlimit="10" d="
           M1475.7,833c0,0-0.7-0.3-0.7-0.2v0.5c0,4.6,4.4,8.7,8.9,8.7h10.5c4.6,0,7.6-4.2,7.6-8.7v-0.5c0-0.1,0.7,0.2,0.7,0.2H1475.7z"/>
       </g>
     </g>
@@ -3059,89 +3426,89 @@ class Drum extends React.Component {
       <g id="Toms">
         <g id="Tom-Rack">
           
-            <path fill="#EEFAF9" stroke="#333333" stroke-width="6" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" d="
+            <path fill="#EEFAF9" stroke="#333333" strokeWidth="6" strokeMiterlimit="round" stroke-linejoin="round" stroke-miterlimit="10" d="
             M1009,760.8c5.6,0,10,4.6,10,10.2v101c0,6-20,6-20,0V771C999,765.4,1003.4,760.8,1009,760.8L1009,760.8z"/>
           
-            <path fill="#EEFAF9" stroke="#333333" stroke-width="6" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" d="
+            <path fill="#EEFAF9" stroke="#333333" strokeWidth="6" strokeMiterlimit="round" stroke-linejoin="round" stroke-miterlimit="10" d="
             M1052,872V771c0-5.6,4.4-10.2,10-10.2l0,0c5.6,0,10,4.6,10,10.2v101C1072,877.6,1052,877.6,1052,872z"/>
           
-            <path fill="#EEFAF9" stroke="#333333" stroke-width="6" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" d="
+            <path fill="#EEFAF9" stroke="#333333" strokeWidth="6" strokeMiterlimit="round" stroke-linejoin="round" stroke-miterlimit="10" d="
             M1082.7,872c0,6.1-4.9,11-11,11h-72c-6.1,0-11-4.9-11-11l0,0c0-6.1,4.9-11,11-11h72C1077.8,861,1082.7,865.9,1082.7,872
             L1082.7,872z"/>
         </g>
         <g id="Tom-Left-All">
           <g id="Tom-Left-Drum">
             
-              <rect x="750" y="679" fill="#0BC1F8" stroke="#333333" stroke-width="8" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" width="221" height="184"/>
-            <line fill="none" stroke="#0891BA" stroke-width="8" stroke-miterlimit="10" x1="754" y1="708" x2="967" y2="708"/>
+              <rect x="750" y="679" fill="#0BC1F8" stroke="#333333" strokeWidth="8" strokeMiterlimit="round" stroke-linejoin="round" stroke-miterlimit="10" width="221" height="184"/>
+            <line fill="none" stroke="#0891BA" strokeWidth="8" stroke-miterlimit="10" x1="754" y1="708" x2="967" y2="708"/>
             <g>
               <g>
                 
-                  <path fill="#F8FDFD" stroke="#333333" stroke-width="6" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" d="
+                  <path fill="#F8FDFD" stroke="#333333" strokeWidth="6" strokeMiterlimit="round" stroke-linejoin="round" stroke-miterlimit="10" d="
                   M757,739c0,4.4-3.6,8-8,8l0,0c-4.4,0-8-3.6-8-8v-20c0-4.4,3.6-8,8-8l0,0c4.4,0,8,3.6,8,8V739z"/>
                 
-                  <path fill="#F8FDFD" stroke="#333333" stroke-width="6" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" d="
+                  <path fill="#F8FDFD" stroke="#333333" strokeWidth="6" strokeMiterlimit="round" stroke-linejoin="round" stroke-miterlimit="10" d="
                   M979,739c0,4.4-3.6,8-8,8l0,0c-4.4,0-8-3.6-8-8v-20c0-4.4,3.6-8,8-8l0,0c4.4,0,8,3.6,8,8V739z"/>
                 <g>
                   
-                    <line fill="#F8FDFD" stroke="#333333" stroke-width="8" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" x1="823" y1="711" x2="823" y2="698"/>
+                    <line fill="#F8FDFD" stroke="#333333" strokeWidth="8" strokeMiterlimit="round" stroke-linejoin="round" stroke-miterlimit="10" x1="823" y1="711" x2="823" y2="698"/>
                   
-                    <path fill="#F8FDFD" stroke="#333333" stroke-width="6" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" d="
+                    <path fill="#F8FDFD" stroke="#333333" strokeWidth="6" strokeMiterlimit="round" stroke-linejoin="round" stroke-miterlimit="10" d="
                     M831,739c0,4.4-3.6,8-8,8l0,0c-4.4,0-8-3.6-8-8v-20c0-4.4,3.6-8,8-8l0,0c4.4,0,8,3.6,8,8V739z"/>
                 </g>
                 <g>
                   
-                    <line fill="#F8FDFD" stroke="#333333" stroke-width="8" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" x1="897" y1="711" x2="897" y2="698"/>
+                    <line fill="#F8FDFD" stroke="#333333" strokeWidth="8" strokeMiterlimit="round" stroke-linejoin="round" stroke-miterlimit="10" x1="897" y1="711" x2="897" y2="698"/>
                   
-                    <path fill="#F8FDFD" stroke="#333333" stroke-width="6" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" d="
+                    <path fill="#F8FDFD" stroke="#333333" strokeWidth="6" strokeMiterlimit="round" stroke-linejoin="round" stroke-miterlimit="10" d="
                     M905,739c0,4.4-3.6,8-8,8l0,0c-4.4,0-8-3.6-8-8v-20c0-4.4,3.6-8,8-8l0,0c4.4,0,8,3.6,8,8V739z"/>
                 </g>
               </g>
               
-                <rect x="741" y="679" fill="#F8FDFD" stroke="#333333" stroke-width="8" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" width="238" height="21"/>
-              <line fill="none" stroke="#BCECE8" stroke-width="4" stroke-miterlimit="10" x1="975" y1="694" x2="745" y2="694"/>
+                <rect x="741" y="679" fill="#F8FDFD" stroke="#333333" strokeWidth="8" strokeMiterlimit="round" stroke-linejoin="round" stroke-miterlimit="10" width="238" height="21"/>
+              <line fill="none" stroke="#BCECE8" strokeWidth="4" stroke-miterlimit="10" x1="975" y1="694" x2="745" y2="694"/>
             </g>
             <g>
               <g>
                 
-                  <path fill="#EEFAF9" stroke="#333333" stroke-width="6" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" d="
+                  <path fill="#EEFAF9" stroke="#333333" strokeWidth="6" strokeMiterlimit="round" stroke-linejoin="round" stroke-miterlimit="10" d="
                   M979,823c0,4.4-3.6,8-8,8l0,0c-4.4,0-8-3.6-8-8v-20c0-4.4,3.6-8,8-8l0,0c4.4,0,8,3.6,8,8V823z"/>
                 
-                  <path fill="#EEFAF9" stroke="#333333" stroke-width="6" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" d="
+                  <path fill="#EEFAF9" stroke="#333333" strokeWidth="6" strokeMiterlimit="round" stroke-linejoin="round" stroke-miterlimit="10" d="
                   M757,823c0,4.4-3.6,8-8,8l0,0c-4.4,0-8-3.6-8-8v-20c0-4.4,3.6-8,8-8l0,0c4.4,0,8,3.6,8,8V823z"/>
                 <g>
                   
-                    <line fill="#EEFAF9" stroke="#333333" stroke-width="8" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" x1="897" y1="831" x2="897" y2="844"/>
+                    <line fill="#EEFAF9" stroke="#333333" strokeWidth="8" strokeMiterlimit="round" stroke-linejoin="round" stroke-miterlimit="10" x1="897" y1="831" x2="897" y2="844"/>
                   
-                    <path fill="#EEFAF9" stroke="#333333" stroke-width="6" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" d="
+                    <path fill="#EEFAF9" stroke="#333333" strokeWidth="6" strokeMiterlimit="round" stroke-linejoin="round" stroke-miterlimit="10" d="
                     M905,823c0,4.4-3.6,8-8,8l0,0c-4.4,0-8-3.6-8-8v-20c0-4.4,3.6-8,8-8l0,0c4.4,0,8,3.6,8,8V823z"/>
                 </g>
                 <g>
                   
-                    <line fill="#EEFAF9" stroke="#333333" stroke-width="8" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" x1="823" y1="831" x2="823" y2="844"/>
+                    <line fill="#EEFAF9" stroke="#333333" strokeWidth="8" strokeMiterlimit="round" stroke-linejoin="round" stroke-miterlimit="10" x1="823" y1="831" x2="823" y2="844"/>
                   
-                    <path fill="#EEFAF9" stroke="#333333" stroke-width="6" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" d="
+                    <path fill="#EEFAF9" stroke="#333333" strokeWidth="6" strokeMiterlimit="round" stroke-linejoin="round" stroke-miterlimit="10" d="
                     M831,823c0,4.4-3.6,8-8,8l0,0c-4.4,0-8-3.6-8-8v-20c0-4.4,3.6-8,8-8l0,0c4.4,0,8,3.6,8,8V823z"/>
                 </g>
               </g>
               
-                <rect x="741" y="842" fill="#F8FDFD" stroke="#333333" stroke-width="8" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" width="238" height="21"/>
-              <line fill="none" stroke="#BCECE8" stroke-width="4" stroke-miterlimit="10" x1="975" y1="858" x2="745" y2="858"/>
+                <rect x="741" y="842" fill="#F8FDFD" stroke="#333333" strokeWidth="8" strokeMiterlimit="round" stroke-linejoin="round" stroke-miterlimit="10" width="238" height="21"/>
+              <line fill="none" stroke="#BCECE8" strokeWidth="4" stroke-miterlimit="10" x1="975" y1="858" x2="745" y2="858"/>
             </g>
           </g>
           <g>
             
-              <path fill="#EEFAF9" stroke="#333333" stroke-width="6" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" d="
+              <path fill="#EEFAF9" stroke="#333333" strokeWidth="6" strokeMiterlimit="round" stroke-linejoin="round" stroke-miterlimit="10" d="
               M959,782.1c0,6-4.9,10.9-10.9,10.9h-5.1c-6,0-10.9-4.9-10.9-10.9v-22.1c0-6,4.9-10.9,10.9-10.9h5.1c6,0,10.9,4.9,10.9,10.9
               V782.1z"/>
             <path fill="#BCECE8" d="M955.6,786h-18.9c1.4,2.4,3.9,4,6.9,4h5.1C951.7,790,954.3,788.4,955.6,786z"/>
             
-              <path fill="#EEFAF9" stroke="#333333" stroke-width="6" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" d="
+              <path fill="#EEFAF9" stroke="#333333" strokeWidth="6" strokeMiterlimit="round" stroke-linejoin="round" stroke-miterlimit="10" d="
               M954.2,781h53.8v0c6,0,10.7-4.4,10.7-10c0-5.6-4.1-10-9.7-10h0.1h-55c-5.6,0-10.2,4.4-10.2,10C944,776.6,948.5,781,954.2,781z
               "/>
             <path fill="#BCECE8" d="M1015.4,774h-67.8c1.1,2.4,3.6,4,6.5,4h54.4c0,0,0.1,0,0.1,0C1011.8,778,1014.3,776.4,1015.4,774z"/>
             
-              <circle fill="#EEFAF9" stroke="#333333" stroke-width="6" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" cx="1009.1" cy="770.8" r="13.3"/>
+              <circle fill="#EEFAF9" stroke="#333333" strokeWidth="6" strokeMiterlimit="round" stroke-linejoin="round" stroke-miterlimit="10" cx="1009.1" cy="770.8" r="13.3"/>
             <path fill="#333333" d="M1011.5,767.6c-1.8-1.3-4.3-0.9-5.6,0.9c-1.3,1.8-0.9,4.3,0.9,5.6c1.8,1.3,4.3,0.9,5.6-0.9
               C1013.7,771.4,1013.3,768.9,1011.5,767.6z"/>
           </g>
@@ -3149,76 +3516,76 @@ class Drum extends React.Component {
         <g id="Tom-Right-All">
           <g id="Tom-Right-Drum">
             
-              <rect x="1101" y="679" fill="#0BC1F8" stroke="#333333" stroke-width="8" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" width="221" height="184"/>
-            <line fill="none" stroke="#0891BA" stroke-width="8" stroke-miterlimit="10" x1="1105" y1="708" x2="1318" y2="708"/>
+              <rect x="1101" y="679" fill="#0BC1F8" stroke="#333333" strokeWidth="8" strokeMiterlimit="round" stroke-linejoin="round" stroke-miterlimit="10" width="221" height="184"/>
+            <line fill="none" stroke="#0891BA" strokeWidth="8" stroke-miterlimit="10" x1="1105" y1="708" x2="1318" y2="708"/>
             <g>
               <g>
                 
-                  <path fill="#F8FDFD" stroke="#333333" stroke-width="6" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" d="
+                  <path fill="#F8FDFD" stroke="#333333" strokeWidth="6" strokeMiterlimit="round" stroke-linejoin="round" stroke-miterlimit="10" d="
                   M1108,739c0,4.4-3.6,8-8,8l0,0c-4.4,0-8-3.6-8-8v-20c0-4.4,3.6-8,8-8l0,0c4.4,0,8,3.6,8,8V739z"/>
                 
-                  <path fill="#F8FDFD" stroke="#333333" stroke-width="6" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" d="
+                  <path fill="#F8FDFD" stroke="#333333" strokeWidth="6" strokeMiterlimit="round" stroke-linejoin="round" stroke-miterlimit="10" d="
                   M1330,739c0,4.4-3.6,8-8,8l0,0c-4.4,0-8-3.6-8-8v-20c0-4.4,3.6-8,8-8l0,0c4.4,0,8,3.6,8,8V739z"/>
                 <g>
                   
-                    <line fill="#F8FDFD" stroke="#333333" stroke-width="8" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" x1="1174" y1="711" x2="1174" y2="698"/>
+                    <line fill="#F8FDFD" stroke="#333333" strokeWidth="8" strokeMiterlimit="round" stroke-linejoin="round" stroke-miterlimit="10" x1="1174" y1="711" x2="1174" y2="698"/>
                   
-                    <path fill="#F8FDFD" stroke="#333333" stroke-width="6" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" d="
+                    <path fill="#F8FDFD" stroke="#333333" strokeWidth="6" strokeMiterlimit="round" stroke-linejoin="round" stroke-miterlimit="10" d="
                     M1182,739c0,4.4-3.6,8-8,8l0,0c-4.4,0-8-3.6-8-8v-20c0-4.4,3.6-8,8-8l0,0c4.4,0,8,3.6,8,8V739z"/>
                 </g>
                 <g>
                   
-                    <line fill="#F8FDFD" stroke="#333333" stroke-width="8" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" x1="1248" y1="711" x2="1248" y2="698"/>
+                    <line fill="#F8FDFD" stroke="#333333" strokeWidth="8" strokeMiterlimit="round" stroke-linejoin="round" stroke-miterlimit="10" x1="1248" y1="711" x2="1248" y2="698"/>
                   
-                    <path fill="#F8FDFD" stroke="#333333" stroke-width="6" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" d="
+                    <path fill="#F8FDFD" stroke="#333333" strokeWidth="6" strokeMiterlimit="round" stroke-linejoin="round" stroke-miterlimit="10" d="
                     M1256,739c0,4.4-3.6,8-8,8l0,0c-4.4,0-8-3.6-8-8v-20c0-4.4,3.6-8,8-8l0,0c4.4,0,8,3.6,8,8V739z"/>
                 </g>
               </g>
               
-                <rect x="1092" y="679" fill="#F8FDFD" stroke="#333333" stroke-width="8" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" width="238" height="21"/>
-              <line fill="none" stroke="#BCECE8" stroke-width="4" stroke-miterlimit="10" x1="1326" y1="694" x2="1096" y2="694"/>
+                <rect x="1092" y="679" fill="#F8FDFD" stroke="#333333" strokeWidth="8" strokeMiterlimit="round" stroke-linejoin="round" stroke-miterlimit="10" width="238" height="21"/>
+              <line fill="none" stroke="#BCECE8" strokeWidth="4" stroke-miterlimit="10" x1="1326" y1="694" x2="1096" y2="694"/>
             </g>
             <g>
               <g>
                 
-                  <path fill="#EEFAF9" stroke="#333333" stroke-width="6" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" d="
+                  <path fill="#EEFAF9" stroke="#333333" strokeWidth="6" strokeMiterlimit="round" stroke-linejoin="round" stroke-miterlimit="10" d="
                   M1330,823c0,4.4-3.6,8-8,8l0,0c-4.4,0-8-3.6-8-8v-20c0-4.4,3.6-8,8-8l0,0c4.4,0,8,3.6,8,8V823z"/>
                 
-                  <path fill="#EEFAF9" stroke="#333333" stroke-width="6" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" d="
+                  <path fill="#EEFAF9" stroke="#333333" strokeWidth="6" strokeMiterlimit="round" stroke-linejoin="round" stroke-miterlimit="10" d="
                   M1108,823c0,4.4-3.6,8-8,8l0,0c-4.4,0-8-3.6-8-8v-20c0-4.4,3.6-8,8-8l0,0c4.4,0,8,3.6,8,8V823z"/>
                 <g>
                   
-                    <line fill="#EEFAF9" stroke="#333333" stroke-width="8" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" x1="1248" y1="831" x2="1248" y2="844"/>
+                    <line fill="#EEFAF9" stroke="#333333" strokeWidth="8" strokeMiterlimit="round" stroke-linejoin="round" stroke-miterlimit="10" x1="1248" y1="831" x2="1248" y2="844"/>
                   
-                    <path fill="#EEFAF9" stroke="#333333" stroke-width="6" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" d="
+                    <path fill="#EEFAF9" stroke="#333333" strokeWidth="6" strokeMiterlimit="round" stroke-linejoin="round" stroke-miterlimit="10" d="
                     M1256,823c0,4.4-3.6,8-8,8l0,0c-4.4,0-8-3.6-8-8v-20c0-4.4,3.6-8,8-8l0,0c4.4,0,8,3.6,8,8V823z"/>
                 </g>
                 <g>
                   
-                    <line fill="#EEFAF9" stroke="#333333" stroke-width="8" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" x1="1174" y1="831" x2="1174" y2="844"/>
+                    <line fill="#EEFAF9" stroke="#333333" strokeWidth="8" strokeMiterlimit="round" stroke-linejoin="round" stroke-miterlimit="10" x1="1174" y1="831" x2="1174" y2="844"/>
                   
-                    <path fill="#EEFAF9" stroke="#333333" stroke-width="6" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" d="
+                    <path fill="#EEFAF9" stroke="#333333" strokeWidth="6" strokeMiterlimit="round" stroke-linejoin="round" stroke-miterlimit="10" d="
                     M1182,823c0,4.4-3.6,8-8,8l0,0c-4.4,0-8-3.6-8-8v-20c0-4.4,3.6-8,8-8l0,0c4.4,0,8,3.6,8,8V823z"/>
                 </g>
               </g>
               
-                <rect x="1092" y="842" fill="#F8FDFD" stroke="#333333" stroke-width="8" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" width="238" height="21"/>
-              <line fill="none" stroke="#BCECE8" stroke-width="4" stroke-miterlimit="10" x1="1326" y1="858" x2="1096" y2="858"/>
+                <rect x="1092" y="842" fill="#F8FDFD" stroke="#333333" strokeWidth="8" strokeMiterlimit="round" stroke-linejoin="round" stroke-miterlimit="10" width="238" height="21"/>
+              <line fill="none" stroke="#BCECE8" strokeWidth="4" stroke-miterlimit="10" x1="1326" y1="858" x2="1096" y2="858"/>
             </g>
           </g>
           <g>
             
-              <path fill="#EEFAF9" stroke="#333333" stroke-width="6" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" d="
+              <path fill="#EEFAF9" stroke="#333333" strokeWidth="6" strokeMiterlimit="round" stroke-linejoin="round" stroke-miterlimit="10" d="
               M1139,759.9c0-6-4.9-10.9-10.9-10.9h-5.1c-6,0-10.9,4.9-10.9,10.9v22.1c0,6,4.9,10.9,10.9,10.9h5.1c6,0,10.9-4.9,10.9-10.9
               V759.9z"/>
             <path fill="#BCECE8" d="M1116.5,786h18.9c-1.4,2.4-3.9,4-6.9,4h-5.1C1120.5,790,1117.9,788.4,1116.5,786z"/>
             
-              <path fill="#EEFAF9" stroke="#333333" stroke-width="6" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" d="
+              <path fill="#EEFAF9" stroke="#333333" strokeWidth="6" strokeMiterlimit="round" stroke-linejoin="round" stroke-miterlimit="10" d="
               M1118,781h-55v0c-6,0-10.2-4.4-10.2-10c0-5.6,4.6-10,10.3-10h-0.1h55c5.6,0,10.2,4.4,10.2,10
               C1128.2,776.6,1123.6,781,1118,781z"/>
             <path fill="#BCECE8" d="M1056.7,774h67.8c-1.1,2.4-3.6,4-6.5,4h-54.4c0,0-0.1,0-0.1,0C1060.3,778,1057.9,776.4,1056.7,774z"/>
             
-              <circle fill="#EEFAF9" stroke="#333333" stroke-width="6" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" cx="1063" cy="770.8" r="13.3"/>
+              <circle fill="#EEFAF9" stroke="#333333" strokeWidth="6" strokeMiterlimit="round" stroke-linejoin="round" stroke-miterlimit="10" cx="1063" cy="770.8" r="13.3"/>
             <path fill="#333333" d="M1060.7,767.6c1.8-1.3,4.3-0.9,5.6,0.9c1.3,1.8,0.9,4.3-0.9,5.6c-1.8,1.3-4.3,0.9-5.6-0.9
               C1058.5,771.4,1058.9,768.9,1060.7,767.6z"/>
           </g>
@@ -3228,35 +3595,35 @@ class Drum extends React.Component {
         <g id="Kick-Stand">
           <g>
             
-              <path fill="#EEFAF9" stroke="#333333" stroke-width="6" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" d="
+              <path fill="#EEFAF9" stroke="#333333" strokeWidth="6" strokeMiterlimit="round" stroke-linejoin="round" stroke-miterlimit="10" d="
               M815.3,1050.3c0.3-5.6,5.3-10,11-9.7c5.6,0.3,10.3,5,10,10.7l-2.7,58l-21-1L815.3,1050.3z"/>
             
-              <path fill="#EEFAF9" stroke="#333333" stroke-width="6" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" d="
+              <path fill="#EEFAF9" stroke="#333333" strokeWidth="6" strokeMiterlimit="round" stroke-linejoin="round" stroke-miterlimit="10" d="
               M828.6,1109.1l-7.7,167.4c-0.1,3.1-2.6,5.5-5.8,5.4c-3.1-0.1-5.4-2.8-5.2-5.9l7.7-167.4L828.6,1109.1z"/>
             
-              <path fill="#5C5C5C" stroke="#333333" stroke-width="6" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" d="
+              <path fill="#5C5C5C" stroke="#333333" strokeWidth="6" strokeMiterlimit="round" stroke-linejoin="round" stroke-miterlimit="10" d="
               M803.4,1269L803.4,1269l7.3-10.6l11,0.4l6.1,11.2h0c1.2,3,1.8,4.8,1.7,7.5c-0.4,7.8-7,13.9-14.8,13.5
               c-7.8-0.4-13.8-7.2-13.5-15C801.4,1273.5,802.1,1271,803.4,1269z"/>
           </g>
           <g>
             
-              <path fill="#EEFAF9" stroke="#333333" stroke-width="6" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" d="
+              <path fill="#EEFAF9" stroke="#333333" strokeWidth="6" strokeMiterlimit="round" stroke-linejoin="round" stroke-miterlimit="10" d="
               M1256.2,1050.3c-0.3-5.6-5.3-10-11-9.7c-5.6,0.3-10.3,5-10,10.7l2.7,58l21-1L1256.2,1050.3z"/>
             
-              <path fill="#EEFAF9" stroke="#333333" stroke-width="6" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" d="
+              <path fill="#EEFAF9" stroke="#333333" strokeWidth="6" strokeMiterlimit="round" stroke-linejoin="round" stroke-miterlimit="10" d="
               M1242.9,1109.1l7.7,167.4c0.1,3.1,2.6,5.5,5.8,5.4c3.1-0.1,5.4-2.8,5.2-5.9l-7.7-167.4L1242.9,1109.1z"/>
             
-              <path fill="#5C5C5C" stroke="#333333" stroke-width="6" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" d="
+              <path fill="#5C5C5C" stroke="#333333" strokeWidth="6" strokeMiterlimit="round" stroke-linejoin="round" stroke-miterlimit="10" d="
               M1268.1,1269L1268.1,1269l-7.3-10.6l-11,0.4l-6.1,11.2h0c-1.2,3-1.8,4.8-1.7,7.5c0.4,7.8,7,13.9,14.8,13.5
               c7.8-0.4,13.8-7.2,13.5-15C1270.1,1273.5,1269.3,1271,1268.1,1269z"/>
           </g>
         </g>
         <g id="Kick-Drum">
           
-            <circle fill="#0BC1F8" stroke="#333333" stroke-width="8" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" cx="1035.7" cy="1085" r="210"/>
+            <circle fill="#0BC1F8" stroke="#333333" strokeWidth="8" strokeMiterlimit="round" stroke-linejoin="round" stroke-miterlimit="10" cx="1035.7" cy="1085" r="210"/>
           <circle id="Inner-Drum-Wobble" fill="none" cx="1035.7" cy="1085" r="201.2"/>
           
-            <circle id="Inner-Drum" fill="#FDFFFC" stroke="#333333" stroke-width="8" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" cx="1035.7" cy="1085" r="192.6"/>
+            <circle id="Inner-Drum" fill="#FDFFFC" stroke="#333333" strokeWidth="8" strokeMiterlimit="round" stroke-linejoin="round" stroke-miterlimit="10" cx="1035.7" cy="1085" r="192.6"/>
           <g id="Drum-Logo-Wobble">
             <g>
               <path fill="none" d="M980.6,942.2l-4.3,19.9h0.8c7.1,0,12.2-8.3,12.2-15c0-4.8-2.7-9-9.4-9c-13.9,0-23.1,7.8-23.1,20.8
@@ -3295,69 +3662,69 @@ class Drum extends React.Component {
                 c-5.2,1.7-9.1,4.1-9.1,8.5C1088.6,1009.2,1090.1,1010.7,1091.9,1010.7z"/>
             </g>
             
-              <line fill="none" stroke="#333333" stroke-width="6" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" x1="959" y1="1008" x2="1076" y2="1008"/>
+              <line fill="none" stroke="#333333" strokeWidth="6" strokeMiterlimit="round" stroke-linejoin="round" stroke-miterlimit="10" x1="959" y1="1008" x2="1076" y2="1008"/>
           </g>
           <g>
             <g>
               <g>
                 
-                  <path fill="#EEFAF9" stroke="#333333" stroke-width="8" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" d="
+                  <path fill="#EEFAF9" stroke="#333333" strokeWidth="8" strokeMiterlimit="round" stroke-linejoin="round" stroke-miterlimit="10" d="
                   M821,1074.7c-6,0-10.5,4.7-10.5,10.5c0,5.8,4.5,10.5,10.5,10.5v9.3h20v-40h-20V1074.7z"/>
                 <path fill="#333333" d="M819.9,1085.3c0,1.1,0.9,2,2,2c1.1,0,2-0.9,2-2c0-1.1-0.9-2-2-2
                   C820.8,1083.3,819.9,1084.2,819.9,1085.3z"/>
               </g>
-              <line fill="none" stroke="#BCECE8" stroke-width="4" stroke-miterlimit="10" x1="835" y1="1101" x2="835" y2="1069"/>
+              <line fill="none" stroke="#BCECE8" strokeWidth="4" stroke-miterlimit="10" x1="835" y1="1101" x2="835" y2="1069"/>
             </g>
             <g>
               <g>
                 
-                  <path fill="#EEFAF9" stroke="#333333" stroke-width="8" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" d="
+                  <path fill="#EEFAF9" stroke="#333333" strokeWidth="8" strokeMiterlimit="round" stroke-linejoin="round" stroke-miterlimit="10" d="
                   M919.8,1265.1c-3,5.2-1.2,11.4,3.8,14.3s11.3,1.4,14.3-3.8l8.1,4.7l10-17.3l-34.6-20l-10,17.3L919.8,1265.1z"/>
                 <path fill="#333333" d="M928.1,1272c1,0.5,2.2,0.2,2.7-0.7c0.6-1,0.2-2.2-0.7-2.7c-1-0.6-2.2-0.2-2.7,0.7
                   C926.8,1270.3,927.1,1271.5,928.1,1272z"/>
               </g>
-              <line fill="none" stroke="#BCECE8" stroke-width="4" stroke-miterlimit="10" x1="949.7" y1="1266.2" x2="922" y2="1250.2"/>
+              <line fill="none" stroke="#BCECE8" strokeWidth="4" stroke-miterlimit="10" x1="949.7" y1="1266.2" x2="922" y2="1250.2"/>
             </g>
             <g>
               <g>
                 
-                  <path fill="#EEFAF9" stroke="#333333" stroke-width="8" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" d="
+                  <path fill="#EEFAF9" stroke="#333333" strokeWidth="8" strokeMiterlimit="round" stroke-linejoin="round" stroke-miterlimit="10" d="
                   M1133.8,1275.5c3,5.2,9.3,6.7,14.3,3.8c5-2.9,6.8-9.1,3.8-14.3l8-4.6l-10-17.3l-34.6,20l10,17.3L1133.8,1275.5z"/>
                 <path fill="#333333" d="M1143.9,1271.7c1-0.6,1.3-1.8,0.7-2.7c-0.6-1-1.8-1.3-2.7-0.7c-1,0.6-1.3,1.8-0.7,2.7
                   C1141.8,1271.9,1143,1272.3,1143.9,1271.7z"/>
               </g>
               
-                <line fill="none" stroke="#BCECE8" stroke-width="4" stroke-miterlimit="10" x1="1149.6" y1="1250.2" x2="1121.8" y2="1266.2"/>
+                <line fill="none" stroke="#BCECE8" strokeWidth="4" stroke-miterlimit="10" x1="1149.6" y1="1250.2" x2="1121.8" y2="1266.2"/>
             </g>
             <g>
               <g>
                 
-                  <path fill="#EEFAF9" stroke="#333333" stroke-width="8" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" d="
+                  <path fill="#EEFAF9" stroke="#333333" strokeWidth="8" strokeMiterlimit="round" stroke-linejoin="round" stroke-miterlimit="10" d="
                   M1249,1095.3c6,0,10.5-4.7,10.5-10.5c0-5.8-4.5-10.5-10.5-10.5v-9.3h-20v40h20V1095.3z"/>
                 <path fill="#333333" d="M1251.6,1084.6c0-1.1-0.9-2-2-2c-1.1,0-2,0.9-2,2c0,1.1,0.9,2,2,2
                   C1250.7,1086.6,1251.6,1085.7,1251.6,1084.6z"/>
               </g>
-              <line fill="none" stroke="#BCECE8" stroke-width="4" stroke-miterlimit="10" x1="1235" y1="1069" x2="1235" y2="1101"/>
+              <line fill="none" stroke="#BCECE8" strokeWidth="4" stroke-miterlimit="10" x1="1235" y1="1069" x2="1235" y2="1101"/>
             </g>
             <g>
               <g>
                 
-                  <path fill="#EEFAF9" stroke="#333333" stroke-width="8" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" d="
+                  <path fill="#EEFAF9" stroke="#333333" strokeWidth="8" strokeMiterlimit="round" stroke-linejoin="round" stroke-miterlimit="10" d="
                   M1151.7,904.7c3-5.2,1.2-11.4-3.8-14.3c-5-2.9-11.3-1.4-14.3,3.8l-8-4.6l-10,17.3l34.6,20l10-17.3L1151.7,904.7z"/>
                 <path fill="#333333" d="M1143.4,897.9c-1-0.5-2.2-0.2-2.7,0.7c-0.6,1-0.2,2.2,0.7,2.7c1,0.6,2.2,0.2,2.7-0.7
                   C1144.7,899.7,1144.3,898.4,1143.4,897.9z"/>
               </g>
-              <line fill="none" stroke="#BCECE8" stroke-width="4" stroke-miterlimit="10" x1="1122" y1="903.8" x2="1149.7" y2="919.8"/>
+              <line fill="none" stroke="#BCECE8" strokeWidth="4" stroke-miterlimit="10" x1="1122" y1="903.8" x2="1149.7" y2="919.8"/>
             </g>
             <g>
               <g>
                 
-                  <path fill="#EEFAF9" stroke="#333333" stroke-width="8" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" d="
+                  <path fill="#EEFAF9" stroke="#333333" strokeWidth="8" strokeMiterlimit="round" stroke-linejoin="round" stroke-miterlimit="10" d="
                   M937.7,894.5c-3-5.2-9.3-6.7-14.3-3.8s-6.8,9.1-3.8,14.3l-8.1,4.7l10,17.3l34.6-20l-10-17.3L937.7,894.5z"/>
                 <path fill="#333333" d="M927.5,898.2c-0.9,0.6-1.3,1.8-0.7,2.7c0.6,1,1.8,1.3,2.7,0.7c1-0.6,1.3-1.8,0.7-2.7
                   C929.7,898,928.5,897.6,927.5,898.2z"/>
               </g>
-              <line fill="none" stroke="#BCECE8" stroke-width="4" stroke-miterlimit="10" x1="921.8" y1="919.8" x2="949.6" y2="903.8"/>
+              <line fill="none" stroke="#BCECE8" strokeWidth="4" stroke-miterlimit="10" x1="921.8" y1="919.8" x2="949.6" y2="903.8"/>
             </g>
           </g>
         </g>
@@ -3366,59 +3733,59 @@ class Drum extends React.Component {
     <g id="Crash">
       <g id="Crash-Stand-Top">
         
-          <path fill="#EEFAF9" stroke="#333333" stroke-width="6" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" d="
+          <path fill="#EEFAF9" stroke="#333333" strokeWidth="6" strokeMiterlimit="round" stroke-linejoin="round" stroke-miterlimit="10" d="
           M558,649.3l20.3-55.8c1.1-2.9-0.3-6.1-3.2-7.2c-2.9-1.1-6,0.5-7.1,3.4l-20.3,55.8L558,649.3z"/>
         
-          <path fill="#EEFAF9" stroke="#333333" stroke-width="6" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" d="
+          <path fill="#EEFAF9" stroke="#333333" strokeWidth="6" strokeMiterlimit="round" stroke-linejoin="round" stroke-miterlimit="10" d="
           M575.4,610.2c1.6-4.3-0.6-9-4.9-10.6l-0.5-0.2c-4.3-1.6-9,0.6-10.6,4.9l-65.2,179.3l16,5.8L575.4,610.2z"/>
         
-          <path fill="#5C5C5C" stroke="#333333" stroke-width="6" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" d="
+          <path fill="#5C5C5C" stroke="#333333" strokeWidth="6" strokeMiterlimit="round" stroke-linejoin="round" stroke-miterlimit="10" d="
           M539.1,645.7c0,0.1-0.1,0.2-0.1,0.2l-0.2,0.5c-1.6,4.3,0.7,9,4.9,10.6l9.9,3.6c4.3,1.6,9-0.7,10.6-4.9l0.2-0.5
           c0-0.1,0-0.2,0.1-0.2L539.1,645.7z"/>
         
-          <path fill="#5C5C5C" stroke="#333333" stroke-width="6" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" d="
+          <path fill="#5C5C5C" stroke="#333333" strokeWidth="6" strokeMiterlimit="round" stroke-linejoin="round" stroke-miterlimit="10" d="
           M575.7,623.9c0-0.1,0.1-0.2,0.1-0.2l0.2-0.5c1.6-4.3-0.6-9-4.9-10.6l-9.9-3.6c-4.3-1.6-9,0.6-10.6,4.9l-0.2,0.5
           c0,0.1,0,0.2-0.1,0.2L575.7,623.9z"/>
         <g id="Crash-Cymbol">
           
-            <path fill="#FDE74C" stroke="#333333" stroke-width="6" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" d="
+            <path fill="#FDE74C" stroke="#333333" strokeWidth="6" strokeMiterlimit="round" stroke-linejoin="round" stroke-miterlimit="10" d="
             M691.9,684.6l-48.7-18.7c-33.9-13-46.9-22.8-54.8-31.5c-3.3-3.4-9.8-9.5-16.9-12.1c-2.2-0.8-8.7-3.2-8.7-3.2s0,0-0.1,0
             c-0.1,0-0.1,0-0.1,0s-6.6-2.4-8.7-3.2c-7.1-2.6-16.1-2.1-20.7-1.6c-11.7,1.5-28,0.7-62.3-11.1l-49.3-17
             c-5.4-2-10.6-0.3-12.1,3.9l-0.1,0.1c-1.5,4.2,1.1,8.6,6.6,10.6l135.4,49.3l0.1,0l0.1,0l135.4,49.3c5.4,2,10.3,0.3,11.9-3.9
             l0.1-0.1C700.2,691.2,697.3,686.6,691.9,684.6z"/>
           
-            <line fill="none" stroke="#FEF5B7" stroke-width="4" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" x1="572.3" y1="630.1" x2="546.6" y2="620.8"/>
+            <line fill="none" stroke="#FEF5B7" strokeWidth="4" strokeMiterlimit="round" stroke-linejoin="round" stroke-miterlimit="10" x1="572.3" y1="630.1" x2="546.6" y2="620.8"/>
         </g>
       </g>
       <g id="Crash-Stand">
         
-          <rect x="493" y="787" fill="#EEFAF9" stroke="#333333" stroke-width="6" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" width="17" height="409"/>
+          <rect x="493" y="787" fill="#EEFAF9" stroke="#333333" strokeWidth="6" strokeMiterlimit="round" stroke-linejoin="round" stroke-miterlimit="10" width="17" height="409"/>
         <g>
           <g>
             
-              <path fill="#EEFAF9" stroke="#333333" stroke-width="6" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" d="
+              <path fill="#EEFAF9" stroke="#333333" strokeWidth="6" strokeMiterlimit="round" stroke-linejoin="round" stroke-miterlimit="10" d="
               M574.8,1269c-3.4,3.4-8.8,3.3-12.1-0.1l-66.7-66.7c-3.4-3.4-3.5-8.7-0.1-12.1l0,0c3.4-3.4,8.8-3.3,12.1,0.1l66.7,66.7
               C578.1,1260.2,578.2,1265.6,574.8,1269L574.8,1269z"/>
-            <line fill="none" stroke="#BCECE8" stroke-width="4" stroke-miterlimit="10" x1="566.9" y1="1265.8" x2="499.7" y2="1198.6"/>
+            <line fill="none" stroke="#BCECE8" strokeWidth="4" stroke-miterlimit="10" x1="566.9" y1="1265.8" x2="499.7" y2="1198.6"/>
             
-              <path fill="#5C5C5C" stroke="#333333" stroke-width="6" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" d="
+              <path fill="#5C5C5C" stroke="#333333" strokeWidth="6" strokeMiterlimit="round" stroke-linejoin="round" stroke-miterlimit="10" d="
               M575.2,1257.4l-12,12c0,0,6.4,10.8,8,12.4c4.7,4.7,11.9,4.3,16.6-0.4c4.7-4.7,5.1-11.9,0.5-16.6
               C586.8,1263.4,575.2,1257.4,575.2,1257.4z"/>
           </g>
           <g>
             
-              <path fill="#EEFAF9" stroke="#333333" stroke-width="6" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" d="
+              <path fill="#EEFAF9" stroke="#333333" strokeWidth="6" strokeMiterlimit="round" stroke-linejoin="round" stroke-miterlimit="10" d="
               M429,1268.7c-3.4-3.4-3.3-8.8,0.1-12.1l66.7-66.7c3.4-3.4,8.7-3.5,12.1-0.1l0,0c3.4,3.4,3.3,8.8-0.1,12.1l-66.7,66.7
               C437.7,1272,432.3,1272.1,429,1268.7L429,1268.7z"/>
-            <line fill="none" stroke="#BCECE8" stroke-width="4" stroke-miterlimit="10" x1="437.2" y1="1265.8" x2="502" y2="1200.9"/>
+            <line fill="none" stroke="#BCECE8" strokeWidth="4" stroke-miterlimit="10" x1="437.2" y1="1265.8" x2="502" y2="1200.9"/>
             
-              <path fill="#5C5C5C" stroke="#333333" stroke-width="6" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" d="
+              <path fill="#5C5C5C" stroke="#333333" strokeWidth="6" strokeMiterlimit="round" stroke-linejoin="round" stroke-miterlimit="10" d="
               M440.5,1269.1l-12-12c0,0-10.8,6.4-12.4,8c-4.7,4.7-4.3,11.9,0.4,16.6c4.7,4.7,11.9,5.1,16.6,0.5
               C434.5,1280.7,440.5,1269.1,440.5,1269.1z"/>
           </g>
           <g>
             
-              <path fill="#EEFAF9" stroke="#333333" stroke-width="6" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" d="
+              <path fill="#EEFAF9" stroke="#333333" strokeWidth="6" strokeMiterlimit="round" stroke-linejoin="round" stroke-miterlimit="10" d="
               M488.6,1195.8c0-7.5,6-13.5,13.5-13.5s13.5,6,13.5,13.5c0,7.5-6,13.5-13.5,13.5S488.6,1203.2,488.6,1195.8z"/>
             <path fill="#333333" d="M504.5,1192.5c-1.8-1.3-4.3-0.9-5.6,0.9c-1.3,1.8-0.9,4.3,0.9,5.6c1.8,1.3,4.3,0.9,5.6-0.9
               C506.7,1196.3,506.3,1193.8,504.5,1192.5z"/>
@@ -3426,15 +3793,15 @@ class Drum extends React.Component {
         </g>
         <g>
           
-            <circle fill="#EEFAF9" stroke="#333333" stroke-width="6" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" cx="517.7" cy="994.5" r="10"/>
+            <circle fill="#EEFAF9" stroke="#333333" strokeWidth="6" strokeMiterlimit="round" stroke-linejoin="round" stroke-miterlimit="10" cx="517.7" cy="994.5" r="10"/>
           
-            <path fill="#EEFAF9" stroke="#333333" stroke-width="6" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" d="
+            <path fill="#EEFAF9" stroke="#333333" strokeWidth="6" strokeMiterlimit="round" stroke-linejoin="round" stroke-miterlimit="10" d="
             M515,1006.1c0,6-4.9,10.9-10.9,10.9h-5.1c-6,0-10.9-4.9-10.9-10.9v-22.1c0-6,4.9-10.9,10.9-10.9h5.1c6,0,10.9,4.9,10.9,10.9
             V1006.1z"/>
         </g>
         <g>
           
-            <path fill="#EEFAF9" stroke="#333333" stroke-width="6" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" d="
+            <path fill="#EEFAF9" stroke="#333333" strokeWidth="6" strokeMiterlimit="round" stroke-linejoin="round" stroke-miterlimit="10" d="
             M488.4,786.8c0-7.5,6-13.5,13.5-13.5s13.5,6,13.5,13.5c0,7.5-6,13.5-13.5,13.5S488.4,794.2,488.4,786.8z"/>
           <path fill="#333333" d="M504.3,783.5c-1.8-1.3-4.3-0.9-5.6,0.9c-1.3,1.8-0.9,4.3,0.9,5.6c1.8,1.3,4.3,0.9,5.6-0.9
             C506.5,787.3,506.1,784.8,504.3,783.5z"/>
@@ -3444,37 +3811,37 @@ class Drum extends React.Component {
   </g>
   <g id="All-Keys" class="hidden" opacity="0.9">
     <g id="Key-66">
-      <path fill="none" stroke="#FDFFFC" stroke-width="9" stroke-miterlimit="10" d="M1103.5,1442.5c0,6.6-5.4,12-12,12h-107
+      <path fill="none" stroke="#FDFFFC" strokeWidth="9" stroke-miterlimit="10" d="M1103.5,1442.5c0,6.6-5.4,12-12,12h-107
         c-6.6,0-12-5.4-12-12v-107c0-6.6,5.4-12,12-12h107c6.6,0,12,5.4,12,12V1442.5z"/>
       <text transform="matrix(1 0 0 1 1011.9473 1411.7119)" fill="#FDFFFC" font-family="'Montserrat'" font-size="76.2579">B</text>
     </g>
     <g id="Key-74">
-      <path fill="none" stroke="#FDFFFC" stroke-width="9" stroke-miterlimit="10" d="M1551.5,1442.5c0,6.6-5.4,12-12,12h-107
+      <path fill="none" stroke="#FDFFFC" strokeWidth="9" stroke-miterlimit="10" d="M1551.5,1442.5c0,6.6-5.4,12-12,12h-107
         c-6.6,0-12-5.4-12-12v-107c0-6.6,5.4-12,12-12h107c6.6,0,12,5.4,12,12V1442.5z"/>
       <text transform="matrix(1 0 0 1 1466.3574 1411.7119)" fill="#FDFFFC" font-family="'Montserrat'" font-size="76.2579">J</text>
     </g>
     <g id="Key-72">
-      <path fill="none" stroke="#FDFFFC" stroke-width="9" stroke-miterlimit="10" d="M1393.5,1442.5c0,6.6-5.4,12-12,12h-107
+      <path fill="none" stroke="#FDFFFC" strokeWidth="9" stroke-miterlimit="10" d="M1393.5,1442.5c0,6.6-5.4,12-12,12h-107
         c-6.6,0-12-5.4-12-12v-107c0-6.6,5.4-12,12-12h107c6.6,0,12,5.4,12,12V1442.5z"/>
       <text transform="matrix(1 0 0 1 1300.0742 1411.7119)" fill="#FDFFFC" font-family="'Montserrat'" font-size="76.2579">H</text>
     </g>
     <g id="Key-71">
-      <path fill="none" stroke="#FDFFFC" stroke-width="9" stroke-miterlimit="10" d="M751.5,1442.5c0,6.6-5.4,12-12,12h-107
+      <path fill="none" stroke="#FDFFFC" strokeWidth="9" stroke-miterlimit="10" d="M751.5,1442.5c0,6.6-5.4,12-12,12h-107
         c-6.6,0-12-5.4-12-12v-107c0-6.6,5.4-12,12-12h107c6.6,0,12,5.4,12,12V1442.5z"/>
       <text transform="matrix(1 0 0 1 658.1689 1411.5645)" fill="#FDFFFC" font-family="'Montserrat'" font-size="76.2579">G</text>
     </g>
     <g id="Key-70">
-      <path fill="none" stroke="#FDFFFC" stroke-width="9" stroke-miterlimit="10" d="M564.5,1442.5c0,6.6-5.4,12-12,12h-107
+      <path fill="none" stroke="#FDFFFC" strokeWidth="9" stroke-miterlimit="10" d="M564.5,1442.5c0,6.6-5.4,12-12,12h-107
         c-6.6,0-12-5.4-12-12v-107c0-6.6,5.4-12,12-12h107c6.6,0,12,5.4,12,12V1442.5z"/>
       <text transform="matrix(1 0 0 1 477.3369 1411.7119)" fill="#FDFFFC" font-family="'Montserrat'" font-size="76.2579">F</text>
     </g>
     <g id="Key-89">
-      <path fill="none" stroke="#FDFFFC" stroke-width="9" stroke-miterlimit="10" d="M1278.5,638.5c0,6.6-5.4,12-12,12h-107
+      <path fill="none" stroke="#FDFFFC" strokeWidth="9" stroke-miterlimit="10" d="M1278.5,638.5c0,6.6-5.4,12-12,12h-107
         c-6.6,0-12-5.4-12-12v-107c0-6.6,5.4-12,12-12h107c6.6,0,12,5.4,12,12V638.5z"/>
       <text transform="matrix(1 0 0 1 1190.5742 607.7119)" fill="#FDFFFC" font-family="'Montserrat'" font-size="76.2579">Y</text>
     </g>
     <g id="Key-84">
-      <path fill="none" stroke="#FDFFFC" stroke-width="9" stroke-miterlimit="10" d="M928.5,638.5c0,6.6-5.4,12-12,12h-107
+      <path fill="none" stroke="#FDFFFC" strokeWidth="9" stroke-miterlimit="10" d="M928.5,638.5c0,6.6-5.4,12-12,12h-107
         c-6.6,0-12-5.4-12-12v-107c0-6.6,5.4-12,12-12h107c6.6,0,12,5.4,12,12V638.5z"/>
       <text transform="matrix(1 0 0 1 841.3369 607.7119)" fill="#FDFFFC" font-family="'Montserrat'" font-size="76.2579">T</text>
     </g>
@@ -3484,17 +3851,6 @@ class Drum extends React.Component {
 
 
 
-
-<div id="footer" class="footer hidden">
-
-        <button id='crashdr'>Crash</button>
-        <button id='floortomdr'>FTom</button>
-        <button id='left-tomdr'>LTom</button>
-        <button id='kickdr'>Kick</button>
-        <button id='right-tomdr'>RTom</button>
-        <button id='snaredr'>Snare</button>
-        <button id='hiHatdr'>HiHat</button>
-</div>
 
         </div>
         )
@@ -3721,119 +4077,87 @@ class DrumSequencer extends React.Component {
 class Vibe extends React.Component {
   render (){
     return (
-    <svg version="1.1" id="launchpadsvg" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 600">
-<g id="outside">
-  <path fill="#B3B3B3" d="M239.3,130.7h3.9c3.7,0,6.8,3.1,6.8,6.8v24.1c0,3.7-3.1,6.8-6.8,6.8h-3.9c-3.7,0-6.8-3.1-6.8-6.8v-24.1
-    C232.5,133.7,235.6,130.7,239.3,130.7z"/>
-  <path id="outer_x5F_rectangle" fill="#B3B3B3" stroke="#CCCCCC" stroke-width="4" stroke-miterlimit="10" d="M617.9,507H183.6
-    c-17.6,0-31.8-14.3-31.8-31.8V201.8c0-17.6,14.3-31.8,31.8-31.8h434.3c17.6,0,31.8,14.3,31.8,31.8v273.3
-    C649.8,492.7,635.5,507,617.9,507z"/>
-  <path id="inner_x5F_rectangle" fill="#FFFFFF" d="M614.9,498.5H186.6c-15,0-27.1-12.2-27.1-27.1V204.5c0-15,12.2-27.1,27.1-27.1
-    h428.3c15,0,27.1,12.2,27.1,27.1v266.9C642.1,486.4,629.9,498.5,614.9,498.5z"/>
-  <text transform="matrix(1 0 0 1 485.9997 481)" fill="#CCCCCC" font-family="'Prototype'" font-size="32">Vibe</text>
-  <path fill="none" stroke="#B3B3B3" stroke-width="7" stroke-miterlimit="10" d="M240.5,131v-24c0,0,1.4-49.3,43.6-49.3
-    S316.5-15,316.5-15"/>
-</g>
+    <svg version="1.1" id="launchpadsvg" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1300 660">
+
+<rect class="cls-1" x="4" y="262.73" width="1270" height="395.5" rx="27" ry="27"/>
+<path class="cls-2" d="M214,200.23h7a12,12,0,0,1,12,12v50a0,0,0,0,1,0,0H202a0,0,0,0,1,0,0v-50a12,12,0,0,1,12-12Z"/>
 <g id="buttons">
-  
-    <circle id='3_button' fill="#FFFFFF" stroke="#CCCCCC" stroke-width="6" stroke-miterlimit="10" cx="241.6" cy="220.4" r="23.2"/>
-  
-    <circle id='4_button' fill="#FFFFFF" stroke="#CCCCCC" stroke-width="6" stroke-miterlimit="10" cx="305.6" cy="220.4" r="23.2"/>
-  
-    <circle id="5_button" fill="#FFFFFF" stroke="#CCCCCC" stroke-width="6" stroke-miterlimit="10" cx="369.6" cy="220.4" r="23.2"/>
-  
-    <circle id="6_button" fill="#FFFFFF" stroke="#CCCCCC" stroke-width="6" stroke-miterlimit="10" cx="433.6" cy="220.4" r="23.2"/>
-  
-    <circle id="7_button" fill="#FFFFFF" stroke="#CCCCCC" stroke-width="6" stroke-miterlimit="10" cx="497.6" cy="220.4" r="23.2"/>
-  
-    <circle id="8_button" fill="#FFFFFF" stroke="#CCCCCC" stroke-width="6" stroke-miterlimit="10" cx="561.6" cy="220.4" r="23.2"/>
-  
-    <circle id="e_button" fill="#FFFFFF" stroke="#CCCCCC" stroke-width="6" stroke-miterlimit="10" cx="261.6" cy="286.4" r="23.2"/>
-  
-    <circle id="r_button" fill="#FFFFFF" stroke="#CCCCCC" stroke-width="6" stroke-miterlimit="10" cx="325.6" cy="286.4" r="23.2"/>
-  
-    <circle id="t_button" fill="#FFFFFF" stroke="#CCCCCC" stroke-width="6" stroke-miterlimit="10" cx="389.6" cy="286.4" r="23.2"/>
-  
-    <circle id="y_button" fill="#FFFFFF" stroke="#CCCCCC" stroke-width="6" stroke-miterlimit="10" cx="453.6" cy="286.4" r="23.2"/>
-  
-    <circle id="u_button" fill="#FFFFFF" stroke="#CCCCCC" stroke-width="6" stroke-miterlimit="10" cx="517.6" cy="286.4" r="23.2"/>
-  
-    <circle id="i_button" fill="#FFFFFF" stroke="#CCCCCC" stroke-width="6" stroke-miterlimit="10" cx="581.6" cy="286.4" r="23.2"/>
-  
-    <circle id="s_button" fill="#FFFFFF" stroke="#CCCCCC" stroke-width="6" stroke-miterlimit="10" cx="219.6" cy="352.4" r="23.2"/>
-  
-    <circle id="d_button" fill="#FFFFFF" stroke="#CCCCCC" stroke-width="6" stroke-miterlimit="10" cx="283.6" cy="352.4" r="23.2"/>
-  
-    <circle id="f_button" fill="#FFFFFF" stroke="#CCCCCC" stroke-width="6" stroke-miterlimit="10" cx="347.6" cy="352.4" r="23.2"/>
-  
-    <circle id="g_button" fill="#FFFFFF" stroke="#CCCCCC" stroke-width="6" stroke-miterlimit="10" cx="411.6" cy="352.4" r="23.2"/>
-  
-    <circle id="h_button" fill="#FFFFFF" stroke="#CCCCCC" stroke-width="6" stroke-miterlimit="10" cx="475.6" cy="352.4" r="23.2"/>
-  
-    <circle id="j_button" fill="#FFFFFF" stroke="#CCCCCC" stroke-width="6" stroke-miterlimit="10" cx="539.6" cy="352.4" r="23.2"/>
-  
-    <circle id="x_button" fill="#FFFFFF" stroke="#CCCCCC" stroke-width="6" stroke-miterlimit="10" cx="244.6" cy="418.4" r="23.2"/>
-  
-    <circle id="c_button" fill="#FFFFFF" stroke="#CCCCCC" stroke-width="6" stroke-miterlimit="10" cx="308.6" cy="418.4" r="23.2"/>
-  
-    <circle id="v_button" fill="#FFFFFF" stroke="#CCCCCC" stroke-width="6" stroke-miterlimit="10" cx="372.6" cy="418.4" r="23.2"/>
-  
-    <circle id="b_x5F_button" fill="#FFFFFF" stroke="#CCCCCC" stroke-width="6" stroke-miterlimit="10" cx="436.6" cy="418.4" r="23.2"/>
-  
-    <circle id="n_button" fill="#FFFFFF" stroke="#CCCCCC" stroke-width="6" stroke-miterlimit="10" cx="500.6" cy="418.4" r="23.2"/>
-  
-    <circle id="m_button" fill="#FFFFFF" stroke="#CCCCCC" stroke-width="6" stroke-miterlimit="10" cx="564.6" cy="418.4" r="23.2"/>
+<rect class="cls-3" id='q_button' x="28" y="307.23" width="88" height="77.65" rx="38.82" ry="38.82"/>
+<rect class="cls-3" id='w_button' x="148" y="307.23" width="88" height="77.65" rx="38.82" ry="38.82"/>
+<rect class="cls-3" id='e_button' x="268" y="307.23" width="88" height="77.65" rx="38.82" ry="38.82"/>
+<rect class="cls-3" id='r_button' x="388" y="307.23" width="88" height="77.65" rx="38.82" ry="38.82"/>
+<rect class="cls-3" id='t_button' x="508" y="307.23" width="88" height="77.65" rx="38.82" ry="38.82"/>
+<rect class="cls-3" id='y_button' x="628" y="307.23" width="88" height="77.65" rx="38.82" ry="38.82"/>
+<rect class="cls-3" id='u_button' x="748" y="307.23" width="88" height="77.65" rx="38.82" ry="38.82"/>
+<rect class="cls-3" id='i_button' x="868" y="307.23" width="88" height="77.65" rx="38.82" ry="38.82"/>
+<rect class="cls-3" id='o_button' x="988" y="307.23" width="88" height="77.65" rx="38.82" ry="38.82"/>
+<rect class="cls-3" id='p_button' x="1108" y="307.23" width="88" height="77.65" rx="38.82" ry="38.82"/>
+
+
+<rect class="cls-3" id='a_button' x="80" y="420.23" width="88" height="77.65" rx="38.82" ry="38.82"/>
+<rect class="cls-3" id='s_button' x="200" y="420.23" width="88" height="77.65" rx="38.82" ry="38.82"/>
+<rect class="cls-3" id='d_button' x="320" y="420.23" width="88" height="77.65" rx="38.82" ry="38.82"/>
+<rect class="cls-3" id='f_button' x="440" y="420.23" width="88" height="77.65" rx="38.82" ry="38.82"/>
+<rect class="cls-3" id='g_button' x="560" y="420.23" width="88" height="77.65" rx="38.82" ry="38.82"/>
+<rect class="cls-3" id='h_button' x="680" y="420.23" width="88" height="77.65" rx="38.82" ry="38.82"/>
+<rect class="cls-3" id='j_button' x="800" y="420.23" width="88" height="77.65" rx="38.82" ry="38.82"/>
+<rect class="cls-3" id='k_button' x="920" y="420.23" width="88" height="77.65" rx="38.82" ry="38.82"/>
+<rect class="cls-3" id='l_button' x="1040" y="420.23" width="88" height="77.65" rx="38.82" ry="38.82"/>
+<rect class="cls-3" id='186_button' x="1160" y="420.23" width="88" height="77.65" rx="38.82" ry="38.82"/>
+
+<rect class="cls-3" id='z_button' x="34" y="532.23" width="88" height="77.65" rx="38.82" ry="38.82"/>
+<rect class="cls-3" id='x_button' x="154" y="532.23" width="88" height="77.65" rx="38.82" ry="38.82"/>
+<rect class="cls-3" id='c_button' x="274" y="532.23" width="88" height="77.65" rx="38.82" ry="38.82"/>
+<rect class="cls-3" id='v_button' x="394" y="532.23" width="88" height="77.65" rx="38.82" ry="38.82"/>
+<rect class="cls-3" id='b_button' x="514" y="532.23" width="88" height="77.65" rx="38.82" ry="38.82"/>
+<rect class="cls-3" id='n_button' x="634" y="532.23" width="88" height="77.65" rx="38.82" ry="38.82"/>
+<rect class="cls-3" id='m_button' x="754" y="532.23" width="88" height="77.65" rx="38.82" ry="38.82"/>
+<rect class="cls-3" id='188_button' x="874" y="532.23" width="88" height="77.65" rx="38.82" ry="38.82"/>
+<rect class="cls-3" id='190_button' x="994" y="532.23" width="88" height="77.65" rx="38.82" ry="38.82"/>
+<rect class="cls-3" id='191_button' x="1114" y="532.23" width="88" height="77.65" rx="38.82" ry="38.82"/>
 </g>
 <g id="lights">
-  
-    <circle id="3_light" fill="#FFFFFF" stroke="#FF7BAC" stroke-width="6" stroke-miterlimit="10" cx="241.6" cy="220.4" r="23.2"/>
-  
-    <circle id="4_light" fill="#FFFFFF" stroke="#FF7BAC" stroke-width="6" stroke-miterlimit="10" cx="305.6" cy="220.4" r="23.2"/>
-  
-    <circle id="5_light" fill="#FFFFFF" stroke="#FF7BAC" stroke-width="6" stroke-miterlimit="10" cx="369.6" cy="220.4" r="23.2"/>
-  
-    <circle id="6_light" fill="#FFFFFF" stroke="#FF7BAC" stroke-width="6" stroke-miterlimit="10" cx="433.6" cy="220.4" r="23.2"/>
-  
-    <circle id="7_light" fill="#FFFFFF" stroke="#FF7BAC" stroke-width="6" stroke-miterlimit="10" cx="497.6" cy="220.4" r="23.2"/>
-  
-    <circle id="8_light" fill="#FFFFFF" stroke="#FF7BAC" stroke-width="6" stroke-miterlimit="10" cx="561.6" cy="220.4" r="23.2"/>
-  
-    <circle id="e_light" fill="#FFFFFF" stroke="#00FFFF" stroke-width="6" stroke-miterlimit="10" cx="261.6" cy="286.4" r="23.2"/>
-  
-    <circle id="r_light" fill="#FFFFFF" stroke="#00FFFF" stroke-width="6" stroke-miterlimit="10" cx="325.6" cy="286.4" r="23.2"/>
-  
-    <circle id="t_light" fill="#FFFFFF" stroke="#00FFFF" stroke-width="6" stroke-miterlimit="10" cx="389.6" cy="286.4" r="23.2"/>
-  
-    <circle id="y_light" fill="#FFFFFF" stroke="#00FFFF" stroke-width="6" stroke-miterlimit="10" cx="453.6" cy="286.4" r="23.2"/>
-  
-    <circle id="u_light" fill="#FFFFFF" stroke="#00FFFF" stroke-width="6" stroke-miterlimit="10" cx="517.6" cy="286.4" r="23.2"/>
-  
-    <circle id="i_light" fill="#FFFFFF" stroke="#00FFFF" stroke-width="6" stroke-miterlimit="10" cx="581.6" cy="286.4" r="23.2"/>
-  
-    <circle id="s_light" fill="#FFFFFF" stroke="#AB00FF" stroke-width="6" stroke-miterlimit="10" cx="219.6" cy="352.4" r="23.2"/>
-  
-    <circle id="d_light" fill="#FFFFFF" stroke="#AB00FF" stroke-width="6" stroke-miterlimit="10" cx="283.6" cy="352.4" r="23.2"/>
-  
-    <circle id="f_light" fill="#FFFFFF" stroke="#AB00FF" stroke-width="6" stroke-miterlimit="10" cx="347.6" cy="352.4" r="23.2"/>
-  
-    <circle id="g_light" fill="#FFFFFF" stroke="#AB00FF" stroke-width="6" stroke-miterlimit="10" cx="411.6" cy="352.4" r="23.2"/>
-  
-    <circle id="h_light" fill="#FFFFFF" stroke="#AB00FF" stroke-width="6" stroke-miterlimit="10" cx="475.6" cy="352.4" r="23.2"/>
-  
-    <circle id="j_light" fill="#FFFFFF" stroke="#AB00FF" stroke-width="6" stroke-miterlimit="10" cx="539.6" cy="352.4" r="23.2"/>
-  
-    <circle id="x_light" fill="#FFFFFF" stroke="#00FF00" stroke-width="6" stroke-miterlimit="10" cx="244.6" cy="418.4" r="23.2"/>
-  
-    <circle id="c_light" fill="#FFFFFF" stroke="#00FF00" stroke-width="6" stroke-miterlimit="10" cx="308.6" cy="418.4" r="23.2"/>
-  
-    <circle id="v_light" fill="#FFFFFF" stroke="#00FF00" stroke-width="6" stroke-miterlimit="10" cx="372.6" cy="418.4" r="23.2"/>
-  
-    <circle id="b_light" fill="#FFFFFF" stroke="#00FF00" stroke-width="6" stroke-miterlimit="10" cx="436.6" cy="418.4" r="23.2"/>
-  
-    <circle id="n_light" fill="#FFFFFF" stroke="#00FF00" stroke-width="6" stroke-miterlimit="10" cx="500.6" cy="418.4" r="23.2"/>
-  
-    <circle id="m_light" fill="#FFFFFF" stroke="#00FF00" stroke-width="6" stroke-miterlimit="10" cx="564.6" cy="418.4" r="23.2"/>
+
+<rect id="q_light" opacity="0" fill="#FFFFFF" stroke="#FF7BAC" strokeWidth="6" stroke-miterlimit="10" x="28" y="307.23" width="88" height="77.65" rx="38.82" ry="38.82"/>
+<rect id="w_light" opacity="0" fill="#FFFFFF" stroke="#FF7BAC" strokeWidth="6" stroke-miterlimit="10" x="148" y="307.23" width="88" height="77.65" rx="38.82" ry="38.82"/>
+<rect id="e_light" opacity="0" fill="#FFFFFF" stroke="#FF7BAC" strokeWidth="6" stroke-miterlimit="10" x="268" y="307.23" width="88" height="77.65" rx="38.82" ry="38.82"/>
+<rect id="r_light" opacity="0" fill="#FFFFFF" stroke="#FF7BAC" strokeWidth="6" stroke-miterlimit="10" x="388" y="307.23" width="88" height="77.65" rx="38.82" ry="38.82"/>
+<rect id="t_light" opacity="0" fill="#FFFFFF" stroke="#FF7BAC" strokeWidth="6" stroke-miterlimit="10" x="508" y="307.23" width="88" height="77.65" rx="38.82" ry="38.82"/>
+<rect id="y_light" opacity="0" fill="#FFFFFF" stroke="#FF7BAC" strokeWidth="6" stroke-miterlimit="10" x="628" y="307.23" width="88" height="77.65" rx="38.82" ry="38.82"/>
+<rect id="u_light" opacity="0" fill="#FFFFFF" stroke="#FF7BAC" strokeWidth="6" stroke-miterlimit="10" x="748" y="307.23" width="88" height="77.65" rx="38.82" ry="38.82"/>
+<rect id="i_light" opacity="0" fill="#FFFFFF" stroke="#FF7BAC" strokeWidth="6" stroke-miterlimit="10" x="868" y="307.23" width="88" height="77.65" rx="38.82" ry="38.82"/>
+<rect id="o_light" opacity="0" fill="#FFFFFF" stroke="#FF7BAC" strokeWidth="6" stroke-miterlimit="10" x="988" y="307.23" width="88" height="77.65" rx="38.82" ry="38.82"/>
+<rect id="p_light" opacity="0" fill="#FFFFFF" stroke="#FF7BAC" strokeWidth="6" stroke-miterlimit="10" x="1108" y="307.23" width="88" height="77.65" rx="38.82" ry="38.82"/>
+
+
+<rect id="a_light" opacity="0" fill="#FFFFFF" stroke="#00FFFF" strokeWidth="6" stroke-miterlimit="10" x="80" y="420.23" width="88" height="77.65" rx="38.82" ry="38.82"/>
+<rect id="s_light" opacity="0" fill="#FFFFFF" stroke="#00FFFF" strokeWidth="6" stroke-miterlimit="10" x="200" y="420.23" width="88" height="77.65" rx="38.82" ry="38.82"/>
+<rect id="d_light" opacity="0" fill="#FFFFFF" stroke="#00FFFF" strokeWidth="6" stroke-miterlimit="10" x="320" y="420.23" width="88" height="77.65" rx="38.82" ry="38.82"/>
+<rect id="f_light" opacity="0" fill="#FFFFFF" stroke="#00FFFF" strokeWidth="6" stroke-miterlimit="10" x="440" y="420.23" width="88" height="77.65" rx="38.82" ry="38.82"/>
+<rect id="g_light" opacity="0" fill="#FFFFFF" stroke="#00FFFF" strokeWidth="6" stroke-miterlimit="10" x="560" y="420.23" width="88" height="77.65" rx="38.82" ry="38.82"/>
+<rect id="h_light" opacity="0" fill="#FFFFFF" stroke="#00FFFF" strokeWidth="6" stroke-miterlimit="10" x="680" y="420.23" width="88" height="77.65" rx="38.82" ry="38.82"/>
+<rect id="j_light" opacity="0" fill="#FFFFFF" stroke="#00FFFF" strokeWidth="6" stroke-miterlimit="10" x="800" y="420.23" width="88" height="77.65" rx="38.82" ry="38.82"/>
+<rect id="k_light" opacity="0" fill="#FFFFFF" stroke="#00FFFF" strokeWidth="6" stroke-miterlimit="10" x="920" y="420.23" width="88" height="77.65" rx="38.82" ry="38.82"/>
+<rect id="l_light" opacity="0" fill="#FFFFFF" stroke="#00FFFF" strokeWidth="6" stroke-miterlimit="10" x="1040" y="420.23" width="88" height="77.65" rx="38.82" ry="38.82"/>
+<rect id="186_light" opacity="0" fill="#FFFFFF" stroke="#00FFFF" strokeWidth="6" stroke-miterlimit="10" x="1160" y="420.23" width="88" height="77.65" rx="38.82" ry="38.82"/>
+
+<rect id="z_light" opacity="0" fill="#FFFFFF" stroke="#AB00FF" strokeWidth="6" stroke-miterlimit="10" x="34" y="532.23" width="88" height="77.65" rx="38.82" ry="38.82"/>
+<rect id="x_light" opacity="0" fill="#FFFFFF" stroke="#AB00FF" strokeWidth="6" stroke-miterlimit="10" x="154" y="532.23" width="88" height="77.65" rx="38.82" ry="38.82"/>
+<rect id="c_light" opacity="0" fill="#FFFFFF" stroke="#AB00FF" strokeWidth="6" stroke-miterlimit="10" x="274" y="532.23" width="88" height="77.65" rx="38.82" ry="38.82"/>
+<rect id="v_light" opacity="0" fill="#FFFFFF" stroke="#AB00FF" strokeWidth="6" stroke-miterlimit="10" x="394" y="532.23" width="88" height="77.65" rx="38.82" ry="38.82"/>
+<rect id="b_light" opacity="0" fill="#FFFFFF" stroke="#AB00FF" strokeWidth="6" stroke-miterlimit="10" x="514" y="532.23" width="88" height="77.65" rx="38.82" ry="38.82"/>
+<rect id="n_light" opacity="0" fill="#FFFFFF" stroke="#AB00FF" strokeWidth="6" stroke-miterlimit="10" x="634" y="532.23" width="88" height="77.65" rx="38.82" ry="38.82"/>
+<rect id="m_light" opacity="0" fill="#FFFFFF" stroke="#AB00FF" strokeWidth="6" stroke-miterlimit="10" x="754" y="532.23" width="88" height="77.65" rx="38.82" ry="38.82"/>
+<rect id="188_light" opacity="0" fill="#FFFFFF" stroke="#AB00FF" strokeWidth="6" stroke-miterlimit="10" x="874" y="532.23" width="88" height="77.65" rx="38.82" ry="38.82"/>
+<rect id="190_light" opacity="0" fill="#FFFFFF" stroke="#AB00FF" strokeWidth="6" stroke-miterlimit="10" x="994" y="532.23" width="88" height="77.65" rx="38.82" ry="38.82"/>
+<rect id="191_light" opacity="0" fill="#FFFFFF" stroke="#AB00FF" strokeWidth="6" stroke-miterlimit="10" x="1114" y="532.23" width="88" height="77.65" rx="38.82" ry="38.82"/>
 </g>
+
+<path class="cls-4" d="M259-260" transform="translate(-42 -3.77)"/>
+<path class="cls-4" d="M259,204" transform="translate(-42 -3.77)"/>
+<path class="cls-3" d="M259,204c0-57.39,5.39-95.58,39.55-95.58" transform="translate(-42 -3.77)"/>
+<path class="cls-3" d="M362,3.77c0,56-6,104.65-63.45,104.65" transform="translate(-42 -3.77)"/>
+
 </svg>
       )
   }
