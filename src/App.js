@@ -23,7 +23,7 @@ import message from "./img/message.png";
 import leftArrow from "./img/arrowLeft.png";
 import rightArrow from "./img/arrowRight.png";
 import userIcon from "./img/user.png";
-
+import recordIcon from "./img/recordIcon.png"
 
 import c from "./sounds/snares3.mp3";
 
@@ -40,6 +40,7 @@ var pianoKeysDown = [];
 var pianoSelector =4;
 var seqOpen = false; 
 var eqOpen = false;
+var recordOpen = false;
 var chatOpen = false;
 var synthStatus = false;
 var keyboardState = "instrument";
@@ -51,6 +52,9 @@ var userColor;
 var activeColors = [];
 
 
+//custon synth
+var filter = "highpass"
+var filterTypes = ["lowpass", "highpass", "bandpass", "lowshelf", "highshelf", "notch", "allpass", "peaking"]
 
 var synth2 = new Tone.PolySynth({
   "portamento" : 0.01,
@@ -106,6 +110,7 @@ function toggleSelectorRight() {
     pianoSelector += 1;
   }
 }
+
 function toggleSequencerLeft() {
   document.getElementById("sequencer1").style.left = "100%";
   document.getElementById("sequencer2").style.right = "0%";
@@ -116,6 +121,48 @@ function toggleSequencerRight() {
   document.getElementById("sequencer1").style.left = "0%";
   document.getElementById("sequencer2").style.right = "100%";
 }
+
+
+ function handleSetFilter(){
+
+      synth2.set("filter" : {
+          "type" : "highpass"
+        },
+        "envelope" : {
+          "attack" : 0.25
+        });
+
+      console.log("SET SYNTH")
+      /*
+      var select = document.getElementById("filterSelector");
+      filter = select.value;
+      synth2.set({
+      "filter" : {
+        "type" : filter
+      }});
+
+      */
+    }
+
+
+  function  handleDetune(){
+      var input = document.getElementById("detune");
+      var currentVal = input.value;
+      synth2.set({
+        detune : currentVal
+        // ...etc
+      })
+    }
+
+  function handleChange(event) {
+      console.log("SET change")
+      alert( event.target.value);
+    }
+
+   function handleSubmit(event) {
+      console.log("SET submit")
+      event.preventDefault();
+    }
 
 function eqPop() {
     
@@ -132,6 +179,25 @@ function eqPop() {
     document.getElementById("eq").style.transition = ".5s"; 
     
     eqOpen = false;
+
+  }
+} 
+
+function recordPop() {
+    
+  if (recordOpen == false) {
+
+    document.getElementById("recordtb").style.left = "0px"; 
+    document.getElementById("recordtb").style.transition = ".5s";
+    
+    
+    recordOpen = true;
+  } 
+  else if (recordOpen == true) {
+    document.getElementById("recordtb").style.left = "-200px"; 
+    document.getElementById("recordtb").style.transition = ".5s"; 
+    
+    recordOpen = false;
 
   }
 } 
@@ -487,6 +553,8 @@ window.onload = function () {
 function startRecording() {
   recordButton.disabled = true;
   stopButton.disabled = false;
+  var icon = document.getElementById("recordIcon");
+  icon.className += " recording"
 
   recorder.start();
 }
@@ -497,6 +565,9 @@ function stopRecording() {
 
   // Stopping the recorder will eventually trigger the `dataavailable` event and we can complete the recording process
   recorder.stop();
+  var icon = document.getElementById("recordIcon");
+  icon.className = icon.className.replace(/ recording/g, "");
+
 }
 
 function onRecordingReady(e) {
@@ -1243,8 +1314,7 @@ $("body").on("keydown", handleKeyPress);
 $("body").on("keyup", handleKeyUp);
 
 function handleKeyPress(event) {
-  console.log(event);
-  
+
   //q = 51
   if ( event.which == 81 ) {
      button_q("down");
@@ -1572,7 +1642,7 @@ $(document).mousedown(function(event) {
     } else if(ctx.charAt(2) ==4){
       ctx = ctx.charAt(0) + ctx.charAt(1) + pianoSelector;
     }
-    console.log(ctx + "down");
+    
 
     if(!pianoKeysDown.includes(ctx)){
     pianoKeysDown.push(ctx);
@@ -1611,7 +1681,6 @@ $('.piano').mouseup(function(event){
     } else if(ctx.charAt(2) ==4){
       ctx = ctx.charAt(0) + ctx.charAt(1) + pianoSelector;
     }
-    console.log(ctx + "up");
     synth2.triggerRelease(ctx);
 
       socket.emit('PianoKeyReleased', ctx);
@@ -2837,7 +2906,6 @@ $('.piano').mouseup(function(event){
     }
 
 
-
 //main render
 //app render
   render() {
@@ -2936,7 +3004,16 @@ $('.piano').mouseup(function(event){
 
         </div>
 
-        
+        <div id="recordtb">
+        <div id = "recordTab" onClick={recordPop}>
+        <img src={recordIcon} id="recordIcon"></img>
+        </div>
+        <p><button class="button" id="record">Record audio</button> <button class="button" id="stop">Stop</button></p>
+        <p><audio id="audio" controls></audio></p>
+        <br/>
+        <br/>
+        <p>Try <a href="https://chrome.google.com/webstore/detail/chrome-audio-capture/kfokdmfpdnokpmpbjhjbcabgligoelgp?hl=en">Chrome Audio Capture</a> with Google Chrome to record Tab's Audio!</p>
+        </div>
       
         
         {this.state.first == "Keyboard1" && <Keyboard1/>}
@@ -2948,9 +3025,6 @@ $('.piano').mouseup(function(event){
         <button class="button" onClick={this.handleSynth.bind(this)}>CHANGE SYNTH</button>
         <button class="button"  onClick={this.handleInstrument.bind(this)}>CHANGE KEYBOARD/VIBE</button>
         <button class="button"  onClick={this.handleDrum.bind(this)}>DRUM</button>
-        <button class="button"  onClick={this.handle.bind(this)}>KEYBOARD2</button>
-        <p><button class="button" id="record">Record audio</button> <button class="button" id="stop">Stop</button></p>
-        <p><audio id="audio" controls></audio></p>
         </div>
         <DrumSequencer/>
 
@@ -3045,7 +3119,7 @@ class Keyboard1 extends React.Component {
           <img src={rightArrow} id="rightArrowPiano"></img>
           </div>
 
-          <p id="pianoSelectorP">{pianoSelector}</p>
+          
 
     <div className="piano">
       <div className="piano-key piano-key-natural piano-key-octave-3 piano-key-F piano-key-Eb piano-key-F3 piano-key-Eb3" id="piano_key_F3" data-note="F3"></div>
@@ -3068,7 +3142,22 @@ class Keyboard1 extends React.Component {
       <div className="piano-key piano-key-accidental piano-key-octave-4 piano-key-A# piano-key-Bb piano-key-A#4 piano-key-Bb4" id="piano_key_A#4" data-note="A#4"></div>
       <div className="piano-key piano-key-natural piano-key-octave-4 piano-key-B piano-key-Cb piano-key-B4 piano-key-Cb4" id="piano_key_B4" data-note="B4"></div>
     </div>
-        </div>
+
+      <div>
+
+         <form onSubmit={this.handleSubmit}>
+        
+         <label>
+          Detune:
+
+          <input onChange={handleDetune} type="range" step="1" min="-1000" max="1000" id="detune"/>
+        </label>
+      </form>
+
+
+
+      </div>
+    </div>
 
         )
   }

@@ -256,6 +256,39 @@ h4 {
   z-index: 10;
 
 }
+#recordIcon{
+      width: 100%;
+    height: 100%;
+}
+#recordTab {
+    width: 59px;
+    height: 59px;
+    background: #222;
+    position: absolute;
+    right: -59px;
+    border-bottom: 1px solid orange;
+    border-top:1px solid orange;
+    border-right:1px solid orange;
+    top: 137px;
+
+}
+
+#recordSoundIcon {
+  width: 30px;
+  height: 30px;
+  top: 13px;
+  position: relative;
+}
+
+#recordtb {
+  background-color: orange;
+  position: fixed;
+  width: 200px;
+  height: 100vh;
+  left:-200px;
+  z-index: 10;
+
+}
 
 #messages {
   background-color: orange;
@@ -287,6 +320,13 @@ h4 {
 
 }
 
+.recording {
+  background-color: #C60;
+}
+
+#audio {
+      width: 80%;
+}
 
 #chat_input {
     height: 100%;
@@ -634,7 +674,7 @@ input[type=number] {
 
 #btn_Menu {
     position: fixed;
-    bottom: 3vh;
+    top: 9vh;
     width: 100%;
 }
 #launchpadsvg{
