@@ -195,6 +195,23 @@ function toggleSequencerRight() {
         // ...etc
       })
     }
+    
+
+
+    function handleReleaseAll(){
+      synth2.releaseAll();
+    }
+
+
+
+  function  handleFrequency(){
+      var input = document.getElementById("frequency");
+      var currentVal = input.value;
+      synth2.set({
+        "frequency" : currentVal
+        // ...etc
+      })
+    }
 
   function handleChange(event) {
       console.log("SET change")
@@ -3166,14 +3183,22 @@ class Keyboard1 extends React.Component {
         
         
         <button class="button" onClick={handleSynth}>CHANGE SYNTH</button>
+        <button class="button" onClick={handleReleaseAll}>RELEASE ALL</button>
          <form id="keyboardControlCenter" onSubmit={this.handleSubmit}>
-        
+         
          <label>
           Detune:
-
+          <br/>
           <input onChange={handleDetune} class="slider" type="range" step="1" min="-1000" max="1000" id="detune"/>
         </label>
 
+        <label>
+          Frequency:
+          <br/>
+          <input onChange={handleFrequency} class="slider" type="range" step="1" min="0" max="1000" id="frequency"/>
+        </label>
+
+        
       </form>
       </div>
 
