@@ -212,6 +212,9 @@ function eqPop() {
 
     document.getElementById("eq").style.left = "0px"; 
     document.getElementById("eq").style.transition = ".5s";
+    document.getElementById("recordtb").style.zIndex = "9";
+    document.getElementById("messages").style.zIndex = "9";
+    
     
     
     eqOpen = true;
@@ -219,6 +222,8 @@ function eqPop() {
   else if (eqOpen == true) {
     document.getElementById("eq").style.left = "-200px"; 
     document.getElementById("eq").style.transition = ".5s"; 
+    document.getElementById("recordtb").style.zIndex = "10";
+    document.getElementById("messages").style.zIndex = "10";
     
     eqOpen = false;
 
@@ -231,6 +236,8 @@ function recordPop() {
 
     document.getElementById("recordtb").style.left = "0px"; 
     document.getElementById("recordtb").style.transition = ".5s";
+    document.getElementById("messages").style.zIndex = "9";
+    document.getElementById("eq").style.zIndex = "9";
     
     
     recordOpen = true;
@@ -238,6 +245,9 @@ function recordPop() {
   else if (recordOpen == true) {
     document.getElementById("recordtb").style.left = "-200px"; 
     document.getElementById("recordtb").style.transition = ".5s"; 
+    document.getElementById("messages").zIndex = "10";
+    document.getElementById("eq").zIndex = "10";
+
     
     recordOpen = false;
 
@@ -252,14 +262,18 @@ function chatPop () {
     document.getElementById("messages").style.left = "0px"; 
     document.getElementById("eqTab").style.right = "0"; 
     document.getElementById("messages").style.transition = ".5s"; 
+    document.getElementById("recordtb").style.zIndex = "7";
+    document.getElementById("eq").style.zIndex = "9";
     chatOpen = true;
+
 
   } 
   else if (chatOpen == true) {
     document.getElementById("messages").style.left = "-200px"; 
-    document.getElementById("eq").style.zIndex = "10"; 
     document.getElementById("messages").style.transition = ".5s";  
     document.getElementById("eqTab").style.right = "-59px"; 
+    document.getElementById("recordtb").style.zIndex = "10";
+    document.getElementById("eq").style.zIndex = "10";
 
 
     chatOpen = false;
@@ -2986,22 +3000,22 @@ $('.piano').mouseup(function(event){
         
         <div class='eqSliders'>
         <h4>Drums</h4>
-        <input id="drumSlider" onChange={this.handleDrumVolume.bind(this)} type="range" class="slider" min="0.0" max="1.0" step=".01"/>
+        <input id="drumSlider" onChange={this.handleDrumVolume.bind(this)} type="range" class="slider2" min="0.0" max="1.0" step=".01"/>
         </div>
 
         <div class='eqSliders'>
         <h4>Synth</h4>
-        <input id="synthSlider" onChange={this.handleSynthVolume.bind(this)} type="range" class="slider" min="0.0" max="1.0" step=".01"/>
+        <input id="synthSlider" onChange={this.handleSynthVolume.bind(this)} type="range" class="slider2" min="0.0" max="1.0" step=".01"/>
         </div>
 
         <div class='eqSliders'>
         <h4>Keys</h4>
-        <input id="keySlider" onChange={this.handleKeyVolume.bind(this)} type="range" class="slider" min="0.0" max="1.0" step=".01"/>
+        <input id="keySlider" onChange={this.handleKeyVolume.bind(this)} type="range" class="slider2" min="0.0" max="1.0" step=".01"/>
         </div>
 
         <div class='eqSliders'>
         <h4>Vibe</h4>
-        <input id="vibeSlider" onChange={this.handleVibeVolume.bind(this)} type="range" class="slider" min="0.0" max="1.0" step=".01"/>
+        <input id="vibeSlider" onChange={this.handleVibeVolume.bind(this)} type="range" class="slider2" min="0.0" max="1.0" step=".01"/>
         </div>
 
         </div>

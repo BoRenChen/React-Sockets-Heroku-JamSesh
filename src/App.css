@@ -286,7 +286,7 @@ h4 {
   width: 200px;
   height: 100vh;
   left:-200px;
-  z-index: 10;
+  z-index: 9;
 
 }
 
@@ -848,4 +848,42 @@ canvas {
   width: 50%;
     margin-left: auto;
     margin-right: auto;
+}
+
+
+.slider2 {
+        -webkit-appearance: none;
+    width: 100%;
+    height: 6px;
+    border-radius: 5px;
+    background: grey;
+    outline: none;
+    /* opacity: 0.7; */
+    -webkit-transition: .2s;
+    -webkit-transition: opacity .2s;
+    -o-transition: opacity .2s;
+    transition: opacity .2s;
+}
+
+.slider2:hover {
+    opacity: 1;
+}
+
+.slider2::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 15px;
+    height: 15px;
+    border-radius: 50%;
+    
+    background: lightGrey;
+    cursor: pointer;
+}
+
+.slider2::-moz-range-thumb {
+    width: 25px;
+    height: 25px;
+    border-radius: 50%;
+    background: orange;
+    cursor: pointer;
 }
