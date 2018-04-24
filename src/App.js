@@ -144,6 +144,48 @@ function toggleSequencerRight() {
       */
     }
 
+      function handleSynth() {
+      console.log("pressed", synth2);
+      socket.emit('synthStatusChanged', synthStatus);
+      if (synthStatus == false) {
+      synth2 = new Tone.PolySynth(3, Tone.DuoSynth, {
+      "oscillator": {
+        "type": "sine"
+      },
+      "envelope": {
+        "attack": 0.01,
+        "decay": 0.1,
+        "sustain": 0.2,
+        "release": 4,
+      }
+    }).toMaster();
+      synthStatus = true;
+    } else {
+      synth2 = new Tone.PolySynth({
+        "portamento" : 0.01,
+        "oscillator" : {
+          "type" : "square"
+        },
+        "envelope" : {
+          "attack" : 0.005,
+          "decay" : 0.2,
+          "sustain" : 0.4,
+          "release" : 1.4,
+        },
+        "filterEnvelope" : {
+          "attack" : 0.005,
+          "decay" : 0.1,
+          "sustain" : 0.05,
+          "release" : 0.8,
+          "baseFrequency" : 300,
+          "octaves" : 4
+        }
+      }).toMaster();
+      synthStatus = false;
+    }
+
+    }
+
 
   function  handleDetune(){
       var input = document.getElementById("detune");
@@ -2841,47 +2883,7 @@ $('.piano').mouseup(function(event){
     keyboardState = data;
   }
 
-  handleSynth() {
-      console.log("pressed", synth2);
-      socket.emit('synthStatusChanged', synthStatus);
-      if (synthStatus == false) {
-      synth2 = new Tone.PolySynth(3, Tone.DuoSynth, {
-      "oscillator": {
-        "type": "sine"
-      },
-      "envelope": {
-        "attack": 0.01,
-        "decay": 0.1,
-        "sustain": 0.2,
-        "release": 4,
-      }
-    }).toMaster();
-      synthStatus = true;
-    } else {
-      synth2 = new Tone.PolySynth({
-        "portamento" : 0.01,
-        "oscillator" : {
-          "type" : "square"
-        },
-        "envelope" : {
-          "attack" : 0.005,
-          "decay" : 0.2,
-          "sustain" : 0.4,
-          "release" : 1.4,
-        },
-        "filterEnvelope" : {
-          "attack" : 0.005,
-          "decay" : 0.1,
-          "sustain" : 0.05,
-          "release" : 0.8,
-          "baseFrequency" : 300,
-          "octaves" : 4
-        }
-      }).toMaster();
-      synthStatus = false;
-    }
 
-    }
 
 
     handleSynthVolume(){
@@ -2984,22 +2986,22 @@ $('.piano').mouseup(function(event){
         
         <div class='eqSliders'>
         <h4>Drums</h4>
-        <input id="drumSlider" onChange={this.handleDrumVolume.bind(this)} type="range" min="0.0" max="1.0" step=".01"/>
+        <input id="drumSlider" onChange={this.handleDrumVolume.bind(this)} type="range" class="slider" min="0.0" max="1.0" step=".01"/>
         </div>
 
         <div class='eqSliders'>
         <h4>Synth</h4>
-        <input id="synthSlider" onChange={this.handleSynthVolume.bind(this)} type="range" min="0.0" max="1.0" step=".01"/>
+        <input id="synthSlider" onChange={this.handleSynthVolume.bind(this)} type="range" class="slider" min="0.0" max="1.0" step=".01"/>
         </div>
 
         <div class='eqSliders'>
         <h4>Keys</h4>
-        <input id="keySlider" onChange={this.handleKeyVolume.bind(this)} type="range" min="0.0" max="1.0" step=".01"/>
+        <input id="keySlider" onChange={this.handleKeyVolume.bind(this)} type="range" class="slider" min="0.0" max="1.0" step=".01"/>
         </div>
 
         <div class='eqSliders'>
         <h4>Vibe</h4>
-        <input id="vibeSlider" onChange={this.handleVibeVolume.bind(this)} type="range" min="0.0" max="1.0" step=".01"/>
+        <input id="vibeSlider" onChange={this.handleVibeVolume.bind(this)} type="range" class="slider" min="0.0" max="1.0" step=".01"/>
         </div>
 
         </div>
@@ -3022,8 +3024,8 @@ $('.piano').mouseup(function(event){
         {this.state.first == "DrumSequencer" && <DrumSequencer/>}
         {this.state.first == "Vibe" && <Vibe/>}
         <div id="btn_Menu">
-        <button class="button" onClick={this.handleSynth.bind(this)}>CHANGE SYNTH</button>
-        <button class="button"  onClick={this.handleInstrument.bind(this)}>CHANGE KEYBOARD/VIBE</button>
+        <button class="button"  onClick={this.handleInstrument.bind(this)}>VIBE</button>
+        <button class="button"  onClick={this.handleInstrument.bind(this)}>KEYBOARD</button>
         <button class="button"  onClick={this.handleDrum.bind(this)}>DRUM</button>
         </div>
         <DrumSequencer/>
@@ -3143,16 +3145,23 @@ class Keyboard1 extends React.Component {
       <div className="piano-key piano-key-natural piano-key-octave-4 piano-key-B piano-key-Cb piano-key-B4 piano-key-Cb4" id="piano_key_B4" data-note="B4"></div>
     </div>
 
-      <div>
 
-         <form onSubmit={this.handleSubmit}>
+
+      <div>
+      <div id="keyboardControlls" >
+        
+        
+        <button class="button" onClick={handleSynth}>CHANGE SYNTH</button>
+         <form id="keyboardControlCenter" onSubmit={this.handleSubmit}>
         
          <label>
           Detune:
 
-          <input onChange={handleDetune} type="range" step="1" min="-1000" max="1000" id="detune"/>
+          <input onChange={handleDetune} class="slider" type="range" step="1" min="-1000" max="1000" id="detune"/>
         </label>
+
       </form>
+      </div>
 
 
 
